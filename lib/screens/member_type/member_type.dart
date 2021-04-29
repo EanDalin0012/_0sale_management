@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sale_management/share/components/show_dialog/show_dialog.dart';
-import 'package:sale_management/share/constant/constantcolor.dart';
+import 'package:sale_management/share/constant/constant_color.dart';
 import 'package:sale_management/share/constant/text_style.dart';
-import 'package:sale_management/share/model/catgory.dart';
+import 'package:sale_management/share/model/category.dart';
 import 'package:sale_management/share/model/data/category.dart';
 
 class MemberType extends StatefulWidget {

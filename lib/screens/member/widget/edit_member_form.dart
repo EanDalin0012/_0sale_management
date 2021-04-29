@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sale_management/screens/constants.dart';
 import 'package:sale_management/screens/size_config.dart';
-import 'package:sale_management/screens/widgets/custom_surfix_icon/custom_surfix_icon.dart';
+import 'package:sale_management/screens/widgets/custom_suffix_icon/custom_suffix_icon.dart';
 
 class EditMemberForm extends StatefulWidget {
   @override
@@ -13,7 +13,6 @@ class _AddMemberFormState extends State<EditMemberForm> {
   final _formKey = GlobalKey<FormState>();
   String email;
   String password;
-  String conform_password;
   bool remember = false;
   final List<String> errors = [];
   Size size;
@@ -78,7 +77,7 @@ class _AddMemberFormState extends State<EditMemberForm> {
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: CustomSurfFixIcon( svgPaddingLeft: 15,svgIcon: "assets/icons/help_outline_black_24dp.svg"),
+        suffixIcon: CustomSufFixIcon( svgPaddingLeft: 15,svgIcon: "assets/icons/help_outline_black_24dp.svg"),
       ),
     );
   }
@@ -111,7 +110,7 @@ class _AddMemberFormState extends State<EditMemberForm> {
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: CustomSurfFixIcon( svgPaddingLeft: 15,svgIcon: "assets/icons/help_outline_black_24dp.svg"),
+        suffixIcon: CustomSufFixIcon( svgPaddingLeft: 15,svgIcon: "assets/icons/help_outline_black_24dp.svg"),
       ),
     );
   }
@@ -144,7 +143,7 @@ class _AddMemberFormState extends State<EditMemberForm> {
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: CustomSurfFixIcon( svgPaddingLeft: 15,svgIcon: "assets/icons/attachment_black_24dp.svg"),
+        suffixIcon: CustomSufFixIcon( svgPaddingLeft: 15,svgIcon: "assets/icons/attachment_black_24dp.svg"),
       ),
     );
   }
@@ -177,7 +176,7 @@ class _AddMemberFormState extends State<EditMemberForm> {
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: CustomSurfFixIcon( svgPaddingLeft: 15,svgIcon: "assets/icons/border_color_black_24dp.svg"),
+        suffixIcon: CustomSufFixIcon( svgPaddingLeft: 15,svgIcon: "assets/icons/border_color_black_24dp.svg"),
       ),
     );
   }

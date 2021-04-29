@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sale_management/screens/constants.dart';
 import 'package:sale_management/screens/size_config.dart';
-import 'package:sale_management/share/model/catgory.dart';
+import 'package:sale_management/share/model/category.dart';
 import 'package:sale_management/screens/category/widget/edit_category_form.dart';
 
 class EditCategoryBody extends StatelessWidget {

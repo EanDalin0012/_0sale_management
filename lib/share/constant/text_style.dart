@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sale_management/share/constant/constantcolor.dart';
+import 'package:sale_management/share/constant/constant_color.dart';
 
 var borderColorsTextField = Colors.deepPurple;
 var labelStyle = TextStyle(fontSize: 20, color: Colors.deepPurple, fontFamily: 'roboto,khmer siemreap');

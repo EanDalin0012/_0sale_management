@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sale_management/screens/size_config.dart';
 
-class CustomSurfFixIcon extends StatelessWidget {
+class CustomSufFixIcon extends StatelessWidget {
   final Color color;
   final double svgPaddingLeft;
   final String svgIcon;
-  const CustomSurfFixIcon({
+  const CustomSufFixIcon({
     Key key,
     this.color,
     this.svgPaddingLeft,

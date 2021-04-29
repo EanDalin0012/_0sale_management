@@ -4,9 +4,9 @@ import 'package:sale_management/screens/category/add_category.dart';
 import 'package:sale_management/screens/category/edit_category.dart';
 import 'package:sale_management/screens/home/Home.dart';
 import 'package:sale_management/share/components/show_dialog/show_dialog.dart';
-import 'package:sale_management/share/constant/constantcolor.dart';
+import 'package:sale_management/share/constant/constant_color.dart';
 import 'package:sale_management/share/constant/text_style.dart';
-import 'package:sale_management/share/model/catgory.dart';
+import 'package:sale_management/share/model/category.dart';
 import 'package:sale_management/share/model/data/category.dart';
 
 class CategoryScreen extends StatefulWidget {

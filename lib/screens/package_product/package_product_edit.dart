@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:sale_management/screens/constants.dart';
 import 'package:sale_management/screens/size_config.dart';
 import 'package:sale_management/share/constant/text_style.dart';
-import 'package:sale_management/share/model/catgory.dart';
+import 'package:sale_management/share/model/category.dart';
 import 'package:sale_management/share/model/product.dart';
 import 'package:sale_management/share/model/package_product.dart';
 import 'package:sale_management/share/services/load_data_local.dart';

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sale_management/screens/constants.dart';
 import 'package:sale_management/screens/sign_in/sign_in_screen.dart';
 import 'package:sale_management/screens/size_config.dart';
-import 'package:sale_management/screens/widgets/custom_surfix_icon/custom_surfix_icon.dart';
+import 'package:sale_management/screens/widgets/custom_suffix_icon/custom_suffix_icon.dart';
 import 'package:sale_management/screens/widgets/default_button/default_button.dart';
 import 'package:sale_management/share/helper/keyboard.dart';
 
@@ -94,7 +94,7 @@ class _SignUpFormState extends State<SignUpForm> {
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: CustomSurfFixIcon(svgIcon: "assets/icons/Lock.svg"),
+        suffixIcon: CustomSufFixIcon(svgIcon: "assets/icons/Lock.svg"),
       ),
     );
   }
@@ -127,7 +127,7 @@ class _SignUpFormState extends State<SignUpForm> {
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: CustomSurfFixIcon(svgIcon: "assets/icons/Lock.svg"),
+        suffixIcon: CustomSufFixIcon(svgIcon: "assets/icons/Lock.svg"),
       ),
     );
   }
@@ -160,7 +160,7 @@ class _SignUpFormState extends State<SignUpForm> {
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: CustomSurfFixIcon( svgPaddingLeft: 15,svgIcon: "assets/icons/Mail.svg"),
+        suffixIcon: CustomSufFixIcon( svgPaddingLeft: 15,svgIcon: "assets/icons/Mail.svg"),
       ),
     );
   }

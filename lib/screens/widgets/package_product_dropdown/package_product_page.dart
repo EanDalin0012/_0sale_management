@@ -5,7 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sale_management/screens/package_product/package_product_add.dart';
 import 'package:sale_management/screens/widgets/product_dropdown/product_page.dart';
 import 'package:sale_management/share/components/show_dialog/show_dialog.dart';
-import 'package:sale_management/share/constant/constantcolor.dart';
+import 'package:sale_management/share/constant/constant_color.dart';
 import 'package:sale_management/share/constant/text_style.dart';
 import 'package:sale_management/share/model/product.dart';
 import 'package:sale_management/share/model/package_product.dart';

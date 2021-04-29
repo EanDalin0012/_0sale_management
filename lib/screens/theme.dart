@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sale_management/share/constant/constantcolor.dart';
+import 'package:sale_management/share/constant/constant_color.dart';
 import 'package:sale_management/share/constant/text_style.dart';
 
 ThemeData theme() {

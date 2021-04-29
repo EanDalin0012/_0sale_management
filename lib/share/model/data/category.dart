@@ -1,5 +1,5 @@
 
-import 'package:sale_management/share/model/catgory.dart';
+import 'package:sale_management/share/model/category.dart';
 
 final List<CategoryModel> categoriesData = [
   CategoryModel('Le','Le'),

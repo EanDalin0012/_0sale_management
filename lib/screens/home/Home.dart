@@ -9,7 +9,7 @@ import 'package:sale_management/screens/home/widgets/sheet_container.dart';
 import 'package:sale_management/screens/notification/notification_screen.dart';
 import 'package:sale_management/screens/sale/sale_screen.dart';
 import 'package:sale_management/screens/widgets/side_nav.dart';
-import 'package:sale_management/share/constant/constantcolor.dart';
+import 'package:sale_management/share/constant/constant_color.dart';
 
 class Home extends StatefulWidget {
   Home():super();

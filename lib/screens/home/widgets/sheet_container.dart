@@ -5,6 +5,7 @@ import 'package:sale_management/screens/package_product/package_product.dart';
 import 'package:sale_management/screens/product/product.dart';
 import 'package:sale_management/share/constant/text_style.dart';
 import 'package:sale_management/screens/member/member.dart';
+import 'package:sale_management/screens/vendor/vendor.dart';
 
 class SheetContainer extends StatefulWidget {
   final BuildContext context;
@@ -323,7 +324,12 @@ class _SheetContainerState extends State<SheetContainer> {
         ),
         InkWell(
           onTap: () {
-            print('Vendor Click');
+            pop();
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => VendorScreen()),
+            );
+
           },
           child: Container(
             width: w,

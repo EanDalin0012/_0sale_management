@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sale_management/screens/constants.dart';
 import 'package:sale_management/screens/size_config.dart';
-import 'package:sale_management/screens/widgets/custom_surfix_icon/custom_surfix_icon.dart';
+import 'package:sale_management/screens/widgets/custom_suffix_icon/custom_suffix_icon.dart';
 import 'package:sale_management/share/constant/text_style.dart';
 import 'package:sale_management/share/model/key/m_key.dart';
 import 'package:sale_management/share/utils/number_format.dart';
-import 'package:sale_management/screens/sale/widgets/group_radio.dart';
 
 class SaleAddConfirm extends StatefulWidget {
   final List<dynamic> vData;
@@ -410,7 +409,7 @@ class _SaleAddConfirmState extends State<SaleAddConfirm> {
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: CustomSurfFixIcon( svgPaddingLeft: 15,svgIcon: "assets/icons/expand_more_black_24dp.svg"),
+        suffixIcon: CustomSufFixIcon( svgPaddingLeft: 15,svgIcon: "assets/icons/expand_more_black_24dp.svg"),
       ),
     );
   }
@@ -429,11 +428,6 @@ class _SaleAddConfirmState extends State<SaleAddConfirm> {
       },
       validator: (value) {
         // if (value.isEmpty) {
-        //   addError(error: kEmailNullError);
-        //   return "";
-        // } else if (!emailValidatorRegExp.hasMatch(value)) {
-        //   addError(error: kInvalidEmailError);
-        //   return "";
         // }
         // return null;
       },
@@ -443,7 +437,7 @@ class _SaleAddConfirmState extends State<SaleAddConfirm> {
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: CustomSurfFixIcon( svgPaddingLeft: 15,svgIcon: "assets/icons/border_color_black_24dp.svg"),
+        suffixIcon: CustomSufFixIcon( svgPaddingLeft: 15,svgIcon: "assets/icons/border_color_black_24dp.svg"),
       ),
     );
   }
@@ -453,7 +447,7 @@ class _SaleAddConfirmState extends State<SaleAddConfirm> {
       labelPadding: EdgeInsets.all(2.0),
       avatar: CircleAvatar(
         // backgroundColor: Colors.white70,
-        child: CustomSurfFixIcon(svgIcon: "assets/icons/help_outline_black_24dp.svg"),
+        child: CustomSufFixIcon(svgIcon: "assets/icons/help_outline_black_24dp.svg"),
       ),
       label: Text(
         label,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sale_management/screens/constants.dart';
 import 'package:sale_management/screens/size_config.dart';
-import 'package:sale_management/screens/widgets/custom_surfix_icon/custom_surfix_icon.dart';
+import 'package:sale_management/screens/widgets/custom_suffix_icon/custom_suffix_icon.dart';
 import 'package:sale_management/screens/widgets/default_button/default_button.dart';
 import 'package:sale_management/screens/widgets/form_error/form_error.dart';
 import 'package:sale_management/screens/widgets/no_account_text/no_account_text.dart';
@@ -78,7 +78,7 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: CustomSurfFixIcon(svgIcon: "assets/icons/Mail.svg"),
+        suffixIcon: CustomSufFixIcon(svgIcon: "assets/icons/Mail.svg"),
       ),
     );
   }

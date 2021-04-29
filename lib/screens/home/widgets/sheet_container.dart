@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sale_management/screens/category/category.dart';
-import 'package:sale_management/screens/customer/Customer.dart';
 import 'package:sale_management/screens/package_product/package_product.dart';
 import 'package:sale_management/screens/product/product.dart';
 import 'package:sale_management/share/constant/text_style.dart';
@@ -95,39 +94,6 @@ class _SheetContainerState extends State<SheetContainer> {
       children: <Widget>[
         InkWell(
           onTap: () {
-            Navigator.pop(widget.context);
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => PackageProductScreen()
-              ),
-            );
-
-          },
-          child: Container(
-            width: w,
-            height: h + 5,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  width: 50,
-                  height: 50,
-                  decoration: BoxDecoration(
-                      color: colorContain,
-                      borderRadius: BorderRadius.circular(50),
-                      border: border
-                  ),
-                  child: Center(child: FaIcon(FontAwesomeIcons.cuttlefish,size: _iconSize , color: _iconColor,)),
-                ),
-                SizedBox(height: 5,),
-                Text('Package',style: textStyle),
-              ],
-            ),
-          ),
-        ),
-        InkWell(
-          onTap: () {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => ProductScreen()),
@@ -152,6 +118,33 @@ class _SheetContainerState extends State<SheetContainer> {
                 ),
                 SizedBox(height: 5,),
                 Text('Product',style: textStyle),
+              ],
+            ),
+          ),
+        ),
+        InkWell(
+          onTap: () {
+            print('Vendor Click');
+          },
+          child: Container(
+            width: w,
+            height: h,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                      color: colorContain,
+                      borderRadius: BorderRadius.circular(50),
+                      border: border
+                  ),
+                  child: Center(child: FaIcon(FontAwesomeIcons.vimeo,size: _iconSize,color: _iconColor)),
+                ),
+                SizedBox(height: 5,),
+                Text('Vendor',style: textStyle),
               ],
             ),
           ),
@@ -258,11 +251,17 @@ class _SheetContainerState extends State<SheetContainer> {
         ),
         InkWell(
           onTap: () {
-            print('Vendor Click');
+            Navigator.pop(widget.context);
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => PackageProductScreen()
+              ),
+            );
+
           },
           child: Container(
             width: w,
-            height: h,
+            height: h + 5,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -272,13 +271,13 @@ class _SheetContainerState extends State<SheetContainer> {
                   height: 50,
                   decoration: BoxDecoration(
                       color: colorContain,
-                    borderRadius: BorderRadius.circular(50),
-                    border: border
+                      borderRadius: BorderRadius.circular(50),
+                      border: border
                   ),
-                  child: Center(child: FaIcon(FontAwesomeIcons.vimeo,size: _iconSize,color: _iconColor)),
+                  child: Center(child: FaIcon(FontAwesomeIcons.cuttlefish,size: _iconSize , color: _iconColor,)),
                 ),
                 SizedBox(height: 5,),
-                Text('Vendor',style: textStyle),
+                Text('Package',style: textStyle),
               ],
             ),
           ),
@@ -293,6 +292,7 @@ class _SheetContainerState extends State<SheetContainer> {
       children: <Widget>[
         InkWell(
           onTap: () {
+            pop();
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => MemberScreen()),
@@ -340,10 +340,10 @@ class _SheetContainerState extends State<SheetContainer> {
                     borderRadius: BorderRadius.circular(50),
                     border: border
                   ),
-                  child: Center(child: FaIcon(FontAwesomeIcons.layerGroup,size: _iconSize,color: _iconColor)),
+                  child: Center(child: FaIcon(FontAwesomeIcons.vimeo,size: _iconSize,color: _iconColor)),
                 ),
                 SizedBox(height: 5,),
-                Text('Import',style: textStyle),
+                Text('Vendor',style: textStyle),
               ],
             ),
           ),

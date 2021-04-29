@@ -1,9 +1,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sale_management/screens/widgets/contry_dropdown/country_listTileWidget.dart';
-import 'package:sale_management/screens/widgets/contry_dropdown/provider/country_provider.dart';
-import 'package:sale_management/screens/widgets/contry_dropdown/search_widget.dart';
+import 'package:sale_management/screens/widgets/country_dropdown/country_listTileWidget.dart';
+import 'package:sale_management/screens/widgets/country_dropdown/provider/country_provider.dart';
+import 'package:sale_management/screens/widgets/country_dropdown/search_widget.dart';
 import 'package:sale_management/share/model/country.dart';
 import 'package:sale_management/share/utils/utils.dart';
 

@@ -1,16 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
-import 'package:provider/provider.dart';
-import 'package:sale_management/screens/home/home_container_screen.dart';
 import 'package:sale_management/screens/notification/notification_screen.dart';
-import 'package:sale_management/screens/sale/sale_screen.dart';
 import 'package:sale_management/screens/sign_in/sign_in_screen.dart';
-import 'package:sale_management/screens/widgets/contry_dropdown/country_page.dart';
-import 'package:sale_management/screens/widgets/contry_dropdown/provider/country_provider.dart';
-import 'package:sale_management/screens/widgets/simple_bar_chart.dart';
-import 'package:sale_management/share/constant/constantcolor.dart';
+import 'package:sale_management/screens/widgets/country_dropdown/country_page.dart';
 import 'package:sale_management/share/model/country.dart';
-import 'package:sale_management/screens/widgets/contry_dropdown/flag_widget.dart';
+import 'package:sale_management/screens/widgets/country_dropdown/flag_widget.dart';
 
 class HomeScreen1 extends StatefulWidget {
   @override

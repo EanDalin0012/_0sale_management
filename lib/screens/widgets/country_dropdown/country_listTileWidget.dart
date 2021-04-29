@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:sale_management/screens/widgets/contry_dropdown/flag_widget.dart';
+import 'package:sale_management/screens/widgets/country_dropdown/flag_widget.dart';
 import 'package:sale_management/share/model/country.dart';
 
 class CountryListTileWidget extends StatelessWidget {

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sale_management/screens/home/widgets/product_card.dart';
-import 'package:sale_management/screens/widgets/contry_dropdown/country_page.dart';
+import 'package:sale_management/screens/widgets/country_dropdown/country_page.dart';
 import 'package:sale_management/screens/widgets/simple_bar_chart.dart';
 import 'package:sale_management/share/model/data/stock_details_data.dart';
 import 'package:sale_management/share/model/stock_details_model.dart';

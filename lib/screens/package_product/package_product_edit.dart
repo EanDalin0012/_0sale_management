@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:sale_management/screens/widgets/product_dropdown/product_dropdown.dart';
+import 'package:sale_management/screens/constants.dart';
+import 'package:sale_management/screens/size_config.dart';
 import 'package:sale_management/share/constant/text_style.dart';
 import 'package:sale_management/share/model/catgory.dart';
 import 'package:sale_management/share/model/product.dart';
 import 'package:sale_management/share/model/package_product.dart';
 import 'package:sale_management/share/services/load_data_local.dart';
+import 'package:sale_management/screens/package_product/widgets/package_product_form_edit.dart';
 
 class PackageProductEdit extends StatefulWidget {
 
@@ -49,7 +51,6 @@ class _PackageProductAddState extends State<PackageProductEdit> {
       appBar: _appBar(),
       body: Column(
         children: <Widget>[
-          _container(),
           _body(),
           Stack(
             children: <Widget>[
@@ -65,7 +66,7 @@ class _PackageProductAddState extends State<PackageProductEdit> {
                   //   left: 5,
                   //   right: 5
                   // ),
-                  child: Center(child: Text('SAVE', style: TextStyle(fontWeight: FontWeight.w700, color: Colors.white, fontFamily: 'roboto', fontSize: 18))),
+                  child: Center(child: Text('Update', style: TextStyle(fontWeight: FontWeight.w700, color: Colors.white, fontFamily: 'roboto', fontSize: 18))),
                 ),
               ),
             ],
@@ -83,243 +84,35 @@ class _PackageProductAddState extends State<PackageProductEdit> {
     );
   }
 
-  Container _container() {
-    return Container(
-      color: Color(0xffd9dbdb).withOpacity(0.4),
-      padding: EdgeInsets.only(
-          left: 10,
-          top: 10,
-          right: 20,
-          bottom: 10
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Text(
-              'Add New Package of Product',
-              style: containStyle
-          ),
-        ],
-      ),
-    );
-  }
 
   Expanded _body() {
     return Expanded(
-        child: SingleChildScrollView(
-            padding: EdgeInsets.only(left: 10),
-            physics: ClampingScrollPhysics(),
-            child: Column(
-                children: <Widget>[
-                  _nameField(),
-                  Container(
-                    margin: EdgeInsets.only(
-                        left: 10,
-                        right: 10
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+          child: SingleChildScrollView(
+              physics: ClampingScrollPhysics(),
+              child: Column(
+                  children: <Widget>[
+                    Center(
+                      child: Column(
+                        children: <Widget>[
+                          SizedBox(height: SizeConfig.screenHeight * 0.04), // 4%
+                          Text("Update Package Product", style: headingStyle),
+                          Text(
+                            "Complete your details",
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
                     ),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                        border: Border.all(color: colorValue, width: 1.5)
-                    ),
-                    child: ProductDropdown(
-                      color: colorValue,
-                      product: this.product,
-                      onChanged: (value) {
-                        print('product change event work: ${value.toString()}');
-                      },
-                    ),
-                  ),
-                  _quantityField(),
-                  _priceField(),
-                  _remarkField()
-                ])
+                    SizedBox(height: SizeConfig.screenHeight * 0.02),
+                    PackageProductFormEdit(),
+                  ])
+          ),
         )
     );
   }
 
-  Padding _nameField() {
-    return Padding(
-      padding: EdgeInsets.only(
-          right: 10,
-          left: 10,
-          top: 10,
-          bottom: 10
-      ),
-      child: TextField(
-        controller: nameValueController,
-        decoration: InputDecoration(
-            hintText: 'Enter category name',
-            labelText: 'Name',
-            // helperText: 'Category Name',
-            labelStyle: labelStyle,
-            hintStyle: hintStyle,
-            // helperStyle: TextStyle(
-            //     color: Colors.blueGrey,
-            //     fontWeight: FontWeight.bold,
-            //     fontFamily: 'roboto'
-            // ),
-            // border: OutlineInputBorder(),
-            enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                    color: borderColorsTextField,
-                    width: 1.5,
-                    style: BorderStyle.solid
-                ),
-                borderRadius: BorderRadius.all(Radius.circular(5.0))
-            ),
-            focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                    color: Colors.indigo,
-                    width: 1.5,
-                    style: BorderStyle.solid
-                )
-            ),
-            prefixIcon: Icon(
-              Icons.info_outline,
-              color: Colors.black54,
-            )
-
-        ),
-      ),
-    );
-  }
-
-  Padding _quantityField() {
-    return Padding(
-      padding: EdgeInsets.only(
-          right: 10,
-          left: 10,
-          top: 10,
-      ),
-      child: TextField(
-        controller: quantityValueController,
-        decoration: InputDecoration(
-            hintText: 'Enter quantity',
-            labelText: 'Quantity',
-            // helperText: 'Remark',
-            labelStyle: labelStyle,
-            hintStyle: hintStyle,
-            // helperStyle: TextStyle(
-            //     color: Colors.blueGrey,
-            //     fontWeight: FontWeight.bold
-            // ),
-            // border: OutlineInputBorder(),
-            enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                    color: borderColorsTextField,
-                    width: 1.5,
-                    style: BorderStyle.solid
-                ),
-                borderRadius: BorderRadius.all(Radius.circular(5.0))
-            ),
-            focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                    color: Colors.indigo,
-                    width: 1.5,
-                    style: BorderStyle.solid
-                )
-            ),
-            prefixIcon: Icon(
-              Icons.info_outline,
-              color: Colors.black54,
-            )
-
-        ),
-      ),
-    );
-  }
-
-  Padding _priceField() {
-    return Padding(
-      padding: EdgeInsets.only(
-        right: 10,
-        left: 10,
-        top: 10,
-      ),
-      child: TextField(
-        keyboardType: TextInputType.number,
-        controller: priceValueController,
-        decoration: InputDecoration(
-            hintText: 'Enter price',
-            labelText: 'Price',
-            // helperText: 'Remark',
-            labelStyle: labelStyle,
-            hintStyle: hintStyle,
-            // helperStyle: TextStyle(
-            //     color: Colors.blueGrey,
-            //     fontWeight: FontWeight.bold
-            // ),
-            // border: OutlineInputBorder(),
-            enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                    color: borderColorsTextField,
-                    width: 1.5,
-                    style: BorderStyle.solid
-                ),
-                borderRadius: BorderRadius.all(Radius.circular(5.0))
-            ),
-            focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                    color: Colors.indigo,
-                    width: 1.5,
-                    style: BorderStyle.solid
-                )
-            ),
-            prefixIcon: Icon(
-              Icons.info_outline,
-              color: Colors.black54,
-            )
-
-        ),
-      ),
-    );
-  }
-
-
-  Padding _remarkField() {
-    return Padding(
-      padding: EdgeInsets.only(
-        right: 10,
-        left: 10,
-        top: 10,
-      ),
-      child: TextField(
-        controller: remarkValueController,
-        decoration: InputDecoration(
-            hintText: 'Enter remark',
-            labelText: 'Remark',
-            // helperText: 'Remark',
-            labelStyle: labelStyle,
-            hintStyle: hintStyle,
-            // helperStyle: TextStyle(
-            //     color: Colors.blueGrey,
-            //     fontWeight: FontWeight.bold
-            // ),
-            // border: OutlineInputBorder(),
-            enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                    color: borderColorsTextField,
-                    width: 1.5,
-                    style: BorderStyle.solid
-                ),
-                borderRadius: BorderRadius.all(Radius.circular(5.0))
-            ),
-            focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                    color: Colors.indigo,
-                    width: 1.5,
-                    style: BorderStyle.solid
-                )
-            ),
-            prefixIcon: Icon(
-              Icons.edit,
-              color: Colors.black54,
-            )
-
-        ),
-      ),
-    );
-  }
 
   _save() {
     var categoryModel = new CategoryModel(nameValueController.text, remarkValueController.text);

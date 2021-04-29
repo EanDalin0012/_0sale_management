@@ -5,6 +5,7 @@ import 'package:sale_management/screens/customer/Customer.dart';
 import 'package:sale_management/screens/package_product/package_product.dart';
 import 'package:sale_management/screens/product/product.dart';
 import 'package:sale_management/share/constant/text_style.dart';
+import 'package:sale_management/screens/member/member.dart';
 
 class SheetContainer extends StatefulWidget {
   final BuildContext context;
@@ -294,7 +295,7 @@ class _SheetContainerState extends State<SheetContainer> {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => Customer()),
+              MaterialPageRoute(builder: (context) => MemberScreen()),
             );
           },
           child: Container(

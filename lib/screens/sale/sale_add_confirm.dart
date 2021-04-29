@@ -6,7 +6,7 @@ import 'package:sale_management/screens/widgets/custom_surfix_icon/custom_surfix
 import 'package:sale_management/share/constant/text_style.dart';
 import 'package:sale_management/share/model/key/m_key.dart';
 import 'package:sale_management/share/utils/number_format.dart';
-import 'package:sale_management/screens/widgets/customer_dropdown/CustomerDropDown.dart';
+import 'package:sale_management/screens/sale/widgets/group_radio.dart';
 
 class SaleAddConfirm extends StatefulWidget {
   final List<dynamic> vData;
@@ -57,13 +57,48 @@ class _SaleAddConfirmState extends State<SaleAddConfirm> {
                   ],
                 ),
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  InputChip(
+                      selected: true,
+                      label: Text('Flutter'),
+                      avatar: FlutterLogo(),
+                      elevation: 10,
+                      pressElevation: 5,
+                      shadowColor: Colors.teal,
+                      onPressed: () {
+                        print('Fluter is pressed');
+
+                        // setState(() {
+                        //   _selected = !_selected;
+                        // });
+                      }
+                  ),
+                  InputChip(
+                      selected: true,
+                      label: Text('Flutter'),
+                      // avatar: FlutterLogo(),
+                      elevation: 10,
+                      pressElevation: 5,
+                      shadowColor: Colors.teal,
+                      onPressed: () {
+                        print('Fluter is pressed');
+
+                        // setState(() {
+                        //   _selected = !_selected;
+                        // });
+                      }
+                  ),
+                ],
+              ),
 
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
                 child: Column(
                     children: <Widget>[
                       SizedBox(height: SizeConfig.screenHeight * 0.02),
-                      _buildProductField(),
+                      _buildCustomerField(),
                       SizedBox(height: SizeConfig.screenHeight * 0.02),
                       _buildRemarkField(),
                       SizedBox(height: SizeConfig.screenHeight * 0.02),
@@ -333,7 +368,6 @@ class _SaleAddConfirmState extends State<SaleAddConfirm> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Container(
-                    height: size.height - 100,
                     child: SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Column(
@@ -348,7 +382,7 @@ class _SaleAddConfirmState extends State<SaleAddConfirm> {
     );
   }
 
-  TextFormField _buildProductField() {
+  TextFormField _buildCustomerField() {
     return TextFormField(
       keyboardType: TextInputType.emailAddress,
       onSaved: (newValue) => email = newValue,
@@ -371,8 +405,8 @@ class _SaleAddConfirmState extends State<SaleAddConfirm> {
         // return null;
       },
       decoration: InputDecoration(
-        labelText: "Product",
-        hintText: "Select product",
+        labelText: "Member",
+        hintText: "Select member",
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -413,6 +447,27 @@ class _SaleAddConfirmState extends State<SaleAddConfirm> {
       ),
     );
   }
+
+  Widget _buildChip({String label, Color color}) {
+    return Chip(
+      labelPadding: EdgeInsets.all(2.0),
+      avatar: CircleAvatar(
+        // backgroundColor: Colors.white70,
+        child: CustomSurfFixIcon(svgIcon: "assets/icons/help_outline_black_24dp.svg"),
+      ),
+      label: Text(
+        label,
+        style: TextStyle(
+          color: Colors.white,
+        ),
+      ),
+      backgroundColor: color,
+      elevation: 6.0,
+      shadowColor: Colors.grey[60],
+      padding: EdgeInsets.all(8.0),
+    );
+  }
+
 
   vPayFunction() {
     widget.vData.map((e)

@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:sale_management/screens/package_product%E2%80%8B%E2%80%8B/package_product_add.dart';
-import 'package:sale_management/screens/package_product%E2%80%8B%E2%80%8B/package_product_edit.dart';
 import 'package:sale_management/screens/size_config.dart';
 import 'package:sale_management/screens/widgets/product_dropdown/product_page.dart';
 import 'package:sale_management/share/components/show_dialog/show_dialog.dart';
@@ -15,6 +13,8 @@ import 'package:sale_management/share/model/product.dart';
 import 'package:sale_management/share/model/package_product.dart';
 import 'package:sale_management/share/services/load_data_local.dart';
 import 'package:sale_management/share/utils/number_format.dart';
+import 'package:sale_management/screens/package_product/package_product_edit.dart';
+import 'package:sale_management/screens/package_product/package_product_add.dart';
 
 class PackageProductScreen extends StatefulWidget {
   @override

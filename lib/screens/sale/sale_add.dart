@@ -1,13 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sale_management/screens/constants.dart';
 import 'package:sale_management/screens/sale/sale_add_confirm.dart';
+import 'package:sale_management/screens/sale/widgets/sale_add_form.dart';
+import 'package:sale_management/screens/size_config.dart';
 import 'package:sale_management/screens/widgets/country_dropdown/country_page.dart';
 import 'package:sale_management/screens/widgets/country_dropdown/flag_widget.dart';
-import 'package:sale_management/screens/widgets/product_dropdown/product_dropdown.dart';
 import 'package:sale_management/share/constant/text_style.dart';
 import 'package:sale_management/share/model/country.dart';
-import 'package:sale_management/screens/widgets/package_product_dropdown/package_product_dropdown.dart';
 import 'package:sale_management/share/model/key/m_key.dart';
 import 'package:sale_management/share/model/package_product.dart';
 import 'package:sale_management/share/model/product.dart';
@@ -46,35 +47,35 @@ class _PackageProductAddState extends State<SaleAddScreen> {
     size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: _appBar(),
-      body: Column(
-        children: <Widget>[
-          _container(),
-          SizedBox(height: 15),
-          _body(),
-          Stack(
-            children: <Widget>[
-              InkWell(
-                onTap: () async {
-                  final feedBackData = await Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => SaleAddConfirm(vData: this.vData)),
-                  );
-                  print('feedBackData: ${feedBackData}');
-                  setState(() {
-                    this.vData = feedBackData;
-                    this.cartArrowDownCount = this.vData.length;
-                  });
-                },
-                child: Container(
-                  width: size.width,
-                  height: 45,
-                  color: Colors.red,
-                  child: Center(child: Text('Next', style: TextStyle(fontWeight: FontWeight.w700, color: Colors.white, fontFamily: 'roboto', fontSize: 18))),
+      body: SafeArea(
+        child: Column(
+          children: <Widget>[
+            _body(),
+            Stack(
+              children: <Widget>[
+                InkWell(
+                  onTap: () async {
+                    final feedBackData = await Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SaleAddConfirm(vData: this.vData)),
+                    );
+                    print('feedBackData: ${feedBackData}');
+                    setState(() {
+                      this.vData = feedBackData;
+                      this.cartArrowDownCount = this.vData.length;
+                    });
+                  },
+                  child: Container(
+                    width: size.width,
+                    height: 45,
+                    color: Colors.red,
+                    child: Center(child: Text('Next', style: TextStyle(fontWeight: FontWeight.w700, color: Colors.white, fontFamily: 'roboto', fontSize: 18))),
+                  ),
                 ),
-              ),
-            ],
-          )
-        ],
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
@@ -116,92 +117,40 @@ class _PackageProductAddState extends State<SaleAddScreen> {
     );
   }
 
-  Container _container() {
-    return Container(
-      color: Color(0xffd9dbdb).withOpacity(0.4),
-      padding: EdgeInsets.only(
-          left: 10,
-          top: 10,
-          right: 20,
-          bottom: 10
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Text(
-              'New Sale',
-              style: containStyle
-          ),
-        ],
-      ),
-    );
-  }
-
   Expanded _body() {
     return Expanded(
-        child: SingleChildScrollView(
-            padding: EdgeInsets.only(left: 10),
-            physics: ClampingScrollPhysics(),
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.only(
-                        left: 10,
-                        right: 10
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+          child: SingleChildScrollView(
+              padding: EdgeInsets.only(left: 10),
+              physics: ClampingScrollPhysics(),
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Center(
+                      child: Column(
+                        children: <Widget>[
+                          SizedBox(height: SizeConfig.screenHeight * 0.04), // 4%
+                          Text("Sale Items", style: headingStyle),
+                          Text(
+                            "Complete your details",
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
                     ),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                        border: Border.all(color: colorValue, width: 1.5)
-                    ),
-                    child: ProductDropdown(
-                      color: colorValue,
-                      product: this.product,
-                      onChanged: (value) {
-                        setState(() {
-                          this.product = value;
-                          this.packageProductModel = null;
-                        });
-                      },
-                    ),
-                  ),
-                  SizedBox(height: 10,),
-                  Container(
-                    margin: EdgeInsets.only(
-                        left: 10,
-                        right: 10
-                    ),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                        border: Border.all(color: colorValue, width: 1.5)
-                    ),
-                    child: PackageProductDropdown(
-                      color: colorValue,
-                      product: product,
-                      packageProduct: packageProductModel,
-                      onChanged: (value) {
-                        setState(() {
-                          this.packageProductModel = value;
-                          this.price = double.parse(this.packageProductModel.price.toString());
-                          this.quantityValueController.text = this.packageProductModel.quantity.toString();
-                          this.totalValueController.text = _calTotal(double.parse(price.toString()),double.parse(this.packageProductModel.quantity.toString()));
-                        });
-                      },
-                    ),
-                  ),
-                  _buildPrice(),
-                  // next > 0 ? _nameField(): Container() ,
-                 _quantityField(),
-                  _totalField(),
-                  SizedBox(height: 15,),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        _buildAddButton()
-                      ]
-                  )
-                ])
+                    SizedBox(height: SizeConfig.screenHeight * 0.05),
+                    SaleAddForm(),
+                    SizedBox(height: 15,),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          _buildAddButton()
+                        ]
+                    )
+                  ])
+          ),
         )
     );
   }
@@ -218,112 +167,6 @@ class _PackageProductAddState extends State<SaleAddScreen> {
         ),
         child: Text('Price: ${pr} USD', style: TextStyle(fontFamily: fontFamilyDefault, fontWeight: FontWeight.w500, fontSize: 15, color: Colors.red.withOpacity(0.8)),));
   }
-
-
-
-
-  Padding _quantityField() {
-    return Padding(
-      padding: EdgeInsets.only(
-          right: 10,
-          left: 10,
-          top: 10
-      ),
-      child: TextField(
-        controller: quantityValueController,
-        style: styleInput,
-        keyboardType: keyboardType,
-        decoration: InputDecoration(
-            hintText: 'Enter quantity',
-            labelText: 'Quantity',
-            // helperText: 'Remark',
-            labelStyle: labelStyle,
-            hintStyle: hintStyle,
-            // helperStyle: TextStyle(
-            //     color: Colors.blueGrey,
-            //     fontWeight: FontWeight.bold
-            // ),
-            // border: OutlineInputBorder(),
-            enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                    color: borderColorsTextField,
-                    width: 1.5,
-                    style: BorderStyle.solid
-                ),
-                borderRadius: BorderRadius.all(Radius.circular(5.0))
-            ),
-            focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                    color: Colors.indigo,
-                    width: 1.5,
-                    style: BorderStyle.solid
-                )
-            ),
-            prefixIcon: Icon(
-              Icons.info_outline,
-              color: Colors.black54,
-            ),
-        ),
-        onChanged: (v) {
-            setState(() {
-              if(quantityValueController.text !=null && quantityValueController.text.trim() != '') {
-                this.totalValueController.text = _calTotal(price, double.parse(quantityValueController.text));
-              } else {
-                this.totalValueController.text = _calTotal(price, 0.0);
-              }
-            });
-        },
-      ),
-    );
-  }
-
-  Padding _totalField() {
-    return Padding(
-      padding: EdgeInsets.only(
-          right: 10,
-          left: 10,
-          top: 10
-      ),
-      child: TextField(
-        controller: totalValueController,
-        style: styleInput,
-        keyboardType: keyboardType,
-        decoration: InputDecoration(
-            hintText: 'Enter total',
-            labelText: 'Total',
-            // helperText: 'Remark',
-            labelStyle: labelStyle,
-            hintStyle: hintStyle,
-            // helperStyle: TextStyle(
-            //     color: Colors.blueGrey,
-            //     fontWeight: FontWeight.bold
-            // ),
-            // border: OutlineInputBorder(),
-            enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                    color: borderColorsTextField,
-                    width: 1.5,
-                    style: BorderStyle.solid
-                ),
-                borderRadius: BorderRadius.all(Radius.circular(5.0))
-            ),
-            focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                    color: Colors.indigo,
-                    width: 1.5,
-                    style: BorderStyle.solid
-                )
-            ),
-            prefixIcon: Icon(
-              Icons.info_outline,
-              color: Colors.black54,
-            )
-
-        ),
-      ),
-    );
-  }
-
 
 
   Widget _buildAddButton() {
@@ -389,11 +232,6 @@ class _PackageProductAddState extends State<SaleAddScreen> {
         },
       ),
     );
-  }
-
-  _save() {
-    // var categoryModel = new CategoryModel(nameValueController.text, remarkValueController.text);
-    // print(categoryModel.toString());
   }
 
   Widget buildSingleCountry() {

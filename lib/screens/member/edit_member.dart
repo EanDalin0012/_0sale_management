@@ -5,6 +5,9 @@ import 'package:sale_management/screens/size_config.dart';
 import 'package:sale_management/screens/member/widget/edit_member_form.dart';
 
 class EditMemberScreen extends StatefulWidget {
+  final Map member;
+  EditMemberScreen({@required this.member});
+
   @override
   _AddMemberScreenState createState() => _AddMemberScreenState();
 }
@@ -14,6 +17,7 @@ class _AddMemberScreenState extends State<EditMemberScreen> {
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
+    print('${widget.member}');
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.purple[900],

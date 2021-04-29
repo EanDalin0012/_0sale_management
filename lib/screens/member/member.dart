@@ -1,7 +1,13 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sale_management/screens/member/edit_member.dart';
 import 'package:sale_management/screens/widgets/search_widget/search_widget.dart';
+import 'package:sale_management/share/constant/constantcolor.dart';
 import 'package:sale_management/share/constant/text_style.dart';
 import 'package:sale_management/screens/member/add_member.dart';
+import 'package:sale_management/share/model/key/m_key.dart';
 
 class MemberScreen extends StatefulWidget {
   @override
@@ -16,6 +22,12 @@ class _MemberScreenState extends State<MemberScreen> {
   var vDataLength = 0;
 
   @override
+  void initState() {
+    this._fetchItems();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
     return Scaffold(
@@ -23,7 +35,8 @@ class _MemberScreenState extends State<MemberScreen> {
       body: SafeArea(
         child: Column(
           children: <Widget>[
-            _container()
+            _container(),
+            if (this.vDataLength > 0 ) _buildBody() else _buildLoadingScreen()
           ],
         ),
       ),
@@ -52,9 +65,9 @@ class _MemberScreenState extends State<MemberScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Container(
-              width: size.width - 65,
+              width: size.width - 40,
               height: 65,
-              margin: EdgeInsets.only(left: 10),
+              margin: EdgeInsets.only(left: 20),
               padding: EdgeInsets.only(bottom: 10, top: 10),
               child: SearchWidget(
                 hintText: 'Search name',
@@ -101,7 +114,7 @@ class _MemberScreenState extends State<MemberScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Text(
-            'Package of Product List',
+            'Member List',
             style: containStyle,
           ),
           Text(this.vDataLength.toString(), style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.w700, fontFamily: fontFamilyDefault),)
@@ -109,5 +122,124 @@ class _MemberScreenState extends State<MemberScreen> {
       ),
     );
   }
+
+  Widget _buildBody () {
+    return Expanded(
+        child: ListView.separated(
+          itemCount: vData.length,
+          separatorBuilder: (context, index) => Divider(
+            color: Colors.purple[900].withOpacity(0.5),
+          ),
+          itemBuilder: (context, index) {
+            return _buildListTile(
+                dataItem: this.vData[index]
+            );},
+        )
+    );
+  }
+
+  Widget _buildLoadingScreen() {
+    return Center(
+      child: CircularProgressIndicator(),
+    );
+  }
+
+  Widget _buildListTile( {
+    @required Map dataItem
+  }) {
+    return ListTile(
+      title: Text( dataItem[MemberKey.name],
+        style: TextStyle( color: Colors.black87, fontSize: 20, fontWeight: FontWeight.w700,fontFamily: fontFamilyDefault),
+      ),
+      leading: _buildLeading(url: dataItem[MemberKey.url]),
+      subtitle: Text(
+          dataItem[MemberKey.phone],
+          style: TextStyle(fontSize: 12,fontWeight: FontWeight.w700, fontFamily: fontFamilyDefault, color: primaryColor),
+      ),
+      trailing: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            _offsetPopup(dataItem),
+          ],
+        ),
+    );
+  }
+
+  Widget _buildLeading({
+    @required  String url
+  }) {
+    return Container(
+      width: 50,
+      height: 50,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(60)),
+        border: Border.all(color: Colors.grey, width: 2),
+      ),
+      child: CircleAvatar(
+        radius: 30.0,
+        backgroundImage:NetworkImage(url),
+        backgroundColor: Colors.transparent,
+      ),
+    );
+  }
+
+  Widget _offsetPopup(Map item) => PopupMenuButton<int>(
+    itemBuilder: (context) => [
+      PopupMenuItem(
+          value: 0,
+          child: Row(
+            children: <Widget>[
+              FaIcon(FontAwesomeIcons.edit,size: 20,color: Colors.purple[900]),
+              SizedBox(width: 10,),
+              Text(
+                "Edit",
+                style: menuStyle,
+              ),
+            ],
+          )
+      ),
+      PopupMenuItem(
+          value: 1,
+          child: Row(
+            children: <Widget>[
+              FaIcon(FontAwesomeIcons.trash,size: 20,color: Colors.purple[900]),
+              SizedBox(width: 10,),
+              Text(
+                "Delete",
+                style: menuStyle,
+              ),
+            ],
+          )
+      ),
+    ],
+    icon: FaIcon(FontAwesomeIcons.ellipsisV,size: 20,color: Colors.black),
+    offset: Offset(0, 45),
+    onSelected: (value) {
+      print('index ${value}');
+      if(value == 0) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) =>
+              EditMemberScreen(member: item)
+          ),
+        );
+      } else if (value == 1) {
+        // _showDialog(item);
+      }
+    },
+  );
+
+
+  _fetchItems() async {
+    final data = await rootBundle.loadString('assets/json_data/member_list.json');
+    Map mapItems = jsonDecode(data);
+    setState(() {
+      this.vData = mapItems['members'];
+      print('${vData}');
+      this.vDataLength = this.vData.length;
+    });
+    return this.vData;
+  }
+
 
 }

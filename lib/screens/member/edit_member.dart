@@ -61,7 +61,7 @@ class _AddMemberScreenState extends State<EditMemberScreen> {
                       child: Column(
                         children: <Widget>[
                           SizedBox(height: SizeConfig.screenHeight * 0.04), // 4%
-                          Text("Register Member", style: headingStyle),
+                          Text("Update Member", style: headingStyle),
                           Text(
                             "Complete your details",
                             textAlign: TextAlign.center,

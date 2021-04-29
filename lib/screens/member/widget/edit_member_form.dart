@@ -74,7 +74,7 @@ class _AddMemberFormState extends State<EditMemberForm> {
       },
       decoration: InputDecoration(
         labelText: "Name",
-        hintText: "Enter category name",
+        hintText: "Enter member name",
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,

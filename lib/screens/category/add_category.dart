@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sale_management/screens/category/category_success_screen.dart';
 import 'package:sale_management/screens/category/widget/add_new_category_form.dart';
 import 'package:sale_management/screens/constants.dart';
 import 'package:sale_management/screens/size_config.dart';
@@ -29,6 +30,10 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
                 InkWell(
                   onTap: () {
                     KeyboardUtil.hideKeyboard(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => CategorySuccessScreen()),
+                    );
                   },
                   child: Container(
                     width: size.width,
@@ -38,7 +43,7 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
                     //   left: 5,
                     //   right: 5
                     // ),
-                    child: Center(child: Text('SAVE', style: TextStyle(fontWeight: FontWeight.w700, color: Colors.white, fontFamily: 'roboto', fontSize: 18))),
+                    child: Center(child: Text('Next', style: TextStyle(fontWeight: FontWeight.w700, color: Colors.white, fontFamily: 'roboto', fontSize: 18))),
                   ),
                 ),
               ],

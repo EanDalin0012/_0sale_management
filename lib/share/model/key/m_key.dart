@@ -66,3 +66,9 @@ class ImportKey {
   static const time                 = 'time';
   static const remark               = "remark";
 }
+
+class StockKey {
+  static const id                   = 'id';
+  static const name                 = "name";
+  static const remark               = "remark";
+}

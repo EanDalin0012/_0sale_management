@@ -374,10 +374,10 @@ class _SheetContainerState extends State<SheetContainer> {
                     border: border
 
                   ),
-                  child: Center(child: FaIcon(FontAwesomeIcons.database,size: _iconSize, color: _iconColor,)),
+                  child: Center(child: FaIcon(FontAwesomeIcons.layerGroup,size: _iconSize, color: _iconColor,)),
                 ),
                 SizedBox(height: 5,),
-                Text('Stock',style: textStyle),
+                Text('Imports',style: textStyle),
               ],
             ),
           ),

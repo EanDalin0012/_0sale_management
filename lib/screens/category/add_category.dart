@@ -43,7 +43,7 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
                     //   left: 5,
                     //   right: 5
                     // ),
-                    child: Center(child: Text('Next', style: TextStyle(fontWeight: FontWeight.w700, color: Colors.white, fontFamily: 'roboto', fontSize: 18))),
+                    child: Center(child: Text('SAVE', style: TextStyle(fontWeight: FontWeight.w700, color: Colors.white, fontFamily: 'roboto', fontSize: 18))),
                   ),
                 ),
               ],

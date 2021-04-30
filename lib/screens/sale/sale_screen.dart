@@ -3,6 +3,7 @@ import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sale_management/screens/widgets/search_widget/search_widget.dart';
 import 'package:sale_management/share/constant/text_style.dart';
 import 'package:sale_management/share/model/sale_transaction.dart';
 import 'package:sale_management/share/utils/format_date.dart';
@@ -173,14 +174,17 @@ class _SaleScreenState extends State<SaleScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Container(
-              width: size.width - 60,
-              child: _buildSearchWidget(
-                text: controller.text,
-                // onChanged: (text) => setState(() => this.text = text),
-                hintText: 'Search by name', onTap: () {  },
+              width: size.width - 40,
+              height: 65,
+              margin: EdgeInsets.only(left: 20),
+              padding: EdgeInsets.only(bottom: 10, top: 10),
+              child: SearchWidget(
+                hintText: 'Search name',
+                onChange: (value) {
+                },
               ),
             ),
-            _buildFilterByProduct()
+            // _buildFilterByProduct()
           ],
         ),
       ): null,

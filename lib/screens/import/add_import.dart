@@ -33,7 +33,7 @@ class _AddImportScreenState extends State<AddImportScreen> {
                     width: size.width,
                     height: 45,
                     color: Colors.red,
-                    child: Center(child: Text('SAVE', style: TextStyle(fontWeight: FontWeight.w700, color: Colors.white, fontFamily: fontFamilyDefault, fontSize: 18))),
+                    child: Center(child: Text('Next', style: TextStyle(fontWeight: FontWeight.w700, color: Colors.white, fontFamily: fontFamilyDefault, fontSize: 18))),
                   ),
                 ),
               ],

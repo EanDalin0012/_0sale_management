@@ -5,6 +5,7 @@ import 'package:sale_management/screens/size_config.dart';
 import 'package:sale_management/share/constant/text_style.dart';
 import 'package:sale_management/share/helper/keyboard.dart';
 import 'package:sale_management/screens/import/widget/add_import_form.dart';
+import 'package:sale_management/screens/import/confirm_import.dart';
 
 class AddImportScreen extends StatefulWidget {
   @override
@@ -14,6 +15,8 @@ class AddImportScreen extends StatefulWidget {
 class _AddImportScreenState extends State<AddImportScreen> {
   var cartArrowDownCount = 0;
   Size size;
+  List<dynamic> vData = [];
+
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
@@ -28,6 +31,11 @@ class _AddImportScreenState extends State<AddImportScreen> {
                 InkWell(
                   onTap: () {
                     KeyboardUtil.hideKeyboard(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ConfirmSale(vData: this.vData,)),
+                    );
+
                   },
                   child: Container(
                     width: size.width,

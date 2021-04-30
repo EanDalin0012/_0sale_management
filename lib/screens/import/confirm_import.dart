@@ -7,16 +7,16 @@ import 'package:sale_management/share/constant/text_style.dart';
 import 'package:sale_management/share/model/key/m_key.dart';
 import 'package:sale_management/share/utils/number_format.dart';
 
-class SaleAddConfirm extends StatefulWidget {
+class ConfirmSale extends StatefulWidget {
   final List<dynamic> vData;
-  SaleAddConfirm({
+  ConfirmSale({
     @required this.vData
-});
+  });
   @override
   _SaleAddConfirmState createState() => _SaleAddConfirmState();
 }
 
-class _SaleAddConfirmState extends State<SaleAddConfirm> {
+class _SaleAddConfirmState extends State<ConfirmSale> {
   var colorValue = Colors.deepPurple;
   Size size;
   var styleInput = TextStyle(color: Colors.black, fontSize: 17, fontWeight: FontWeight.w500, fontFamily: fontFamilyDefault);
@@ -39,8 +39,8 @@ class _SaleAddConfirmState extends State<SaleAddConfirm> {
     size = MediaQuery.of(context).size;
     this.i = 0;
     return Scaffold(
-      appBar: _buildAppBar(),
-      body: Container(
+        appBar: _buildAppBar(),
+        body: Container(
           height: size.height,
           child: Column(
             children: <Widget>[
@@ -48,57 +48,20 @@ class _SaleAddConfirmState extends State<SaleAddConfirm> {
                 child: Column(
                   children: <Widget>[
                     SizedBox(height: SizeConfig.screenHeight * 0.04), // 4%
-                    Text("Sale Items", style: headingStyle),
+                    Text("Import Items", style: headingStyle),
                     Text(
-                      "Complete your details. \n Please check sale items then click confirm.",
+                      "Complete your details. \n Please check your items ready then click confirm.",
                       textAlign: TextAlign.center,
                     ),
                   ],
                 ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  InputChip(
-                      selected: true,
-                      label: Text('Flutter'),
-                      avatar: FlutterLogo(),
-                      elevation: 10,
-                      pressElevation: 5,
-                      shadowColor: Colors.teal,
-                      onPressed: () {
-                        print('Fluter is pressed');
-
-                        // setState(() {
-                        //   _selected = !_selected;
-                        // });
-                      }
-                  ),
-                  InputChip(
-                      selected: true,
-                      label: Text('Flutter'),
-                      // avatar: FlutterLogo(),
-                      elevation: 10,
-                      pressElevation: 5,
-                      shadowColor: Colors.teal,
-                      onPressed: () {
-                        print('Fluter is pressed');
-
-                        // setState(() {
-                        //   _selected = !_selected;
-                        // });
-                      }
-                  ),
-                ],
               ),
 
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
                 child: Column(
                     children: <Widget>[
-                      SizedBox(height: SizeConfig.screenHeight * 0.02),
-                      _buildCustomerField(),
-                      SizedBox(height: SizeConfig.screenHeight * 0.02),
+                      SizedBox(height: SizeConfig.screenHeight * 0.04),
                       _buildRemarkField(),
                       SizedBox(height: SizeConfig.screenHeight * 0.02),
                     ]
@@ -117,16 +80,16 @@ class _SaleAddConfirmState extends State<SaleAddConfirm> {
 
   AppBar _buildAppBar() {
     return AppBar(
-        title: Text('Conform', style: TextStyle(fontFamily: fontFamilyDefault, fontWeight: FontWeight.w700)),
-        leading: InkWell(
-          onTap: () {
-            Navigator.pop(context, widget.vData);
-          },
-          child: Icon(
+      title: Text('Conform', style: TextStyle(fontFamily: fontFamilyDefault, fontWeight: FontWeight.w700)),
+      leading: InkWell(
+        onTap: () {
+          Navigator.pop(context, widget.vData);
+        },
+        child: Icon(
             Icons.arrow_back
-          ),
         ),
-        backgroundColor: Colors.purple[900],
+      ),
+      backgroundColor: Colors.purple[900],
     );
   }
 
@@ -153,36 +116,36 @@ class _SaleAddConfirmState extends State<SaleAddConfirm> {
 
   Widget _container() {
     return  Container(
-        color: Color(0xFF939BA9).withOpacity(0.5),
-        height: 40,
-        padding: EdgeInsets.only(
-            left: 10,
-            top: 10,
-            right: 20,
-            bottom: 10
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Text(
-                'Sale Conform',
-                style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.w500, fontFamily: fontFamilyDefault)
-            ),
-            Text(FormatNumber.usdFormat2Digit(pay.toString()) + ' USD', style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.w700, fontFamily: fontFamilyDefault),)
-          ],
-        ),
+      color: Color(0xFF939BA9).withOpacity(0.5),
+      height: 40,
+      padding: EdgeInsets.only(
+          left: 10,
+          top: 10,
+          right: 20,
+          bottom: 10
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Text(
+              'Sale Conform',
+              style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.w500, fontFamily: fontFamilyDefault)
+          ),
+          Text(FormatNumber.usdFormat2Digit(pay.toString()) + ' USD', style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.w700, fontFamily: fontFamilyDefault),)
+        ],
+      ),
     );
   }
 
   Widget buildListView() {
     return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-        color: Colors.white,
-      ),
-    child: Column(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+          color: Colors.white,
+        ),
+        child: Column(
 
-      )
+        )
     );
   }
 
@@ -264,96 +227,6 @@ class _SaleAddConfirmState extends State<SaleAddConfirm> {
           },
           icon: FaIcon(FontAwesomeIcons.minusCircle,size: 20 , color: Colors.white,),
           label: Text('Remove',style: TextStyle(fontFamily: fontFamilyDefault, fontWeight: FontWeight.w700, fontSize: 15, color: Colors.white))
-      ),
-    );
-  }
-
-
-  Padding _remarkField() {
-    return Padding(
-      padding: EdgeInsets.all(10),
-      child: TextField(
-        controller: remarkValueController,
-        style: styleInput,
-        decoration: InputDecoration(
-            hintText: 'Enter remark',
-            labelText: 'Remark',
-            // helperText: 'Remark',
-            labelStyle: labelStyle,
-            hintStyle: hintStyle,
-            // helperStyle: TextStyle(
-            //     color: Colors.blueGrey,
-            //     fontWeight: FontWeight.bold
-            // ),
-            // border: OutlineInputBorder(),
-            enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                    color: borderColorsTextField,
-                    width: 1.5,
-                    style: BorderStyle.solid
-                ),
-                borderRadius: BorderRadius.all(Radius.circular(5.0))
-            ),
-            focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                    color: Colors.indigo,
-                    width: 1.5,
-                    style: BorderStyle.solid
-                )
-            ),
-            prefixIcon: Icon(
-              Icons.edit,
-              color: Colors.black54,
-            )
-
-        ),
-      ),
-    );
-  }
-
-  Padding _nameField() {
-    return Padding(
-      padding: EdgeInsets.only(
-          right: 10,
-          left: 10,
-          top: 10
-      ),
-      child: TextField(
-        controller: nameValueController,
-        style: styleInput,
-        decoration: InputDecoration(
-            hintText: 'Enter category name',
-            labelText: 'Name',
-            // helperText: 'Category Name',
-            labelStyle: labelStyle,
-            hintStyle: hintStyle,
-            // helperStyle: TextStyle(
-            //     color: Colors.blueGrey,
-            //     fontWeight: FontWeight.bold,
-            //     fontFamily: 'roboto'
-            // ),
-            // border: OutlineInputBorder(),
-            enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                    color: borderColorsTextField,
-                    width: 1.5,
-                    style: BorderStyle.solid
-                ),
-                borderRadius: BorderRadius.all(Radius.circular(5.0))
-            ),
-            focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                    color: Colors.indigo,
-                    width: 1.5,
-                    style: BorderStyle.solid
-                )
-            ),
-            prefixIcon: Icon(
-              Icons.info_outline,
-              color: Colors.black54,
-            )
-
-        ),
       ),
     );
   }

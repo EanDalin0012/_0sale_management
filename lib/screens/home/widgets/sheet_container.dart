@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sale_management/screens/category/category.dart';
+import 'package:sale_management/screens/import/import.dart';
 import 'package:sale_management/screens/package_product/package_product.dart';
 import 'package:sale_management/screens/product/product.dart';
 import 'package:sale_management/share/constant/text_style.dart';
@@ -356,6 +357,11 @@ class _SheetContainerState extends State<SheetContainer> {
         ),
         InkWell(
           onTap: () {
+            pop();
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ImportScreen()),
+            );
 
           },
           child: Container(

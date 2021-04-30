@@ -56,3 +56,13 @@ class ImportAddKey {
   static const price                = 'price';
   static const remark               = "remark";
 }
+
+class ImportKey {
+  static const transactionDate      = "transactionDate";
+  static const transactionInfo      = "transactionInfo";
+  static const id                   = 'id';
+  static const transactionId        = 'transactionId';
+  static const total                = 'total';
+  static const time                 = 'time';
+  static const remark               = "remark";
+}

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sale_management/screens/constants.dart';
 import 'package:sale_management/screens/size_config.dart';
 import 'package:sale_management/screens/widgets/custom_suffix_icon/custom_suffix_icon.dart';
+import 'package:sale_management/share/model/key/m_key.dart';
 
 class EditVendorForm extends StatefulWidget {
   final Map vendor;
@@ -21,6 +22,12 @@ class _AddMemberFormState extends State<EditVendorForm> {
   bool remember = false;
   final List<String> errors = [];
   Size size;
+
+  var nameController = new TextEditingController();
+  var phoneController = new TextEditingController();
+  var emailController = new TextEditingController();
+  var remarkController = new TextEditingController();
+
   void addError({String error}) {
     if (!errors.contains(error))
       setState(() {
@@ -38,6 +45,11 @@ class _AddMemberFormState extends State<EditVendorForm> {
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
+    nameController.text = widget.vendor[VendorKey.name];
+    phoneController.text = widget.vendor[VendorKey.phone];
+    emailController.text = widget.vendor[VendorKey.email];
+    remarkController.text = widget.vendor[VendorKey.remark];
+
     return Form(
       key: _formKey,
       child: Column(
@@ -56,7 +68,8 @@ class _AddMemberFormState extends State<EditVendorForm> {
 
   TextFormField _buildNameField() {
     return TextFormField(
-      keyboardType: TextInputType.emailAddress,
+      keyboardType: TextInputType.text,
+      controller: nameController,
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
@@ -89,7 +102,8 @@ class _AddMemberFormState extends State<EditVendorForm> {
 
   TextFormField _buildPhoneField() {
     return TextFormField(
-      keyboardType: TextInputType.emailAddress,
+      keyboardType: TextInputType.phone,
+      controller: phoneController,
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
@@ -123,6 +137,7 @@ class _AddMemberFormState extends State<EditVendorForm> {
   TextFormField _buildEmailField() {
     return TextFormField(
       keyboardType: TextInputType.emailAddress,
+      controller: emailController,
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
@@ -156,7 +171,8 @@ class _AddMemberFormState extends State<EditVendorForm> {
 
   TextFormField _buildRemarkField() {
     return TextFormField(
-      keyboardType: TextInputType.emailAddress,
+      keyboardType: TextInputType.text,
+      controller: remarkController,
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {

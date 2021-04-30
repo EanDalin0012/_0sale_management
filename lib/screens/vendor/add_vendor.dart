@@ -4,6 +4,7 @@ import 'package:sale_management/screens/constants.dart';
 import 'package:sale_management/screens/size_config.dart';
 import 'package:sale_management/screens/vendor/widget/add_vendor_form.dart';
 import 'package:sale_management/share/constant/text_style.dart';
+import 'package:sale_management/share/helper/keyboard.dart';
 
 class AddVendorScreen extends StatefulWidget {
   @override
@@ -29,7 +30,7 @@ class _AddMemberScreenState extends State<AddVendorScreen> {
                   children: <Widget>[
                     InkWell(
                       onTap: () {
-
+                        KeyboardUtil.hideKeyboard(context);
                       },
                       child: Container(
                         width: size.width,

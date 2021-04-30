@@ -53,7 +53,7 @@ class _AddMemberFormState extends State<AddVendorForm> {
 
   TextFormField _buildNameField() {
     return TextFormField(
-      keyboardType: TextInputType.emailAddress,
+      keyboardType: TextInputType.text,
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
@@ -86,7 +86,7 @@ class _AddMemberFormState extends State<AddVendorForm> {
 
   TextFormField _buildPhoneField() {
     return TextFormField(
-      keyboardType: TextInputType.emailAddress,
+      keyboardType: TextInputType.phone,
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
@@ -153,7 +153,7 @@ class _AddMemberFormState extends State<AddVendorForm> {
 
   TextFormField _buildBrowsField() {
     return TextFormField(
-      keyboardType: TextInputType.emailAddress,
+      keyboardType: TextInputType.text,
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
@@ -186,7 +186,7 @@ class _AddMemberFormState extends State<AddVendorForm> {
 
   TextFormField _buildRemarkField() {
     return TextFormField(
-      keyboardType: TextInputType.emailAddress,
+      keyboardType: TextInputType.text,
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {

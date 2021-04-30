@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sale_management/screens/size_config.dart';
+import 'package:sale_management/screens/widgets/circular_progress_indicator/circular_progress_loading.dart';
 import 'package:sale_management/screens/widgets/product_dropdown/product_page.dart';
 import 'package:sale_management/share/components/show_dialog/show_dialog.dart';
 import 'package:sale_management/share/constant/constant_color.dart';
@@ -57,7 +58,7 @@ class _PackageProductScreenState extends State<PackageProductScreen> {
           child: Column(
             children: <Widget>[
               _container(),
-              if (items.length > 0 ) _buildBody() else _buildLoadingScreen(),
+              if (items.length > 0 ) _buildBody() else CircularProgressLoading(),
               SizedBox(height: 60,)
             ],
           ),

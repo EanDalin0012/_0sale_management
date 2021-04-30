@@ -40,7 +40,6 @@ class _PackageProductAddState extends State<SaleAddScreen> {
   ProductModel product;
   PackageProductModel packageProductModel;
   List<dynamic> vData = [];
-
   Size size;
   @override
   Widget build(BuildContext context) {
@@ -220,7 +219,6 @@ class _PackageProductAddState extends State<SaleAddScreen> {
                 SaleAddItemKey.price: this.packageProductModel.price,
                 SaleAddItemKey.total: totalValueController.text
               };
-              this.vData.add(data);
               this.cartArrowDownCount = this.vData.length;
               this.product = null;
               this.quantityValueController.text = '';

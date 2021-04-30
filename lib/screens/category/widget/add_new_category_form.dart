@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:sale_management/screens/constants.dart';
 import 'package:sale_management/screens/size_config.dart';
 import 'package:sale_management/screens/widgets/custom_suffix_icon/custom_suffix_icon.dart';
-import 'package:sale_management/screens/widgets/default_button/default_button.dart';
-import 'package:sale_management/share/helper/keyboard.dart';
-import 'package:sale_management/screens/category/category_success_screen.dart';
 
 class AddNewCategoryForm extends StatefulWidget {
   @override
@@ -43,24 +40,6 @@ class _AddNewCategoryFormState extends State<AddNewCategoryForm> {
             _buildNameField(),
             SizedBox(height: SizeConfig.screenHeight * 0.02),
             _buildRemarkField(),
-            SizedBox(height: SizeConfig.screenHeight * 0.04),
-            DefaultButton(
-              text: "Save",
-              color: Colors.red,
-              borderRadiusCircular: 25,
-              press: () {
-                if (_formKey.currentState.validate()) {
-                  _formKey.currentState.save();
-                  // if all are valid then go to success screen
-
-                }
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => CategorySuccessScreen()),
-                );
-                KeyboardUtil.hideKeyboard(context);
-              },
-            )
           ]
       ),
     );
@@ -131,4 +110,8 @@ class _AddNewCategoryFormState extends State<AddNewCategoryForm> {
       ),
     );
   }
+}
+
+Function onClick() {
+  print('onClick');
 }

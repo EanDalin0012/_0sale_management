@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -79,7 +78,6 @@ class _ProductScreenState extends State<ProductScreen> {
               child: SearchWidget(
                 hintText: 'Search name',
                 onChange: (value) {
-                  print('value ${value}');
                 },
               ),
             ),
@@ -123,7 +121,7 @@ class _ProductScreenState extends State<ProductScreen> {
       onPressed: (){
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => NewProduct()),
+          MaterialPageRoute(builder: (context) => NewProductScreen()),
         );
       },
       tooltip: 'Increment',
@@ -253,7 +251,7 @@ class _ProductScreenState extends State<ProductScreen> {
       if(value == 0) {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => EditProduct(productItem: item)),
+          MaterialPageRoute(builder: (context) => EditProductScreen(product: item)),
         );
       } else if (value == 1) {
         _showDialog(item);
@@ -262,7 +260,7 @@ class _ProductScreenState extends State<ProductScreen> {
   );
 
   Widget _showDialog(Map item) {
-    ShowDialog.showDialogYesNo(
+    return ShowDialog.showDialogYesNo(
         buildContext: context,
         title: Text(item[ProductKey.name]),
         content: Text('Do you want to delete package of product : '+item[ProductKey.name]+'?'),

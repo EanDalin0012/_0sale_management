@@ -30,7 +30,6 @@ class _PackageProductScreenState extends State<PackageProductScreen> {
   var text = '';
   Size size ;
   var styleInput = TextStyle(color: Colors.black, fontSize: 17, fontWeight: FontWeight.w500, fontFamily: fontFamilyDefault);
-  // List<CategoryModel> categories = categoriesData;
   var menuStyle = TextStyle( color: Colors.purple[900], fontWeight: FontWeight.w500, fontFamily: fontFamilyDefault);
 
   List<PackageProductModel> items = [];
@@ -58,7 +57,8 @@ class _PackageProductScreenState extends State<PackageProductScreen> {
           child: Column(
             children: <Widget>[
               _container(),
-              if (items.length > 0 ) _buildBody() else _buildLoadingScreen()
+              if (items.length > 0 ) _buildBody() else _buildLoadingScreen(),
+              SizedBox(height: 60,)
             ],
           ),
         ),
@@ -147,7 +147,6 @@ class _PackageProductScreenState extends State<PackageProductScreen> {
       style: TextStyle(color: Colors.white, fontSize: 20),
       // onSaved: (newValue) => email = newValue,
       onChanged: (value) {
-        print('${value}');
         this.isItemChanged = true;
         if(value != null || value.trim() != '') {
           this.isItemChanged = true;
@@ -181,14 +180,6 @@ class _PackageProductScreenState extends State<PackageProductScreen> {
     );
   }
 
-  _save() async {
-    // if (_controller.text.isEmpty) return;
-    // FocusScope.of(context).requestFocus(FocusNode());
-    // setState(() {
-    //   messages.insert(0, Message(rand.nextInt(2), _controller.text));
-    //   _controller.clear();
-    // });
-  }
 
   Widget _offsetPopup(PackageProductModel item) => PopupMenuButton<int>(
     itemBuilder: (context) => [
@@ -199,7 +190,7 @@ class _PackageProductScreenState extends State<PackageProductScreen> {
               FaIcon(FontAwesomeIcons.edit,size: 20,color: Colors.purple[900]),
               SizedBox(width: 10,),
               Text(
-                "Edit",
+                'Edit',
                 style: menuStyle,
               ),
             ],
@@ -211,8 +202,7 @@ class _PackageProductScreenState extends State<PackageProductScreen> {
             children: <Widget>[
               FaIcon(FontAwesomeIcons.trash,size: 20,color: Colors.purple[900]),
               SizedBox(width: 10,),
-              Text(
-                "Delete",
+              Text('Delete',
                 style: menuStyle,
               ),
             ],
@@ -222,7 +212,6 @@ class _PackageProductScreenState extends State<PackageProductScreen> {
     icon: FaIcon(FontAwesomeIcons.ellipsisV,size: 20,color: Colors.black),
     offset: Offset(0, 45),
     onSelected: (value) {
-      print('index ${value}');
       if(value == 0) {
         Navigator.push(
           context,
@@ -304,7 +293,7 @@ class _PackageProductScreenState extends State<PackageProductScreen> {
 
 
   Widget _showDialog(PackageProductModel item) {
-    ShowDialog.showDialogYesNo(
+    return ShowDialog.showDialogYesNo(
         buildContext: context,
         title: Text(item.name),
         content: Text('Do you want to delete package of product : '+item.name+'?'),
@@ -388,9 +377,7 @@ class _PackageProductScreenState extends State<PackageProductScreen> {
 
 
   onItemChanged(String value) {
-    print('value ${value}');
     var dataItems = itemsTmp.where((e) => e.name.toLowerCase().contains(value.toLowerCase())).toList();
-    print('value ${dataItems}');
     return dataItems;
   }
 

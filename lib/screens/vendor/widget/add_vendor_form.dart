@@ -42,8 +42,8 @@ class _AddMemberFormState extends State<AddVendorForm> {
             _buildPhoneField(),
             SizedBox(height: SizeConfig.screenHeight * 0.02),
             _buildEmailField(),
-            SizedBox(height: SizeConfig.screenHeight * 0.02),
-            _buildBrowsField(),
+            // SizedBox(height: SizeConfig.screenHeight * 0.02),
+            // _buildBrowsField(),
             SizedBox(height: SizeConfig.screenHeight * 0.02),
             _buildRemarkField()
           ]

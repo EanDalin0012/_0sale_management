@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:sale_management/screens/constants.dart';
 import 'package:sale_management/screens/size_config.dart';
 import 'package:sale_management/screens/vendor/widget/add_vendor_form.dart';
+import 'package:sale_management/share/constant/text_style.dart';
 
 class AddVendorScreen extends StatefulWidget {
   @override
@@ -38,7 +39,7 @@ class _AddMemberScreenState extends State<AddVendorScreen> {
                         //   left: 5,
                         //   right: 5
                         // ),
-                        child: Center(child: Text('SAVE', style: TextStyle(fontWeight: FontWeight.w700, color: Colors.white, fontFamily: 'roboto', fontSize: 18))),
+                        child: Center(child: Text('SAVE', style: TextStyle(fontWeight: FontWeight.w700, color: Colors.white, fontFamily: fontFamilyDefault, fontSize: 18))),
                       ),
                     ),
                   ],

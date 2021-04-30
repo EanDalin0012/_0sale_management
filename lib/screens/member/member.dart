@@ -72,7 +72,6 @@ class _MemberScreenState extends State<MemberScreen> {
               child: SearchWidget(
                 hintText: 'Search name',
                 onChange: (value) {
-                  print('value ${value}');
                 },
               ),
             ),
@@ -235,7 +234,6 @@ class _MemberScreenState extends State<MemberScreen> {
     Map mapItems = jsonDecode(data);
     setState(() {
       this.vData = mapItems['members'];
-      print('${vData}');
       this.vDataLength = this.vData.length;
     });
     return this.vData;

@@ -1,16 +1,16 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:sale_management/screens/category/category_success_screen.dart';
 import 'package:sale_management/screens/constants.dart';
 import 'package:sale_management/screens/size_config.dart';
 import 'package:sale_management/screens/widgets/custom_suffix_icon/custom_suffix_icon.dart';
-import 'package:sale_management/screens/widgets/default_button/default_button.dart';
-import 'package:sale_management/share/helper/keyboard.dart';
-import 'package:sale_management/share/model/category.dart';
+import 'package:sale_management/share/model/key/m_key.dart';
 
 class EditCategoryForm extends StatefulWidget {
-  final CategoryModel categoryModel;
+  final Map category;
+  final Function onClick;
   EditCategoryForm({
-    @required this.categoryModel
+    @required this.category,
+    this.onClick
   });
 
   @override
@@ -25,7 +25,6 @@ class _EditCategoryFormState extends State<EditCategoryForm> {
   final _formKey = GlobalKey<FormState>();
   String email;
   String password;
-  String conform_password;
   bool remember = false;
   final List<String> errors = [];
   Size size;
@@ -46,9 +45,8 @@ class _EditCategoryFormState extends State<EditCategoryForm> {
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
-    print('${widget.categoryModel}');
-    nameController.text = widget.categoryModel.name;
-    remarkController.text = widget.categoryModel.remark;
+    nameController.text = widget.category[CategoryKey.name];
+    remarkController.text = widget.category[CategoryKey.remark];
 
     return Form(
       key: _formKey,
@@ -58,23 +56,6 @@ class _EditCategoryFormState extends State<EditCategoryForm> {
             SizedBox(height: SizeConfig.screenHeight * 0.02),
             _buildRemarkField(),
             SizedBox(height: SizeConfig.screenHeight * 0.04),
-            DefaultButton(
-              text: "Update",
-              color: Colors.red,
-              borderRadiusCircular: 25,
-              press: () {
-                if (_formKey.currentState.validate()) {
-                  _formKey.currentState.save();
-                  // if all are valid then go to success screen
-
-                }
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => CategorySuccessScreen()),
-                );
-                KeyboardUtil.hideKeyboard(context);
-              },
-            )
           ]
       ),
     );

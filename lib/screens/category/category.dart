@@ -1,13 +1,15 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sale_management/screens/category/add_category.dart';
 import 'package:sale_management/screens/category/edit_category.dart';
 import 'package:sale_management/screens/home/Home.dart';
+import 'package:sale_management/screens/widgets/search_widget/search_widget.dart';
 import 'package:sale_management/share/components/show_dialog/show_dialog.dart';
 import 'package:sale_management/share/constant/constant_color.dart';
 import 'package:sale_management/share/constant/text_style.dart';
-import 'package:sale_management/share/model/category.dart';
-import 'package:sale_management/share/model/data/category.dart';
+import 'package:sale_management/share/model/key/m_key.dart';
 
 class CategoryScreen extends StatefulWidget {
   @override
@@ -15,14 +17,26 @@ class CategoryScreen extends StatefulWidget {
 }
 
 class _CategoryState extends State<CategoryScreen> {
+
+  var isNative = false;
+  Size size ;
+  int vDataLength = 0;
+  List<dynamic> vData = [];
+
+  @override
+  void initState() {
+    this._fetchItems();
+    super.initState();
+  }
+
   bool isSearch = false;
   TextEditingController _controller;
-  List<CategoryModel> categories = categoriesData;
   var menuStyle = TextStyle( color: Colors.purple[900], fontWeight: FontWeight.w500, fontFamily: fontFamilyDefault);
 
 
   @override
   Widget build(BuildContext context) {
+    size = MediaQuery.of(context).size;
     return WillPopScope(
       onWillPop:  () async {
         return Navigator.push(
@@ -31,7 +45,7 @@ class _CategoryState extends State<CategoryScreen> {
         );
       },
       child: Scaffold(
-          appBar: _appBar(),
+          appBar: _buildAppBar(),
           body: Column(
             children: <Widget>[
               isSearch ? _containerSearch() : _container(),
@@ -43,8 +57,10 @@ class _CategoryState extends State<CategoryScreen> {
     );
   }
 
-  AppBar _appBar() {
+  Widget _buildAppBar() {
     return AppBar(
+      backgroundColor: Colors.purple[900],
+      title: Text('Category'),
       leading: IconButton(
         icon: Icon(Icons.arrow_back),
         onPressed: () {
@@ -54,7 +70,38 @@ class _CategoryState extends State<CategoryScreen> {
           );
         },
       ),
-      title: Text('Category', style: appBarStyle,)
+      actions: [
+        IconButton(
+          icon: Icon(isNative ? Icons.close : Icons.search),
+          onPressed: () => setState(() {
+            this.isNative = !isNative;
+            // this.isItemChanged = false;
+            // this.isFilterByProduct = false;
+          }),
+        ),
+        const SizedBox(width: 8),
+      ],
+      bottom: this.isNative ? PreferredSize(preferredSize: Size.fromHeight(60),
+        child:  Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              width: size.width - 40,
+              height: 65,
+              margin: EdgeInsets.only(left: 18),
+              padding: EdgeInsets.only(bottom: 10, top: 10),
+              child: SearchWidget(
+                hintText: 'Search name',
+                onChange: (value) {
+                  print('value ${value}');
+                },
+              ),
+            ),
+            // _buildFilterByProduct()
+          ],
+        ),
+      ): null,
     );
   }
 
@@ -112,7 +159,7 @@ class _CategoryState extends State<CategoryScreen> {
                 this.isSearch = true;
               });
             },
-            child: FaIcon(FontAwesomeIcons.search,size: 15 , color: Colors.blueGrey,),
+            child: Text(this.vDataLength.toString(),style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.w700, fontFamily: fontFamilyDefault)),
           ),
         ],
       ),
@@ -146,9 +193,9 @@ class _CategoryState extends State<CategoryScreen> {
                   primary: false,
                   shrinkWrap: true,
                   separatorBuilder: (context, index) => Divider(),
-                  itemCount: categories.length,
+                  itemCount: vDataLength,
                   itemBuilder: (context, index) => ListTile(
-                    title: Text( categories[index].name,
+                    title: Text( this.vData[index][CategoryKey.name],
                       style: TextStyle(
                         color: Colors.black87,
                         fontSize: 16,
@@ -157,12 +204,12 @@ class _CategoryState extends State<CategoryScreen> {
                       ),
                     ),
                     subtitle: Text(
-                      'Remark: '+categories[index].remark,
+                      this.vData[index][CategoryKey.remark],
                       style: TextStyle( color: primaryColor.withOpacity(0.8),fontSize: 12,fontWeight: FontWeight.w500, fontFamily: fontFamilyDefault),
                     ),
                       trailing: Column(
                         children: <Widget>[
-                          _offsetPopup(categories[index]),
+                          _offsetPopup(this.vData[index]),
                         ],
                       )
                   )
@@ -173,10 +220,10 @@ class _CategoryState extends State<CategoryScreen> {
     );
   }
 
-  Widget _offsetPopup(CategoryModel categoryModel) => PopupMenuButton<int>(
+  Widget _offsetPopup(Map category) => PopupMenuButton<int>(
     itemBuilder: (context) => [
       PopupMenuItem(
-          value: 2,
+          value: 0,
           child: Row(
             children: <Widget>[
               FaIcon(FontAwesomeIcons.edit,size: 20,color: Colors.purple[900]),
@@ -189,7 +236,7 @@ class _CategoryState extends State<CategoryScreen> {
           )
       ),
       PopupMenuItem(
-          value: 3,
+          value: 1,
           child: Row(
             children: <Widget>[
               FaIcon(FontAwesomeIcons.trash,size: 20,color: Colors.purple[900]),
@@ -205,27 +252,22 @@ class _CategoryState extends State<CategoryScreen> {
     icon: FaIcon(FontAwesomeIcons.ellipsisV,size: 20,color: Colors.black),
     offset: Offset(0, 45),
     onSelected: (value) {
-      if(value == 1) {
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(builder: (context) => VendorViewScreen(vendorModel)),
-        // );
-      } else if(value == 2) {
+      if(value == 0) {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => EditCategoryScreen(categoryModel)),
+          MaterialPageRoute(builder: (context) => EditCategoryScreen(category: category)),
         );
-      } else if (value == 3) {
-        _showDialog(categoryModel);
+      } else if (value == 1) {
+        _showDialog(category);
       }
     },
   );
 
-  Widget _showDialog(CategoryModel _vendorModel) {
-    ShowDialog.showDialogYesNo(
+  Widget _showDialog(Map category) {
+    return ShowDialog.showDialogYesNo(
         buildContext: context,
-        title: Text(_vendorModel.name),
-        content: Text('Do you want to delete category : '+_vendorModel.name+'?'),
+        title: Text(category[CategoryKey.name]),
+        content: Text('Do you want to delete category : '+category[CategoryKey.name]+'?'),
         btnRight: 'Yes',
         onPressedBntRight: () {
           print('onPressedBntRight');
@@ -250,5 +292,16 @@ class _CategoryState extends State<CategoryScreen> {
       elevation: 5,
       child: Icon(Icons.add_circle, size: 50,),
     );
+  }
+
+  _fetchItems() async {
+    final data = await rootBundle.loadString('assets/json_data/category_list.json');
+    Map mapItems = jsonDecode(data);
+    setState(() {
+      this.vData = mapItems['categoryList'];
+      this.vDataLength = this.vData.length;
+      print('${this.vData}');
+    });
+    return this.vData;
   }
 }

@@ -46,24 +46,6 @@ class _ProductFormAddState extends State<ProductFormAdd> {
               _buildBrowsField(),
               SizedBox(height: SizeConfig.screenHeight * 0.02),
               _buildRemarkField(),
-              SizedBox(height: SizeConfig.screenHeight * 0.04),
-              DefaultButton(
-                text: "Save",
-                color: Colors.red,
-                borderRadiusCircular: 25,
-                press: () {
-                  if (_formKey.currentState.validate()) {
-                    _formKey.currentState.save();
-                    // if all are valid then go to success screen
-
-                  }
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(builder: (context) => Home()),
-                  // );
-                  KeyboardUtil.hideKeyboard(context);
-                },
-              )
             ]
         )
     );

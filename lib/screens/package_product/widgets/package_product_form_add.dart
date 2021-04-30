@@ -38,9 +38,9 @@ class _PackageProductFormState extends State<PackageProductForm> {
       key: _formKey,
       child: Column(
         children: <Widget>[
-          _buildNameField(),
+          _buildPackageNameField(),
           SizedBox(height: SizeConfig.screenHeight * 0.02),
-          _buildPackageProductField(),
+          _buildProductField(),
           SizedBox(height: SizeConfig.screenHeight * 0.02),
           _buildQuantityField(),
           SizedBox(height: SizeConfig.screenHeight * 0.02),
@@ -53,7 +53,7 @@ class _PackageProductFormState extends State<PackageProductForm> {
     );
   }
 
-  TextFormField _buildNameField() {
+  TextFormField _buildPackageNameField() {
     return TextFormField(
       keyboardType: TextInputType.emailAddress,
       onSaved: (newValue) => email = newValue,
@@ -77,7 +77,7 @@ class _PackageProductFormState extends State<PackageProductForm> {
       },
       decoration: InputDecoration(
         labelText: "Name",
-        hintText: "Enter category name",
+        hintText: "Enter package name",
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -185,7 +185,7 @@ class _PackageProductFormState extends State<PackageProductForm> {
     );
   }
 
-  TextFormField _buildPackageProductField() {
+  TextFormField _buildProductField() {
     return TextFormField(
       keyboardType: TextInputType.emailAddress,
       onSaved: (newValue) => email = newValue,
@@ -208,8 +208,8 @@ class _PackageProductFormState extends State<PackageProductForm> {
         return null;
       },
       decoration: InputDecoration(
-        labelText: "Package Product",
-        hintText: "Select package product",
+        labelText: "Product",
+        hintText: "Select product",
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,

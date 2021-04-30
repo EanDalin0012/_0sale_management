@@ -62,11 +62,7 @@ class _PackageProductAddState extends State<PackageProductEdit> {
                   width: size.width,
                   height: 45,
                   color: Colors.red,
-                  // margin: EdgeInsets.only(
-                  //   left: 5,
-                  //   right: 5
-                  // ),
-                  child: Center(child: Text('Update', style: TextStyle(fontWeight: FontWeight.w700, color: Colors.white, fontFamily: 'roboto', fontSize: 18))),
+                  child: Center(child: Text('Update', style: TextStyle(fontWeight: FontWeight.w700, color: Colors.white, fontFamily: fontFamilyDefault, fontSize: 18))),
                 ),
               ),
             ],
@@ -164,7 +160,6 @@ class _PackageProductAddState extends State<PackageProductEdit> {
       if(widget.packageProduct.productId > 0 && widget.packageProduct.productId != null) {
         setState(() {
           product = _searchProductById(widget.packageProduct.productId);
-          print('product: ${product}');
         });
       }
     });

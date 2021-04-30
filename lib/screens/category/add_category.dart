@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sale_management/screens/category/widget/add_new_category_form.dart';
 import 'package:sale_management/screens/constants.dart';
 import 'package:sale_management/screens/size_config.dart';
+import 'package:sale_management/share/helper/keyboard.dart';
 
 class AddNewCategoryScreen extends StatefulWidget {
   @override
@@ -27,6 +28,7 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
               children: <Widget>[
                 InkWell(
                   onTap: () {
+                    KeyboardUtil.hideKeyboard(context);
                   },
                   child: Container(
                     width: size.width,

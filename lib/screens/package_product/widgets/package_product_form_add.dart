@@ -55,7 +55,7 @@ class _PackageProductFormState extends State<PackageProductForm> {
 
   TextFormField _buildPackageNameField() {
     return TextFormField(
-      keyboardType: TextInputType.emailAddress,
+      keyboardType: TextInputType.text,
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
@@ -88,7 +88,7 @@ class _PackageProductFormState extends State<PackageProductForm> {
 
   TextFormField _buildQuantityField() {
     return TextFormField(
-      keyboardType: TextInputType.emailAddress,
+      keyboardType: TextInputType.number,
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
@@ -121,7 +121,7 @@ class _PackageProductFormState extends State<PackageProductForm> {
 
   TextFormField _buildPriceField() {
     return TextFormField(
-      keyboardType: TextInputType.emailAddress,
+      keyboardType: TextInputType.number,
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
@@ -154,7 +154,7 @@ class _PackageProductFormState extends State<PackageProductForm> {
 
   TextFormField _buildRemarkField() {
     return TextFormField(
-      keyboardType: TextInputType.emailAddress,
+      keyboardType: TextInputType.text,
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
@@ -187,7 +187,7 @@ class _PackageProductFormState extends State<PackageProductForm> {
 
   TextFormField _buildProductField() {
     return TextFormField(
-      keyboardType: TextInputType.emailAddress,
+      keyboardType: TextInputType.text,
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {

@@ -133,7 +133,7 @@ class _ProductFormEditState extends State<ProductFormEdit> {
 
   TextFormField _buildCategoryField() {
     return TextFormField(
-      keyboardType: TextInputType.emailAddress,
+      keyboardType: TextInputType.text,
       controller: categoryController,
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {

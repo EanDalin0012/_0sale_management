@@ -15,7 +15,6 @@ class _SaleAddFormState extends State<SaleAddForm> {
   final _formKey = GlobalKey<FormState>();
   String email;
   String password;
-  String conform_password;
   bool remember = false;
   final List<String> errors = [];
   Size size;
@@ -88,7 +87,7 @@ class _SaleAddFormState extends State<SaleAddForm> {
 
   TextFormField _buildProductField() {
     return TextFormField(
-      keyboardType: TextInputType.emailAddress,
+      keyboardType: TextInputType.text,
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
@@ -121,7 +120,7 @@ class _SaleAddFormState extends State<SaleAddForm> {
 
   TextFormField _buildCategoryField() {
     return TextFormField(
-      keyboardType: TextInputType.emailAddress,
+      keyboardType: TextInputType.text,
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {

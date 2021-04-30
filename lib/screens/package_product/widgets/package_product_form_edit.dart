@@ -13,7 +13,6 @@ class _PackageProductFormState extends State<PackageProductFormEdit> {
   final _formKey = GlobalKey<FormState>();
   String email;
   String password;
-  String conform_password;
   bool remember = false;
   final List<String> errors = [];
   Size size;
@@ -55,7 +54,7 @@ class _PackageProductFormState extends State<PackageProductFormEdit> {
 
   TextFormField _buildPackageNameField() {
     return TextFormField(
-      keyboardType: TextInputType.emailAddress,
+      keyboardType: TextInputType.text,
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
@@ -88,7 +87,7 @@ class _PackageProductFormState extends State<PackageProductFormEdit> {
 
   TextFormField _buildQuantityField() {
     return TextFormField(
-      keyboardType: TextInputType.emailAddress,
+      keyboardType: TextInputType.number,
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
@@ -121,7 +120,7 @@ class _PackageProductFormState extends State<PackageProductFormEdit> {
 
   TextFormField _buildPriceField() {
     return TextFormField(
-      keyboardType: TextInputType.emailAddress,
+      keyboardType: TextInputType.number,
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
@@ -154,7 +153,7 @@ class _PackageProductFormState extends State<PackageProductFormEdit> {
 
   TextFormField _buildRemarkField() {
     return TextFormField(
-      keyboardType: TextInputType.emailAddress,
+      keyboardType: TextInputType.text,
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
@@ -187,7 +186,7 @@ class _PackageProductFormState extends State<PackageProductFormEdit> {
 
   TextFormField _buildProductField() {
     return TextFormField(
-      keyboardType: TextInputType.emailAddress,
+      keyboardType: TextInputType.text,
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {

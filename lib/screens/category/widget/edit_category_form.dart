@@ -63,7 +63,7 @@ class _EditCategoryFormState extends State<EditCategoryForm> {
 
   TextFormField _buildNameField() {
     return TextFormField(
-      keyboardType: TextInputType.emailAddress,
+      keyboardType: TextInputType.text,
       controller: nameController,
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
@@ -97,7 +97,7 @@ class _EditCategoryFormState extends State<EditCategoryForm> {
 
   TextFormField _buildRemarkField() {
     return TextFormField(
-      keyboardType: TextInputType.emailAddress,
+      keyboardType: TextInputType.text,
       controller: remarkController,
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {

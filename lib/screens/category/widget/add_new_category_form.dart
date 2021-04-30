@@ -47,7 +47,7 @@ class _AddNewCategoryFormState extends State<AddNewCategoryForm> {
 
   TextFormField _buildNameField() {
     return TextFormField(
-      keyboardType: TextInputType.emailAddress,
+      keyboardType: TextInputType.text,
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
@@ -80,7 +80,7 @@ class _AddNewCategoryFormState extends State<AddNewCategoryForm> {
 
   TextFormField _buildRemarkField() {
     return TextFormField(
-      keyboardType: TextInputType.emailAddress,
+      keyboardType: TextInputType.text,
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {

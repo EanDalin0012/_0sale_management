@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sale_management/screens/category/widget/edit_category_form.dart';
 import 'package:sale_management/screens/constants.dart';
 import 'package:sale_management/screens/size_config.dart';
+import 'package:sale_management/share/helper/keyboard.dart';
 
 
 class EditCategoryScreen extends StatefulWidget {
@@ -35,7 +36,9 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
               Stack(
                 children: <Widget>[
                   InkWell(
-                    onTap: ()=> save(),
+                    onTap: (){
+                      KeyboardUtil.hideKeyboard(context);
+                    },
                     child: Container(
                       width: size.width,
                       height: 45,

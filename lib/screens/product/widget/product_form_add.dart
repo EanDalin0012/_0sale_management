@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:sale_management/screens/constants.dart';
 import 'package:sale_management/screens/size_config.dart';
 import 'package:sale_management/screens/widgets/custom_suffix_icon/custom_suffix_icon.dart';
-import 'package:sale_management/screens/widgets/default_button/default_button.dart';
-import 'package:sale_management/share/helper/keyboard.dart';
 
 class ProductFormAdd extends StatefulWidget {
   @override
@@ -14,7 +12,6 @@ class _ProductFormAddState extends State<ProductFormAdd> {
   final _formKey = GlobalKey<FormState>();
   String email;
   String password;
-  String conform_password;
   bool remember = false;
   final List<String> errors = [];
   Size size;
@@ -53,7 +50,7 @@ class _ProductFormAddState extends State<ProductFormAdd> {
 
   TextFormField _buildNameField() {
     return TextFormField(
-      keyboardType: TextInputType.emailAddress,
+      keyboardType: TextInputType.text,
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
@@ -86,7 +83,7 @@ class _ProductFormAddState extends State<ProductFormAdd> {
 
   TextFormField _buildRemarkField() {
     return TextFormField(
-      keyboardType: TextInputType.emailAddress,
+      keyboardType: TextInputType.text,
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
@@ -119,7 +116,7 @@ class _ProductFormAddState extends State<ProductFormAdd> {
 
   TextFormField _buildCategoryField() {
     return TextFormField(
-      keyboardType: TextInputType.emailAddress,
+      keyboardType: TextInputType.text,
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
@@ -152,7 +149,7 @@ class _ProductFormAddState extends State<ProductFormAdd> {
 
   TextFormField _buildBrowsField() {
     return TextFormField(
-      keyboardType: TextInputType.emailAddress,
+      keyboardType: TextInputType.text,
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {

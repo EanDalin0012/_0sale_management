@@ -7,6 +7,7 @@ import 'package:sale_management/screens/product/product.dart';
 import 'package:sale_management/share/constant/text_style.dart';
 import 'package:sale_management/screens/member/member.dart';
 import 'package:sale_management/screens/vendor/vendor.dart';
+import 'package:sale_management/screens/stock/stock.dart';
 
 class SheetContainer extends StatefulWidget {
   final BuildContext context;
@@ -98,7 +99,7 @@ class _SheetContainerState extends State<SheetContainer> {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => ProductScreen()),
+              MaterialPageRoute(builder: (context) => StockScreen()),
             );
           },
           child: Container(
@@ -116,10 +117,10 @@ class _SheetContainerState extends State<SheetContainer> {
                       borderRadius: BorderRadius.circular(50),
                       border: border
                   ),
-                  child: Center(child: FaIcon(FontAwesomeIcons.productHunt,size: _iconSize,color: _iconColor)),
+                  child: Center(child: FaIcon(FontAwesomeIcons.database,size: _iconSize,color: _iconColor)),
                 ),
                 SizedBox(height: 5,),
-                Text('Product',style: textStyle),
+                Text('Stock',style: textStyle),
               ],
             ),
           ),

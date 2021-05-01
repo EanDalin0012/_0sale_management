@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sale_management/screens/management/management.dart';
@@ -7,7 +5,6 @@ import 'package:sale_management/screens/management/management.dart';
 class SideNave extends StatelessWidget {
   Size size;
   var numItems = 20;
-  var _biggerFont = TextStyle(fontSize: 18.0);
   var logo = '';
   var leftSub = 10.0;
   @override
@@ -170,43 +167,43 @@ class SideNave extends StatelessWidget {
     );
   }
 
-  Container _container(BuildContext context) {
-    return Container(
-      // margin: const EdgeInsets.only(top: 50),
-      // height: 170,
-        color: Colors.purple,
-        child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              ListTile(
-                onTap: (){},
-                leading: Stack(
-                  overflow: Overflow.visible,
-                  children: <Widget>[
-                    CircleAvatar(
-                      backgroundColor: Colors.white,
-                      child: Image.network('https://static.dezeen.com/uploads/2020/10/gmail-google-logo-rebrand-workspace-design_dezeen_2364_sq.jpg'),
-                    ),
-                    Positioned(
-                        bottom: -5,
-                        right: -5,
-                        child: Icon(Icons.remove_circle, color: Colors.red,))
-                  ],
-                ),
-                title: Text("Damodar Lohani",style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18.0
-                ),),
-                subtitle: Text("981151121", style: TextStyle(
-                    fontSize: 16.0,
-                    color: Colors.white
-                ),),
-                trailing: Icon(Icons.keyboard_arrow_right, color: Colors.white,),
-              ),
-            ]
-        )
-    );
-  }
+  // Container _container(BuildContext context) {
+  //   return Container(
+  //     // margin: const EdgeInsets.only(top: 50),
+  //     // height: 170,
+  //       color: Colors.purple,
+  //       child: Column(
+  //           mainAxisSize: MainAxisSize.min,
+  //           crossAxisAlignment: CrossAxisAlignment.start,
+  //           children: <Widget>[
+  //             ListTile(
+  //               onTap: (){},
+  //               leading: Stack(
+  //                 overflow: Overflow.visible,
+  //                 children: <Widget>[
+  //                   CircleAvatar(
+  //                     backgroundColor: Colors.white,
+  //                     child: Image.network('https://static.dezeen.com/uploads/2020/10/gmail-google-logo-rebrand-workspace-design_dezeen_2364_sq.jpg'),
+  //                   ),
+  //                   Positioned(
+  //                       bottom: -5,
+  //                       right: -5,
+  //                       child: Icon(Icons.remove_circle, color: Colors.red,))
+  //                 ],
+  //               ),
+  //               title: Text("Damodar Lohani",style: TextStyle(
+  //                   color: Colors.white,
+  //                   fontWeight: FontWeight.bold,
+  //                   fontSize: 18.0
+  //               ),),
+  //               subtitle: Text("981151121", style: TextStyle(
+  //                   fontSize: 16.0,
+  //                   color: Colors.white
+  //               ),),
+  //               trailing: Icon(Icons.keyboard_arrow_right, color: Colors.white,),
+  //             ),
+  //           ]
+  //       )
+  //   );
+  // }
 }

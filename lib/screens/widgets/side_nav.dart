@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sale_management/screens/management/management.dart';
 import 'package:sale_management/share/constant/text_style.dart';
+import 'package:sale_management/screens/setting/setting.dart';
 
 class SideNave extends StatelessWidget {
   Size size;
@@ -47,6 +47,10 @@ class SideNave extends StatelessWidget {
                         ListTile(
                           onTap: () {
                             Navigator.pop(context);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => SettingScreen()),
+                            );
                           },
                           title: Text("Settings",style: style), leading: Icon(Icons.settings),),
                         // ListTile(title: Text("About"), leading: Icon(Icons.info),),
@@ -150,44 +154,4 @@ class SideNave extends StatelessWidget {
         )
     );
   }
-
-  // Container _container(BuildContext context) {
-  //   return Container(
-  //     // margin: const EdgeInsets.only(top: 50),
-  //     // height: 170,
-  //       color: Colors.purple,
-  //       child: Column(
-  //           mainAxisSize: MainAxisSize.min,
-  //           crossAxisAlignment: CrossAxisAlignment.start,
-  //           children: <Widget>[
-  //             ListTile(
-  //               onTap: (){},
-  //               leading: Stack(
-  //                 overflow: Overflow.visible,
-  //                 children: <Widget>[
-  //                   CircleAvatar(
-  //                     backgroundColor: Colors.white,
-  //                     child: Image.network('https://static.dezeen.com/uploads/2020/10/gmail-google-logo-rebrand-workspace-design_dezeen_2364_sq.jpg'),
-  //                   ),
-  //                   Positioned(
-  //                       bottom: -5,
-  //                       right: -5,
-  //                       child: Icon(Icons.remove_circle, color: Colors.red,))
-  //                 ],
-  //               ),
-  //               title: Text("Damodar Lohani",style: TextStyle(
-  //                   color: Colors.white,
-  //                   fontWeight: FontWeight.bold,
-  //                   fontSize: 18.0
-  //               ),),
-  //               subtitle: Text("981151121", style: TextStyle(
-  //                   fontSize: 16.0,
-  //                   color: Colors.white
-  //               ),),
-  //               trailing: Icon(Icons.keyboard_arrow_right, color: Colors.white,),
-  //             ),
-  //           ]
-  //       )
-  //   );
-  // }
 }

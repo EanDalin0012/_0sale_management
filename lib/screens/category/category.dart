@@ -44,15 +44,18 @@ class _CategoryState extends State<CategoryScreen> {
           MaterialPageRoute(builder: (context) => Home()),
         );
       },
-      child: Scaffold(
-          appBar: _buildAppBar(),
-          body: Column(
-            children: <Widget>[
-              isSearch ? _containerSearch() : _container(),
-              _mainTransactionBody()
-            ],
-          ),
-        floatingActionButton: _floatingActionButton()
+      child: SafeArea(
+        top: false,
+        child: Scaffold(
+            appBar: _buildAppBar(),
+            body: Column(
+              children: <Widget>[
+                isSearch ? _containerSearch() : _container(),
+                _mainTransactionBody()
+              ],
+            ),
+          floatingActionButton: _floatingActionButton()
+        ),
       ),
     );
   }

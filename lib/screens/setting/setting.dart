@@ -10,7 +10,6 @@ class SettingScreen extends StatefulWidget {
 class _SettingScreenState extends State<SettingScreen> {
 
   var style = TextStyle(fontFamily: fontFamilyDefault, fontWeight: FontWeight.w500);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

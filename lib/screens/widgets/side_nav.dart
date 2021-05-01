@@ -18,7 +18,8 @@ class SideNave extends StatelessWidget {
               body: SingleChildScrollView(
                 child: Column(
                     children: <Widget>[
-                      _container(context),
+                      buildUserInfo(context),
+                      // _container(context),
                       // ListTile(title: Text("KYC Form"), leading: Icon(Icons.info),),
                       // ListTile(title: Text("My Bookings"), leading: Icon(FontAwesomeIcons.calendarDay),),
                       // ListTile(title: Text("My Purchases"), leading: Icon(FontAwesomeIcons.listOl),),
@@ -86,10 +87,86 @@ class SideNave extends StatelessWidget {
     );
   }
 
-  AppBar _appBar(){
-    return AppBar(
-      backgroundColor: Colors.transparent,
-      leading: new Container()
+  Container buildUserInfo(context) => Container(
+    color: Color(0xFF88070B),
+    //height: deviceSize.height * 0.3,
+    padding: EdgeInsets.only(bottom: 25.0),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        ListTile(
+          onTap: () {
+            Navigator.of(context).pop();
+          },
+          leading: Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              'Good Afternoon!',
+              style: TextStyle(
+                fontSize: 14.0,
+                fontWeight: FontWeight.w300,
+                color: Colors.white,
+              ),
+            ),
+            SizedBox(
+              width: 5,
+            ),
+            Text(
+              'MAUSAM'.toUpperCase(),
+              style: TextStyle(
+                fontSize: 17.0,
+                fontWeight: FontWeight.w300,
+                color: Colors.white,
+              ),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 15.0,
+        ),
+        _buildProfile(
+          color: Colors.white,
+          height: 70.0,
+          width: 70.0,
+        ),
+        SizedBox(
+          height: 15.0,
+        ),
+        Text(
+          'MAUSAM rayamajhi'.toUpperCase(),
+          style: TextStyle(
+            fontSize: 15.0,
+            fontWeight: FontWeight.w300,
+            color: Colors.white,
+          ),
+        )
+      ],
+    ),
+  );
+
+  Container _buildProfile({double height, width, Color color}) {
+    return Container(
+      width: width,
+      height: height,
+        decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.red,
+            image: DecorationImage(
+              image: AssetImage('assets/images/profile.jpg'),
+              fit: BoxFit.contain,
+            ),
+          border: Border.all(
+            color: color,
+            width: 3.0,
+          ),
+        )
     );
   }
 
@@ -128,28 +205,6 @@ class SideNave extends StatelessWidget {
                 ),),
                 trailing: Icon(Icons.keyboard_arrow_right, color: Colors.white,),
               ),
-              // Padding(
-              //   padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 75.0),
-              //   child: Text.rich(TextSpan(
-              //       children: [
-              //         TextSpan(text: "Rs "),
-              //         TextSpan(text: "0", style: TextStyle(
-              //             fontSize: 24.0
-              //         ))
-              //       ]
-              //   ), style: TextStyle(color: Colors.white),),
-              // ),
-              // Padding(
-              //   padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 75.0),
-              //   child: Text.rich(TextSpan(
-              //       children: [
-              //         TextSpan(text: "KP "),
-              //         TextSpan(text: "0", style: TextStyle(
-              //             fontSize: 20.0
-              //         ))
-              //       ]
-              //   ), style: TextStyle(color: Colors.white),),
-              // ),
             ]
         )
     );

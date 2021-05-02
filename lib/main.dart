@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:sale_management/screens/sign_in/sign_in_screen.dart';
 import 'package:sale_management/screens/theme.dart';
 import 'package:sale_management/screens/widgets/country_dropdown/provider/country_provider.dart';
+import 'package:sale_management/share/utils/local_storage.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -11,6 +12,7 @@ Future<void> main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
+  UtilLocalStorage.set(key: 'lang', value: 'kh');
   runApp(MyApp());
 }
 

@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:sale_management/screens/size_config.dart';
-import 'package:sale_management/screens/widgets/custom_suffix_icon/custom_suffix_icon.dart';
+import 'package:sale_management/screens/setting/widget/language_choice.dart';
 import 'package:sale_management/share/constant/text_style.dart';
 import 'package:sale_management/screens/setting/widget/profile_header.dart';
+import 'package:sale_management/share/model/key/m_key.dart';
+import 'package:sale_management/share/utils/local_storage.dart';
 
 class SettingScreen extends StatefulWidget {
   @override
@@ -16,8 +16,27 @@ class _SettingScreenState extends State<SettingScreen> {
 
   var style = TextStyle(fontFamily: fontFamilyDefault, fontWeight: FontWeight.w500);
   var switchValue = true;
+  var language = '';
+  @override
+  void initState() {
+    UtilLocalStorage.get(key: 'lang').then((value) {
+      var langCode = value;
+      setState(() {
+        if(langCode == 'kh') {
+          this.language = 'ខ្មែរ';
+        } else if(langCode == 'en') {
+          this.language = 'English';
+        } else if (langCode == 'zn') {
+          this.language = '中文';
+        }
+      });
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       extendBodyBehindAppBar: true,
@@ -102,17 +121,20 @@ class _SettingScreenState extends State<SettingScreen> {
                     top: 10,
                     bottom: 10
                 ),
-                child: Row(
-                  children: <Widget>[
-                    _listTileLeading(
-                        height: 25,
-                        width: 20,
-                        svgIcon: 'assets/icons/language_black_24dp.svg'
-                    ),
-                    Padding(
-                        padding: EdgeInsets.only(left: 15),
-                        child: Text('English', style: style,))
-                  ],
+                child: InkWell(
+                  onTap: () => languageChoice(),
+                  child: Row(
+                    children: <Widget>[
+                      _listTileLeading(
+                          height: 25,
+                          width: 20,
+                          svgIcon: 'assets/icons/language_black_24dp.svg'
+                      ),
+                      Padding(
+                          padding: EdgeInsets.only(left: 15),
+                          child: Text('${this.language}', style: style,))
+                    ],
+                  ),
                 ),
               ),
               Container(
@@ -171,5 +193,26 @@ class _SettingScreenState extends State<SettingScreen> {
         color: color,
       ),
     );
+  }
+
+  languageChoice() {
+    print('pricnt');
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0)
+            ), //this right here
+            child: LanguageChoice(
+              onChange: (value) {
+                setState(() {
+                  this.language = value[LanguageKey.value];
+                });
+              },
+            )
+          );
+        });
+
   }
 }

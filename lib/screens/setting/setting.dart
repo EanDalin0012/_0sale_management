@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sale_management/share/constant/text_style.dart';
+import 'package:sale_management/screens/setting/widget/profile_header.dart';
 
 class SettingScreen extends StatefulWidget {
   @override
@@ -10,6 +11,7 @@ class SettingScreen extends StatefulWidget {
 class _SettingScreenState extends State<SettingScreen> {
 
   var style = TextStyle(fontFamily: fontFamilyDefault, fontWeight: FontWeight.w500);
+  var switchValue = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,41 +25,43 @@ class _SettingScreenState extends State<SettingScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              Container(
-                  padding: EdgeInsets.only(top: 15, left: 8, right: 8, bottom: 15),
-                  color: Color(0xFF88070B),
-                  child:Row(
-                    children: <Widget>[
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(100.0),
-                        child: Image.asset("assets/images/profile.jpg", width: 80, height: 80, fit: BoxFit.fill,),
-                      ),
-                      SizedBox(width: 15,),
-                      RichText(
-                          text: TextSpan(
-                              children: [
-                                TextSpan(text: "Name Surname\n", style: TextStyle(fontWeight: FontWeight.bold, fontFamily: fontFamilyDefault, color: Colors.white)),
-                                TextSpan(text: "@username", style: TextStyle(fontFamily: fontFamilyDefault, color: Colors.white)),
-                              ]
-                          )
-                      )
-                    ],
+              ProfileHeader(
+                avatar: NetworkImage('https://machinecurve.com/wp-content/uploads/2019/07/thispersondoesnotexist-1-1022x1024.jpg'),
+                coverImage: NetworkImage('https://machinecurve.com/wp-content/uploads/2019/07/thispersondoesnotexist-1-1022x1024.jpg'),
+                title: "Ramesh Mana",
+                subtitle: "Manager",
+                actions: <Widget>[
+                  MaterialButton(
+                    color: Colors.white,
+                    shape: CircleBorder(),
+                    elevation: 0,
+                    child: Icon(Icons.edit),
+                    onPressed: () {},
                   )
+                ],
               ),
-              ListTile(title: Text("Contact Us", style: style,), leading: Icon(Icons.phone),),
-              ListTile(title: Text("Terms & Condition", style: style), leading: Icon(Icons.card_giftcard),),
-              Divider(),
-              ListTile(
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => SettingScreen()),
-                  );
-                },
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        "User Information",
+                        style: TextStyle(
+                          color: Colors.black87,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16,
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
+                    ),
+                    Divider()
+                  ],
+                ),
               )
             ],
-          ),
+          )
         ),
       ),
     );

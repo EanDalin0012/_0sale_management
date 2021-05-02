@@ -41,6 +41,7 @@ dependencies:
   flutter_parsed_text: ^2.1.0
   time_machine: ^0.9.16
   date_format: ^2.0.2
+  settings_ui: ^1.0.0
 
 dev_dependencies:
   flutter_test:

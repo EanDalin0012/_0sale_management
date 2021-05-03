@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sale_management/screens/setting/widget/language_choice.dart';
 import 'package:sale_management/share/constant/text_style.dart';
 import 'package:sale_management/screens/setting/widget/profile_header.dart';
@@ -19,19 +20,20 @@ class _SettingScreenState extends State<SettingScreen> {
   var language = '';
   @override
   void initState() {
-    Map vDataReturn = UtilLocalStorage.get(key: 'lang');
-    print('vDataReturn::::${vDataReturn}');
-    if(vDataReturn != null) {
-        setState(() {
-          if(vDataReturn[LanguageKey.code] == 'kh') {
-            this.language = 'ខ្មែរ';
-          } else if(vDataReturn[LanguageKey.code] == 'en') {
-            this.language = 'English';
-          } else if (vDataReturn[LanguageKey.code] == 'zn') {
-            this.language = '中文';
-          }
-        });
-    }
+    UtilLocalStorage.get(key: 'lang').then((vData) {
+      showMessage(data: vData.toString());
+      if(vData != null) {
+          setState(() {
+            if(vData[LanguageKey.code] == 'kh') {
+              this.language = 'ខ្មែរ';
+            } else if(vData[LanguageKey.code] == 'en') {
+              this.language = 'English';
+            } else if (vData[LanguageKey.code] == 'zn') {
+              this.language = '中文';
+            }
+          });
+      }
+    });
     super.initState();
   }
 
@@ -214,6 +216,31 @@ class _SettingScreenState extends State<SettingScreen> {
             )
           );
         });
+    // _showToast();
 
   }
+
+  _showToast() {
+    Fluttertoast.showToast(
+        msg: "This is Center Short Toast",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM
+    );
+  }
+
+    showMessage({String data}) {
+      print('pricnt');
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return Dialog(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0)
+                ), //this right here
+                child: Text('${data}')
+            );
+          });
+      // _showToast();
+
+    }
 }

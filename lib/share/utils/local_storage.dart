@@ -10,10 +10,8 @@ class UtilLocalStorage {
     storage.setItem(key, info);
   }
 
-  static Map get({String key})  {
-    Map vData = storage.getItem(key);
-    print('vData: ${vData}');
-    return vData;
+  static Future<Map> get({String key}) async {
+    return await storage.getItem(key);
   }
 
 }

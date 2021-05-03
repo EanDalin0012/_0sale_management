@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sale_management/share/constant/text_style.dart';
 import 'package:sale_management/share/model/key/m_key.dart';
 import 'package:sale_management/share/utils/local_storage.dart';
@@ -30,30 +29,53 @@ class _LanguageChoiceState extends State<LanguageChoice> {
 
   @override
   void initState() {
-    Map vDataReturn = UtilLocalStorage.get(key: 'lang');
-    print('vDataReturn language choice ${vDataReturn}');
-    _showToast();
-    setState(() {
-      if(vDataReturn[LanguageKey.code] == 'kh') {
-        this.isCheckKh = true;
-        vData = {
-          LanguageKey.code: 'kh',
-          LanguageKey.value: 'ខ្មែរ',
-        };
-      } else if(vDataReturn[LanguageKey.code] == 'en') {
-        this.isCheckEn = true;
-        vData = {
-          LanguageKey.code: 'en',
-          LanguageKey.value: 'English',
-        };
-      } else if (vDataReturn[LanguageKey.code] == 'zn') {
-        this.isCheckZn = true;
-        vData = {
-          LanguageKey.code: 'zn',
-          LanguageKey.value: '中文',
-        };
+    UtilLocalStorage.get(key: 'lang').then((vDataResponse) {
+      if(vData != null) {
+        setState(() {
+            if(vDataResponse[LanguageKey.code].toString() == 'kh') {
+              this.isCheckKh = true;
+              vData = {
+                LanguageKey.code: 'kh',
+                LanguageKey.value: 'ខ្មែរ',
+              };
+            } else if(vDataResponse[LanguageKey.code].toString() == 'en') {
+              this.isCheckEn = true;
+              vData = {
+                LanguageKey.code: 'en',
+                LanguageKey.value: 'English',
+              };
+            } else if (vDataResponse[LanguageKey.code].toString() == 'zn') {
+              this.isCheckZn = true;
+              vData = {
+                LanguageKey.code: 'zn',
+                LanguageKey.value: '中文',
+              };
+            }
+        });
       }
     });
+    // Map vDataReturn = UtilLocalStorage.get(key: 'lang');
+    // setState(() {
+    //   if(vDataReturn[LanguageKey.code] == 'kh') {
+    //     this.isCheckKh = true;
+    //     vData = {
+    //       LanguageKey.code: 'kh',
+    //       LanguageKey.value: 'ខ្មែរ',
+    //     };
+    //   } else if(vDataReturn[LanguageKey.code] == 'en') {
+    //     this.isCheckEn = true;
+    //     vData = {
+    //       LanguageKey.code: 'en',
+    //       LanguageKey.value: 'English',
+    //     };
+    //   } else if (vDataReturn[LanguageKey.code] == 'zn') {
+    //     this.isCheckZn = true;
+    //     vData = {
+    //       LanguageKey.code: 'zn',
+    //       LanguageKey.value: '中文',
+    //     };
+    //   }
+    // });
     super.initState();
   }
 
@@ -230,17 +252,5 @@ class _LanguageChoiceState extends State<LanguageChoice> {
 
   pop(BuildContext context) {
     Navigator.pop(context);
-  }
-
-  _showToast() {
-    Fluttertoast.showToast(
-        msg: "This is Center Short Toast",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.red,
-        textColor: Colors.red,
-        fontSize: 16.0
-    );
   }
 }

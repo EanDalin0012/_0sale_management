@@ -20,25 +20,26 @@ class _SettingScreenState extends State<SettingScreen> {
   var language = '';
   @override
   void initState() {
-    UtilLocalStorage.get(key: 'lang').then((vData) {
-      showMessage(data: vData.toString());
-      if(vData != null) {
-          setState(() {
-            if(vData[LanguageKey.code] == 'kh') {
-              this.language = 'ខ្មែរ';
-            } else if(vData[LanguageKey.code] == 'en') {
-              this.language = 'English';
-            } else if (vData[LanguageKey.code] == 'zn') {
-              this.language = '中文';
-            }
-          });
-      }
-    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+
+    UtilLocalStorage.get(key: 'lang').then((vData) {
+      if(vData != null) {
+        showMessage(data: vData.toString());
+        setState(() {
+          if(vData[LanguageKey.code] == 'kh') {
+            this.language = 'ខ្មែរ';
+          } else if(vData[LanguageKey.code] == 'en') {
+            this.language = 'English';
+          } else if (vData[LanguageKey.code] == 'zn') {
+            this.language = '中文';
+          }
+        });
+      }
+    });
 
     return Scaffold(
       backgroundColor: Colors.grey.shade100,

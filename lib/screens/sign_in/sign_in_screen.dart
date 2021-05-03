@@ -9,17 +9,14 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  Map vData = {
-    LanguageKey.code: 'en',
-    LanguageKey.value: 'English',
-  };
-
 
   @override
   Widget build(BuildContext context) {
-    UtilLocalStorage.set(key: 'lang', info: vData);
     UtilLocalStorage.get(key: 'lang').then((value) {
-      showMessage(data: value.toString());
+      if(value != null) {
+        showMessage(data: value.toString());
+      }
+
    });
 
     return Scaffold(

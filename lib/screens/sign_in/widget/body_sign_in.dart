@@ -4,11 +4,19 @@ import 'package:sale_management/screens/size_config.dart';
 import 'package:sale_management/screens/widgets/no_account_text/no_account_text.dart';
 import 'package:sale_management/screens/widgets/socal_card/socal_card.dart';
 import 'package:sale_management/share/constant/text_style.dart';
+import 'package:sale_management/share/utils/local_storage.dart';
 
 class SignInBody extends StatelessWidget {
+
+
   @override
   Widget build(BuildContext context) {
     SizeConfig.init(context);
+    UtilLocalStorage.get(key: 'lang').then((value) {
+      if(value != null) {
+        showMessage(data: value.toString(), context: context);
+      }
+    });
     return SafeArea(
         child: SizedBox(
           width: double.infinity,
@@ -60,4 +68,21 @@ class SignInBody extends StatelessWidget {
         )
     );
   }
+
+  showMessage({String data, BuildContext context}) {
+    print('pricnt');
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0)
+              ), //this right here
+              child: Text('${data}')
+          );
+        });
+    // _showToast();
+
+  }
+
 }

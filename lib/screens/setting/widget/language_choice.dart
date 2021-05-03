@@ -54,29 +54,6 @@ class _LanguageChoiceState extends State<LanguageChoice> {
         });
       }
     });
-    // Map vDataReturn = UtilLocalStorage.get(key: 'lang');
-    // setState(() {
-    //   if(vDataReturn[LanguageKey.code] == 'kh') {
-    //     this.isCheckKh = true;
-    //     vData = {
-    //       LanguageKey.code: 'kh',
-    //       LanguageKey.value: 'ខ្មែរ',
-    //     };
-    //   } else if(vDataReturn[LanguageKey.code] == 'en') {
-    //     this.isCheckEn = true;
-    //     vData = {
-    //       LanguageKey.code: 'en',
-    //       LanguageKey.value: 'English',
-    //     };
-    //   } else if (vDataReturn[LanguageKey.code] == 'zn') {
-    //     this.isCheckZn = true;
-    //     vData = {
-    //       LanguageKey.code: 'zn',
-    //       LanguageKey.value: '中文',
-    //     };
-    //   }
-    // });
-    super.initState();
   }
 
   @override

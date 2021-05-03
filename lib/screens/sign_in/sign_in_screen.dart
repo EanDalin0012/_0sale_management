@@ -16,7 +16,6 @@ class _SignInScreenState extends State<SignInScreen> {
       if(value != null) {
         showMessage(data: value.toString());
       }
-
    });
 
     return Scaffold(

@@ -1,18 +1,19 @@
 
-import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:localstorage/localstorage.dart';
 
 class UtilLocalStorage {
 
-  static set({String key, String value}) async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    pref.setString(key, value);
+  static String localstorageApp = 'localstorage_app';
+  static LocalStorage storage = new LocalStorage(localstorageApp);
+  static set({String key, Map info})  {
+    storage.setItem(key, info);
   }
 
-  static Future<String> get({String key}) async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    var data = pref.get(key);
-    print('data : ${data}');
-    return pref.get(key);
+  static Map get({String key})  {
+    Map vData = storage.getItem(key);
+    print('vData: ${vData}');
+    return vData;
   }
 
 }

@@ -19,18 +19,19 @@ class _SettingScreenState extends State<SettingScreen> {
   var language = '';
   @override
   void initState() {
-    UtilLocalStorage.get(key: 'lang').then((value) {
-      var langCode = value;
-      setState(() {
-        if(langCode == 'kh') {
-          this.language = 'ខ្មែរ';
-        } else if(langCode == 'en') {
-          this.language = 'English';
-        } else if (langCode == 'zn') {
-          this.language = '中文';
-        }
-      });
-    });
+    Map vDataReturn = UtilLocalStorage.get(key: 'lang');
+    print('vDataReturn::::${vDataReturn}');
+    if(vDataReturn != null) {
+        setState(() {
+          if(vDataReturn[LanguageKey.code] == 'kh') {
+            this.language = 'ខ្មែរ';
+          } else if(vDataReturn[LanguageKey.code] == 'en') {
+            this.language = 'English';
+          } else if (vDataReturn[LanguageKey.code] == 'zn') {
+            this.language = '中文';
+          }
+        });
+    }
     super.initState();
   }
 

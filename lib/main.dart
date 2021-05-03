@@ -12,7 +12,6 @@ Future<void> main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-  UtilLocalStorage.set(key: 'lang', value: 'kh');
   runApp(MyApp());
 }
 

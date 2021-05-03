@@ -43,6 +43,8 @@ dependencies:
   date_format: ^2.0.2
   settings_ui: ^1.0.0
   shared_preferences: ^2.0.5
+  localstorage: ^4.0.0+1
+  fluttertoast: ^8.0.6
 
 dev_dependencies:
   flutter_test:

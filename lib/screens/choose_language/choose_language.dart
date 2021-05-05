@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sale_management/screens/sign_in/sign_in_screen.dart';
 import 'package:sale_management/screens/size_config.dart';
 import 'package:sale_management/share/constant/text_style.dart';
 import 'package:sale_management/share/model/key/language_key.dart';
@@ -11,6 +12,7 @@ class ChooseLanguageScreen extends StatefulWidget {
 
 class _ChooseLanguageScreenState extends State<ChooseLanguageScreen> {
   var color = Color(0xc429ac9d);
+  var code = 'en';
   List<dynamic> vData = [
     {
       LanguageKey.code: 'kh',
@@ -55,12 +57,30 @@ class _ChooseLanguageScreenState extends State<ChooseLanguageScreen> {
                 ),
                 SizedBox(height: SizeConfig.screenHeight * 0.06),
                 Container(
-                  height: height - 38,
+                  height: height - 78,
                   color: Colors.lightBlue[50].withOpacity(0.4),
                   child: Column(
                     children: vData.map((e) => _container(e)).toList(),
                   ),
-                )
+                ),
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SignInScreen()),
+                    );
+                  },
+                  child: Container(
+                    width: size.width,
+                    height: 45,
+                    color: Colors.red,
+                    // margin: EdgeInsets.only(
+                    //   left: 5,
+                    //   right: 5
+                    // ),
+                    child: Center(child: Text('SAVE', style: TextStyle(fontWeight: FontWeight.w700, color: Colors.white, fontFamily: 'roboto', fontSize: 18))),
+                  ),
+                ),
               ],
             ),
           ),
@@ -71,39 +91,47 @@ class _ChooseLanguageScreenState extends State<ChooseLanguageScreen> {
 
   Widget _container(Map map) {
     var isCheck = false;
-    if(map[LanguageKey.code] == 'en') {
+    if(map[LanguageKey.code] == code) {
       isCheck = true;
     }
-    return Container(
-      decoration: BoxDecoration(
-        border: isCheck ? Border(
-          top: BorderSide(width: 2, color: color),
-          bottom: BorderSide(width: 2, color: color),
-        ): null,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          Container(
-            width: 55,
-            height: 55,
-            margin: EdgeInsets.all(15),
-            // decoration: BoxDecoration(
-            //     color: Colors.red
-            // ),
-            child: _buildFlag(map['url'].toString()),
-          ),
-          Expanded(
-            flex: 1,
-            child: Container(
-              width: 50.0,
-              height: 50.0,
-              padding: EdgeInsets.only(top: 10),
-              child: Text('Language',style: TextStyle(color: Colors.blueGrey, fontSize: 20, fontWeight: FontWeight.w700, fontFamily: fontFamilyDefault)),
+    return InkWell(
+      onTap: () {
+        print('${map.toString()}');
+        setState(() {
+          code = map[LanguageKey.code];
+        });
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          border: isCheck ? Border(
+            top: BorderSide(width: 2, color: color),
+            bottom: BorderSide(width: 2, color: color),
+          ): null,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              width: 55,
+              height: 55,
+              margin: EdgeInsets.all(15),
+              // decoration: BoxDecoration(
+              //     color: Colors.red
+              // ),
+              child: _buildFlag(map['url'].toString()),
             ),
-          ),
-          isCheck ? _buildIconCheck() : Container()
-        ],
+            Expanded(
+              flex: 1,
+              child: Container(
+                width: 50.0,
+                height: 50.0,
+                padding: EdgeInsets.only(top: 10),
+                child: Text('Language',style: TextStyle(color: Colors.blueGrey, fontSize: 20, fontWeight: FontWeight.w700, fontFamily: fontFamilyDefault)),
+              ),
+            ),
+            isCheck ? _buildIconCheck() : Container()
+          ],
+        ),
       ),
     );
   }

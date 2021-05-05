@@ -12,11 +12,6 @@ class SignInBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SizeConfig.init(context);
-    UtilLocalStorage.get(key: 'lang').then((value) {
-      if(value != null) {
-        showMessage(data: value.toString(), context: context);
-      }
-    });
     return SafeArea(
         child: SizedBox(
           width: double.infinity,

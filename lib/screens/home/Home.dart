@@ -211,7 +211,7 @@ class _HomeState extends State<Home> {
                     )
                 ),
                 onPressed: () {
-                  exit(0);
+                  Navigator.of(context).pop(true);
                   // SystemNavigator.pop();
                 },
               ),

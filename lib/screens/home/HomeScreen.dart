@@ -6,6 +6,7 @@ import 'package:sale_management/screens/widgets/simple_bar_chart.dart';
 import 'package:sale_management/share/model/data/stock_details_data.dart';
 import 'package:sale_management/share/model/stock_details_model.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -121,9 +122,38 @@ class _HomeScreenState extends State<HomeScreen> {
             SliverFixedExtentList(
               itemExtent: 75,
               delegate: SliverChildListDelegate([
-                Container(color: Colors.blue),
-                Container(color: Colors.pink),
-                Container(color: Colors.yellow),
+                Container(
+                    color: Colors.blue,
+                    child: FlatButton(
+                      color: Colors.blue,
+                      textColor: Colors.white,
+                      padding: EdgeInsets.all(8.0),
+                      splashColor: Colors.blueAccent,
+                      onPressed: () => onPressedSetLocal(),
+                      child: Text("Set Flat Button",style: TextStyle(fontSize: 20.0),),
+                    ),
+                ),FlatButton(
+                    color: Colors.blue,
+                    textColor: Colors.white,
+                    padding: EdgeInsets.all(8.0),
+                    splashColor: Colors.blueAccent,
+                    onPressed: () {
+                      onPressedGetLocal().then((value) {
+                        showMessage(data: value.toString());
+                      });
+                    },
+                    child: Text("Get Flat Button",style: TextStyle(fontSize: 20.0),),
+                  ),
+                FlatButton(
+                  color: Colors.blue,
+                  textColor: Colors.white,
+                  padding: EdgeInsets.all(8.0),
+                  splashColor: Colors.blueAccent,
+                  onPressed: () {
+                    showMessage(data: 'Testing');
+                  },
+                  child: Text("Testing Flat Button",style: TextStyle(fontSize: 20.0),),
+                ),
               ]),
             ),
 
@@ -224,4 +254,30 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  onPressedSetLocal() async {
+    print('onPressedSetLocal');
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('yourKey', 'en');
+  }
+
+  Future<String> onPressedGetLocal() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('yourKey');
+  }
+
+  showMessage({String data}) {
+    print('pricnt');
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0)
+              ), //this right here
+              child: Text('${data}')
+          );
+        });
+    // _showToast();
+
+  }
 }

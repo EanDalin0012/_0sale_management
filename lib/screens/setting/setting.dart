@@ -5,8 +5,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sale_management/screens/setting/widget/language_choice.dart';
 import 'package:sale_management/share/constant/text_style.dart';
 import 'package:sale_management/screens/setting/widget/profile_header.dart';
-import 'package:sale_management/share/model/key/m_key.dart';
+import 'package:sale_management/share/model/key/language_key.dart';
 import 'package:sale_management/share/utils/local_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingScreen extends StatefulWidget {
   @override
@@ -28,7 +29,6 @@ class _SettingScreenState extends State<SettingScreen> {
 
     UtilLocalStorage.get(key: 'lang').then((vData) {
       if(vData != null) {
-        showMessage(data: vData.toString());
         setState(() {
           if(vData[LanguageKey.code] == 'kh') {
             this.language = 'ខ្មែរ';
@@ -156,7 +156,18 @@ class _SettingScreenState extends State<SettingScreen> {
               Divider(
                 height: 2,
               ),
-
+              FlatButton(
+                color: Colors.blue,
+                textColor: Colors.white,
+                padding: EdgeInsets.all(8.0),
+                splashColor: Colors.blueAccent,
+                onPressed: () {
+                  onPressedGetLocal().then((value) {
+                    showMessage(data: value.toString());
+                  });
+                },
+                child: Text("Set Flat Button",style: TextStyle(fontSize: 20.0),),
+              ),
             ],
           )
         ),
@@ -200,7 +211,6 @@ class _SettingScreenState extends State<SettingScreen> {
   }
 
   languageChoice() {
-    print('pricnt');
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -211,7 +221,7 @@ class _SettingScreenState extends State<SettingScreen> {
             child: LanguageChoice(
               onChange: (value) {
                 setState(() {
-                  this.language = value[LanguageKey.value];
+                  this.language = value[LanguageKey.text];
                 });
               },
             )
@@ -244,4 +254,9 @@ class _SettingScreenState extends State<SettingScreen> {
       // _showToast();
 
     }
+
+  Future<String> onPressedGetLocal() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('yourKey');
+  }
 }

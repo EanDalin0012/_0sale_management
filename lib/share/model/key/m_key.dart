@@ -1,8 +1,3 @@
-class LanguageKey {
-  static const code                = "code";
-  static const value                = "value";
-}
-
 class SaleAddItemKey {
   static const total                = "total";
   static const productId            = "productId";

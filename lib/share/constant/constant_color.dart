@@ -17,7 +17,7 @@ const kGoodPurple = Color(0xFF9E8ACF);
 const kGoodPurpleLight = Color(0xFFEDE8FF);
 const kGoodPurpleLight2 = Color(0xFFF9F6FF);
 
-const kGoodOrange = Color(0xFFF08F7F);
+const kGoodOrange = Color(0xFF4D8E5D);
 const kGoodOrange2 = Color(0xFFF8C3BB);
 const kGoodDarkGray = Color(0xFF969696);
 const kGoodDarkGray2 = Color(0xFF777777);

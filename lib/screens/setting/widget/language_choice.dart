@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sale_management/share/constant/text_style.dart';
+import 'package:sale_management/share/model/key/language_key.dart';
 import 'package:sale_management/share/model/key/m_key.dart';
 import 'package:sale_management/share/utils/local_storage.dart';
 
@@ -24,7 +25,7 @@ class _LanguageChoiceState extends State<LanguageChoice> {
 
   Map vData = {
     LanguageKey.code: '',
-    LanguageKey.value: '',
+    LanguageKey.text: '',
   };
 
   @override
@@ -36,19 +37,19 @@ class _LanguageChoiceState extends State<LanguageChoice> {
               this.isCheckKh = true;
               vData = {
                 LanguageKey.code: 'kh',
-                LanguageKey.value: 'ខ្មែរ',
+                LanguageKey.text: 'ខ្មែរ',
               };
             } else if(vDataResponse[LanguageKey.code].toString() == 'en') {
               this.isCheckEn = true;
               vData = {
                 LanguageKey.code: 'en',
-                LanguageKey.value: 'English',
+                LanguageKey.text: 'English',
               };
             } else if (vDataResponse[LanguageKey.code].toString() == 'zn') {
               this.isCheckZn = true;
               vData = {
                 LanguageKey.code: 'zn',
-                LanguageKey.value: '中文',
+                LanguageKey.text: '中文',
               };
             }
         });
@@ -88,7 +89,7 @@ class _LanguageChoiceState extends State<LanguageChoice> {
                 });
                 vData = {
                   LanguageKey.code: 'kh',
-                  LanguageKey.value: 'ខ្មែរ',
+                  LanguageKey.text: 'ខ្មែរ',
                 };
                 pop(context);
                 UtilLocalStorage.set(key: key, info: vData);
@@ -125,7 +126,7 @@ class _LanguageChoiceState extends State<LanguageChoice> {
                 pop(context);
                 vData = {
                   LanguageKey.code: 'en',
-                  LanguageKey.value: 'English',
+                  LanguageKey.text: 'English',
                 };
                 UtilLocalStorage.set(key: key, info: vData);
                 widget.onChange(vData);
@@ -160,7 +161,7 @@ class _LanguageChoiceState extends State<LanguageChoice> {
                 pop(context);
                 vData = {
                   LanguageKey.code: 'zn',
-                  LanguageKey.value: '中文',
+                  LanguageKey.text: '中文',
                 };
                 UtilLocalStorage.set(key: key, info: vData);
                 widget.onChange(vData);

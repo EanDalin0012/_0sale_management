@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sale_management/screens/size_config.dart';
-import 'package:sale_management/screens/widgets/custom_suffix_icon/custom_suffix_icon.dart';
 import 'package:sale_management/share/constant/text_style.dart';
 import 'package:sale_management/share/model/key/language_key.dart';
 
@@ -11,6 +10,7 @@ class ChooseLanguageScreen extends StatefulWidget {
 }
 
 class _ChooseLanguageScreenState extends State<ChooseLanguageScreen> {
+  var color = Color(0xc429ac9d);
   List<dynamic> vData = [
     {
       LanguageKey.code: 'kh',
@@ -32,8 +32,9 @@ class _ChooseLanguageScreenState extends State<ChooseLanguageScreen> {
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
-    height = (size.height - SizeConfig.screenHeight * 0.06 - SizeConfig.screenHeight * 0.06);
     SizeConfig.init(context);
+    height = (size.height - SizeConfig.screenHeight * 0.06 - SizeConfig.screenHeight * 0.06);
+
     return WillPopScope(
       onWillPop:  () async {
         // return Navigator.push(
@@ -54,8 +55,8 @@ class _ChooseLanguageScreenState extends State<ChooseLanguageScreen> {
                 ),
                 SizedBox(height: SizeConfig.screenHeight * 0.06),
                 Container(
-                  height: height - 35,
-                  color: Colors.blueGrey.withOpacity(0.1),
+                  height: height - 38,
+                  color: Colors.lightBlue[50].withOpacity(0.4),
                   child: Column(
                     children: vData.map((e) => _container(e)).toList(),
                   ),
@@ -76,8 +77,8 @@ class _ChooseLanguageScreenState extends State<ChooseLanguageScreen> {
     return Container(
       decoration: BoxDecoration(
         border: isCheck ? Border(
-          top: BorderSide(width: 1, color: Colors.green),
-          bottom: BorderSide(width: 1, color: Colors.green),
+          top: BorderSide(width: 2, color: color),
+          bottom: BorderSide(width: 2, color: color),
         ): null,
       ),
       child: Row(

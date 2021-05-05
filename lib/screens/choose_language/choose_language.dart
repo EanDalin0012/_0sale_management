@@ -28,9 +28,11 @@ class _ChooseLanguageScreenState extends State<ChooseLanguageScreen> {
     }
   ];
   Size size;
+  double height;
   @override
   Widget build(BuildContext context) {
-
+    size = MediaQuery.of(context).size;
+    height = (size.height - SizeConfig.screenHeight * 0.06 - SizeConfig.screenHeight * 0.06);
     SizeConfig.init(context);
     return WillPopScope(
       onWillPop:  () async {
@@ -45,12 +47,18 @@ class _ChooseLanguageScreenState extends State<ChooseLanguageScreen> {
             child: Column(
               children: <Widget>[
                 SizedBox(height: SizeConfig.screenHeight * 0.06),
-                Center(
-                  child: Text('Choose the language', style: TextStyle(color: Colors.blueGrey, fontSize: 28, fontWeight: FontWeight.w700, fontFamily: fontFamilyDefault)),
+                Container(
+                  child: Center(
+                    child: Text('Choose the language', style: TextStyle(color: Colors.blueGrey, fontSize: 28, fontWeight: FontWeight.w700, fontFamily: fontFamilyDefault)),
+                  ),
                 ),
                 SizedBox(height: SizeConfig.screenHeight * 0.06),
-                Column(
-                  children: vData.map((e) => _container(e)).toList(),
+                Container(
+                  height: height - 35,
+                  color: Colors.blueGrey.withOpacity(0.1),
+                  child: Column(
+                    children: vData.map((e) => _container(e)).toList(),
+                  ),
                 )
               ],
             ),

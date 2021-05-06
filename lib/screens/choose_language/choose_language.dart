@@ -37,14 +37,7 @@ class _ChooseLanguageScreenState extends State<ChooseLanguageScreen> {
     SizeConfig.init(context);
     height = (size.height - SizeConfig.screenHeight * 0.06 - SizeConfig.screenHeight * 0.06);
 
-    return WillPopScope(
-      onWillPop:  () async {
-        // return Navigator.push(
-        //   context,
-        //   MaterialPageRoute(builder: (context) => Home()),
-        // );
-      },
-      child: Scaffold(
+    return Scaffold(
         body: SingleChildScrollView(
           child: Container(
             child: Column(
@@ -78,15 +71,14 @@ class _ChooseLanguageScreenState extends State<ChooseLanguageScreen> {
                     //   left: 5,
                     //   right: 5
                     // ),
-                    child: Center(child: Text('SAVE', style: TextStyle(fontWeight: FontWeight.w700, color: Colors.white, fontFamily: 'roboto', fontSize: 18))),
+                    child: Center(child: Text('Next', style: TextStyle(fontWeight: FontWeight.w700, color: Colors.white, fontFamily: 'roboto', fontSize: 18))),
                   ),
                 ),
               ],
             ),
           ),
         ),
-      ),
-    );
+      );
   }
 
   Widget _container(Map map) {

@@ -6,7 +6,7 @@ import 'package:sale_management/screens/setting/widget/language_choice.dart';
 import 'package:sale_management/share/constant/text_style.dart';
 import 'package:sale_management/screens/setting/widget/profile_header.dart';
 import 'package:sale_management/share/model/key/language_key.dart';
-import 'package:sale_management/share/utils/local_storage.dart';
+import 'package:sale_management/share/static/language_static.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingScreen extends StatefulWidget {
@@ -19,6 +19,7 @@ class _SettingScreenState extends State<SettingScreen> {
   var style = TextStyle(fontFamily: fontFamilyDefault, fontWeight: FontWeight.w500);
   var switchValue = true;
   var language = '';
+  var languageCode = '';
   @override
   void initState() {
     super.initState();
@@ -27,19 +28,8 @@ class _SettingScreenState extends State<SettingScreen> {
   @override
   Widget build(BuildContext context) {
 
-    UtilLocalStorage.get(key: 'lang').then((vData) {
-      if(vData != null) {
-        setState(() {
-          if(vData[LanguageKey.code] == 'kh') {
-            this.language = 'ខ្មែរ';
-          } else if(vData[LanguageKey.code] == 'en') {
-            this.language = 'English';
-          } else if (vData[LanguageKey.code] == 'zn') {
-            this.language = '中文';
-          }
-        });
-      }
-    });
+    this.language = MemoryStore.languageStore[LanguageKey.text];
+    this.languageCode = MemoryStore.languageStore[LanguageKey.code];
 
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
@@ -162,9 +152,8 @@ class _SettingScreenState extends State<SettingScreen> {
                 padding: EdgeInsets.all(8.0),
                 splashColor: Colors.blueAccent,
                 onPressed: () {
-                  onPressedGetLocal().then((value) {
-                    showMessage(data: value.toString());
-                  });
+                  // onPressedGetLocal().then((value) {
+                  // });
                 },
                 child: Text("Set Flat Button",style: TextStyle(fontSize: 20.0),),
               ),
@@ -219,9 +208,13 @@ class _SettingScreenState extends State<SettingScreen> {
                 borderRadius: BorderRadius.circular(20.0)
             ), //this right here
             child: LanguageChoice(
+              code: this.languageCode,
               onChange: (value) {
+                print('${value}');
                 setState(() {
+                  MemoryStore.languageStore = value;
                   this.language = value[LanguageKey.text];
+                  this.languageCode = value[LanguageKey.code];
                 });
               },
             )
@@ -238,22 +231,6 @@ class _SettingScreenState extends State<SettingScreen> {
         gravity: ToastGravity.BOTTOM
     );
   }
-
-    showMessage({String data}) {
-      print('pricnt');
-      showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return Dialog(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0)
-                ), //this right here
-                child: Text('${data}')
-            );
-          });
-      // _showToast();
-
-    }
 
   Future<String> onPressedGetLocal() async {
     final prefs = await SharedPreferences.getInstance();

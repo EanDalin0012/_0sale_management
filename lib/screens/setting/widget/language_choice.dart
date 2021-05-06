@@ -1,14 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:sale_management/screens/size_config.dart';
 import 'package:sale_management/share/constant/text_style.dart';
 import 'package:sale_management/share/model/key/language_key.dart';
-import 'package:sale_management/share/model/key/m_key.dart';
-import 'package:sale_management/share/utils/local_storage.dart';
+import 'package:sale_management/share/static/language_static.dart';
 
 class LanguageChoice extends StatefulWidget {
   final ValueChanged<Map> onChange;
+  final String code;
   LanguageChoice({
+    this.code,
     this.onChange
   });
 
@@ -17,61 +19,43 @@ class LanguageChoice extends StatefulWidget {
 }
 
 class _LanguageChoiceState extends State<LanguageChoice> {
+  var color = Color(0xff32b8a1);
+  var code = 'en';
   double kDefaultPadding = 20.0;
   var isCheckKh = false;
   var isCheckEn = false;
   var isCheckZn = false;
   var key = 'lang';
 
-  Map vData = {
-    LanguageKey.code: '',
-    LanguageKey.text: '',
-  };
-
-  @override
-  void initState() {
-    UtilLocalStorage.get(key: 'lang').then((vDataResponse) {
-      if(vData != null) {
-        setState(() {
-            if(vDataResponse[LanguageKey.code].toString() == 'kh') {
-              this.isCheckKh = true;
-              vData = {
-                LanguageKey.code: 'kh',
-                LanguageKey.text: 'ខ្មែរ',
-              };
-            } else if(vDataResponse[LanguageKey.code].toString() == 'en') {
-              this.isCheckEn = true;
-              vData = {
-                LanguageKey.code: 'en',
-                LanguageKey.text: 'English',
-              };
-            } else if (vDataResponse[LanguageKey.code].toString() == 'zn') {
-              this.isCheckZn = true;
-              vData = {
-                LanguageKey.code: 'zn',
-                LanguageKey.text: '中文',
-              };
-            }
-        });
-      }
-    });
-  }
+  List<dynamic> vData = [
+    {
+      LanguageKey.code: 'kh',
+      LanguageKey.text: 'ខ្មែរ',
+      'url':'assets/countries/kh.svg'
+    },
+    {
+      LanguageKey.code: 'en',
+      LanguageKey.text: 'English',
+      'url':'assets/countries/gb.svg'
+    },{
+      LanguageKey.code: 'zn',
+      LanguageKey.text: '中文',
+      'url':'assets/countries/cn.svg'
+    }
+  ];
 
   @override
   Widget build(BuildContext context) {
+    if(widget.code != null) {
+      code = widget.code;
+    }
     return Container(
-        height: MediaQuery
-            .of(context)
-            .size
-            .height * 0.45,
+        height: MediaQuery.of(context).size.height * 0.40,
         child: Column(
           children: <Widget>[
             Container(
               height: 60,
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width,
+              width: MediaQuery.of(context).size.width,
               color: Colors.deepPurple,
               child: Center(child: Text('Language', style: TextStyle(
                   fontSize: 20,
@@ -79,111 +63,10 @@ class _LanguageChoiceState extends State<LanguageChoice> {
                   fontFamily: fontFamilyDefault,
                   fontWeight: FontWeight.w500),)),
             ),
-            InkWell(
-              onTap: () {
-                UtilLocalStorage.set(key: key, info: vData);
-                setState(() {
-                  this.isCheckKh = true;
-                  this.isCheckZn = false;
-                  this.isCheckEn = false;
-                });
-                vData = {
-                  LanguageKey.code: 'kh',
-                  LanguageKey.text: 'ខ្មែរ',
-                };
-                pop(context);
-                UtilLocalStorage.set(key: key, info: vData);
-                widget.onChange(vData);
-              },
-              child: Container(
-                margin: EdgeInsets.only(top: 15, left: 10, right: 10),
-                padding: EdgeInsets.all(kDefaultPadding),
-                decoration: BoxDecoration(
-                    border: Border.all(color: Color(0xFFC1C1C1)),
-                    borderRadius: BorderRadius.circular(25)
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    this.isCheckKh ? _checked() : _buildRadio(),
-                    SizedBox(width: 15,),
-                    Text('ខ្មែរ', style: TextStyle(fontSize: 20,
-                        color: Colors.black,
-                        fontFamily: fontFamilyDefault,
-                        fontWeight: FontWeight.w500)),
-                  ],
-                ),
-              ),
-            ),
-            InkWell(
-              onTap: () {
-                UtilLocalStorage.set(key: key, info: vData);
-                setState(() {
-                  this.isCheckEn = true;
-                  this.isCheckKh = false;
-                  this.isCheckZn = false;
-                });
-                pop(context);
-                vData = {
-                  LanguageKey.code: 'en',
-                  LanguageKey.text: 'English',
-                };
-                UtilLocalStorage.set(key: key, info: vData);
-                widget.onChange(vData);
-              },
-              child: Container(
-                margin: EdgeInsets.only(top: 15, left: 10, right: 10),
-                padding: EdgeInsets.all(kDefaultPadding),
-                decoration: BoxDecoration(
-                    border: Border.all(color: Color(0xFFC1C1C1)),
-                    borderRadius: BorderRadius.circular(25)
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    this.isCheckEn ? _checked() : _buildRadio(),
-                    SizedBox(width: 15,),
-                    Text('English', style: TextStyle(fontSize: 20,
-                        color: Colors.black,
-                        fontFamily: fontFamilyDefault,
-                        fontWeight: FontWeight.w500)),
-                  ],
-                ),
-              ),
-            ),
-            InkWell(
-              onTap: () {
-                setState(() {
-                  this.isCheckZn = true;
-                  this.isCheckEn = false;
-                  this.isCheckKh = false;
-                });
-                pop(context);
-                vData = {
-                  LanguageKey.code: 'zn',
-                  LanguageKey.text: '中文',
-                };
-                UtilLocalStorage.set(key: key, info: vData);
-                widget.onChange(vData);
-              },
-              child: Container(
-                margin: EdgeInsets.only(top: 15, left: 10, right: 10),
-                padding: EdgeInsets.all(kDefaultPadding),
-                decoration: BoxDecoration(
-                    border: Border.all(color: Color(0xFFC1C1C1)),
-                    borderRadius: BorderRadius.circular(25)
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    this.isCheckZn ? _checked() : _buildRadio(),
-                    SizedBox(width: 15,),
-                    Text('中文', style: TextStyle(fontSize: 20,
-                        color: Colors.black,
-                        fontFamily: fontFamilyDefault,
-                        fontWeight: FontWeight.w500)),
-                  ],
-                ),
+            Container(
+              color: Colors.lightBlue[50].withOpacity(0.4),
+              child: Column(
+                children: vData.map((e) => _container(e)).toList(),
               ),
             ),
           ],
@@ -191,40 +74,68 @@ class _LanguageChoiceState extends State<LanguageChoice> {
     );
   }
 
-  Padding _listTileLeading({
-    String svgIcon,
-    Color color,
-    double width,
-    double height,
-  }) {
-    return Padding(
-      padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-      child: SvgPicture.asset(
-        svgIcon,
-        width: width,
-        height: height,
-        color: color,
+  Widget _container(Map map) {
+    var isCheck = false;
+    if(map[LanguageKey.code] == code) {
+      isCheck = true;
+    }
+
+    return InkWell(
+      onTap: () {
+        widget.onChange(map);
+        pop(context);
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          border: isCheck ? Border(
+            top: BorderSide(width: 2, color: color),
+            bottom: BorderSide(width: 2, color: color),
+          ): null,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              width: 55,
+              height: 55,
+              margin: EdgeInsets.all(15),
+              // decoration: BoxDecoration(
+              //     color: Colors.red
+              // ),
+              child: _buildFlag(map['url'].toString()),
+            ),
+            Expanded(
+              flex: 1,
+              child: Container(
+                width: 50.0,
+                height: 50.0,
+                padding: EdgeInsets.only(top: 10),
+                child: Text(map[LanguageKey.text],style: TextStyle(color: Colors.blueGrey, fontSize: 20, fontWeight: FontWeight.w700, fontFamily: fontFamilyDefault)),
+              ),
+            ),
+            isCheck ? _buildIconCheck() : Container()
+          ],
+        ),
       ),
     );
   }
 
-  Widget _checked() {
-    return _listTileLeading(
-        height: 25,
-        width: 20,
-        color: Colors.deepPurpleAccent,
-        svgIcon: 'assets/icons/check_circle_outline_black_24dp.svg'
-    );
-  }
 
-  Container _buildRadio() {
+  Widget _buildIconCheck() {
     return Container(
-      height: 26,
-      width: 25,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(50),
-          border: Border.all(color: Color(0xFFC1C1C1))
+      margin: EdgeInsets.only(right: 15),
+      child: SvgPicture.asset(
+        'assets/icons/success_green_check_mark.svg',
+        height: getProportionateScreenWidth(20),
+        color: Color(0xFF32b8a1),
       ),
+    );
+  }
+
+  Widget _buildFlag(String url) {
+    return SvgPicture.asset(
+      url.toString(),
+      height: 50,
     );
   }
 

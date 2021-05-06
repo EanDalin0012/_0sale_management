@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sale_management/screens/sign_in/sign_in_screen.dart';
 import 'package:sale_management/screens/size_config.dart';
-import 'package:sale_management/screens/widgets/default_button/default_button.dart';
 import 'package:sale_management/share/constant/text_style.dart';
 import 'package:sale_management/share/database/language_db.dart';
 import 'package:sale_management/share/model/key/language_key.dart';
+import 'package:sale_management/share/static/language_static.dart';
 
 class ChooseLanguageScreen extends StatefulWidget {
   @override
@@ -50,15 +51,6 @@ class _ChooseLanguageScreenState extends State<ChooseLanguageScreen> {
                   ),
                 ),
                 SizedBox(height: SizeConfig.screenHeight * 0.06),
-                // DefaultButton(
-                //   text: 'Delete',
-                //   press: () {
-                //     LanguageDataBase.delete(1).then((value){
-                //       print('data: ${value}');
-                //     });
-                //
-                //   },
-                // ),
                 Container(
                   height: height - 78,
                   color: Colors.lightBlue[50].withOpacity(0.4),
@@ -69,10 +61,10 @@ class _ChooseLanguageScreenState extends State<ChooseLanguageScreen> {
                 InkWell(
                   onTap: () {
                     saveLanguage();
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(builder: (context) => SignInScreen()),
-                    // );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SignInScreen()),
+                    );
                   },
                   child: Container(
                     width: size.width,
@@ -99,9 +91,30 @@ class _ChooseLanguageScreenState extends State<ChooseLanguageScreen> {
     }
     return InkWell(
       onTap: () {
-        print('${map.toString()}');
         setState(() {
           code = map[LanguageKey.code];
+          if(map[LanguageKey.code] == 'kh') {
+            MemoryStore.languageStore = {
+              LanguageKey.id: 1,
+              LanguageKey.code: 'kh',
+              LanguageKey.text: 'ខ្មែរ',
+              LanguageKey.isUse: code == 'kh' ? true: false
+              };
+          } else if(map[LanguageKey.code] == 'zn') {
+            MemoryStore.languageStore = {
+              LanguageKey.id: 3,
+              LanguageKey.code: 'zn',
+              LanguageKey.text: '中文',
+              LanguageKey.isUse: code == 'zn' ? true: false
+            };
+          } else {
+            MemoryStore.languageStore = {
+              LanguageKey.id: 2,
+              LanguageKey.code: 'en',
+              LanguageKey.text: 'English',
+              LanguageKey.isUse: code == 'en' ? true: false
+            };
+          }
           saveLanguage();
         });
       },

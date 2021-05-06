@@ -30,30 +30,42 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     LanguageDataBase.currentSelectedLanguage().then((value) {
       if (value != null) {
-        print('found data'+ value.toString());
         setState(() {
           currentLanguage = value;
           MemoryStore.languageStore = currentLanguage;
+
         });
       } else {
         print('not found data');
       }
     });
+
+
+  }
+
+  showMessage({String data}) {
+    return AlertDialog(
+        title: Text(data.toString())
+    );
+    // _showToast();
+
   }
 
   @override
-  Widget build(BuildContext context) => ChangeNotifierProvider(
-      create: (context) => CountryProvider(),
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
-        theme: theme(),
-        home: currentLanguage == null ? ChooseLanguageScreen() : SignInScreen(),
-      )
-  );
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+        create: (context) => CountryProvider(),
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Flutter Demo',
+          theme: theme(),
+          home: currentLanguage == null ? ChooseLanguageScreen() : SignInScreen(),
+        )
+    );
 
-  void checkCurrentLanguage() {
+    void checkCurrentLanguage() {
 
+    }
   }
 }
 

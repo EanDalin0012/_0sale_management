@@ -108,12 +108,11 @@ class LanguageDataBase {
   static Future<int> delete(int id) async {
     final db = await instance.database;
     return await db.rawDelete('DELETE FROM $languageTable WHERE id = ?', [id]);
+  }
 
-    return await db.delete(
-      languageTable,
-      where: '${LanguageField.id} = ?',
-      whereArgs: [id],
-    );
+  static Future<int> deleteAll() async {
+    final db = await instance.database;
+    return await db.rawDelete('DELETE FROM $languageTable');
   }
 
   Future close() async {

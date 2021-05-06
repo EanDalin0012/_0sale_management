@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:sale_management/screens/sign_in/sign_in_screen.dart';
 import 'package:sale_management/screens/size_config.dart';
+import 'package:sale_management/screens/widgets/default_button/default_button.dart';
 import 'package:sale_management/share/constant/text_style.dart';
+import 'package:sale_management/share/database/language_db.dart';
 import 'package:sale_management/share/model/key/language_key.dart';
 
 class ChooseLanguageScreen extends StatefulWidget {
@@ -11,7 +12,7 @@ class ChooseLanguageScreen extends StatefulWidget {
 }
 
 class _ChooseLanguageScreenState extends State<ChooseLanguageScreen> {
-  var color = Color(0xc429ac9d);
+  var color = Color(0xff32b8a1);
   var code = 'en';
   List<dynamic> vData = [
     {
@@ -45,10 +46,19 @@ class _ChooseLanguageScreenState extends State<ChooseLanguageScreen> {
                 SizedBox(height: SizeConfig.screenHeight * 0.06),
                 Container(
                   child: Center(
-                    child: Text('Choose the language', style: TextStyle(color: Colors.blueGrey, fontSize: 28, fontWeight: FontWeight.w700, fontFamily: fontFamilyDefault)),
+                    child: Text('Choose the language', style: TextStyle(color: Color(0xFF3f496d), fontSize: 28, fontWeight: FontWeight.w700, fontFamily: fontFamilyDefault)),
                   ),
                 ),
                 SizedBox(height: SizeConfig.screenHeight * 0.06),
+                // DefaultButton(
+                //   text: 'Delete',
+                //   press: () {
+                //     LanguageDataBase.delete(1).then((value){
+                //       print('data: ${value}');
+                //     });
+                //
+                //   },
+                // ),
                 Container(
                   height: height - 78,
                   color: Colors.lightBlue[50].withOpacity(0.4),
@@ -58,10 +68,11 @@ class _ChooseLanguageScreenState extends State<ChooseLanguageScreen> {
                 ),
                 InkWell(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => SignInScreen()),
-                    );
+                    saveLanguage();
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(builder: (context) => SignInScreen()),
+                    // );
                   },
                   child: Container(
                     width: size.width,
@@ -91,6 +102,7 @@ class _ChooseLanguageScreenState extends State<ChooseLanguageScreen> {
         print('${map.toString()}');
         setState(() {
           code = map[LanguageKey.code];
+          saveLanguage();
         });
       },
       child: Container(
@@ -118,7 +130,7 @@ class _ChooseLanguageScreenState extends State<ChooseLanguageScreen> {
                 width: 50.0,
                 height: 50.0,
                 padding: EdgeInsets.only(top: 10),
-                child: Text('Language',style: TextStyle(color: Colors.blueGrey, fontSize: 20, fontWeight: FontWeight.w700, fontFamily: fontFamilyDefault)),
+                child: Text(map[LanguageKey.text],style: TextStyle(color: Colors.blueGrey, fontSize: 20, fontWeight: FontWeight.w700, fontFamily: fontFamilyDefault)),
               ),
             ),
             isCheck ? _buildIconCheck() : Container()
@@ -132,17 +144,42 @@ class _ChooseLanguageScreenState extends State<ChooseLanguageScreen> {
     return Container(
       margin: EdgeInsets.only(right: 15),
       child: SvgPicture.asset(
-          'assets/icons/success-green-check-mark.svg',
+          'assets/icons/success_green_check_mark.svg',
           height: getProportionateScreenWidth(20),
-          color: Colors.green,
+          color: Color(0xFF32b8a1),
         ),
     );
   }
 
   Widget _buildFlag(String url) {
     return SvgPicture.asset(
-        url,
+        url.toString(),
         height: 50,
       );
+  }
+
+  void saveLanguage() {
+    List<dynamic> languageData = [
+      {
+        LanguageKey.id: 1,
+        LanguageKey.code: 'kh',
+        LanguageKey.text: 'ខ្មែរ',
+        LanguageKey.isUse: code == 'kh' ? true: false
+      },
+      {
+        LanguageKey.id: 2,
+        LanguageKey.code: 'en',
+        LanguageKey.text: 'English',
+        LanguageKey.isUse: code == 'en' ? true: false
+      },{
+        LanguageKey.id: 3,
+        LanguageKey.code: 'zn',
+        LanguageKey.text: '中文',
+        LanguageKey.isUse: code == 'zn' ? true: false
+      }
+    ];
+    languageData.map((e) {
+      LanguageDataBase.create(e);
+    }).toList();
   }
 }

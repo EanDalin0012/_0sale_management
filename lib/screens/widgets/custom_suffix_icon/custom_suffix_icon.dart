@@ -30,7 +30,7 @@ class CustomSufFixIcon extends StatelessWidget {
       child: SvgPicture.asset(
         svgIcon,
         height: getProportionateScreenWidth(20),
-        color: color,
+        // color: color,
       ),
     );
   }

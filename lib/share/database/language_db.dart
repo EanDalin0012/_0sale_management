@@ -1,4 +1,3 @@
-
 import 'package:path/path.dart';
 import 'package:sale_management/share/model/key/language_key.dart';
 import 'package:sale_management/share/model/sqflite_field/language_field.dart';
@@ -34,26 +33,41 @@ class LanguageDataBase {
         ${LanguageField.id} $idType, 
         ${LanguageField.code} $textType,
         ${LanguageField.text} $textType,
-        ${LanguageField.is_use} $boolType,
+        ${LanguageField.is_use} $boolType
         )
       ''');
   }
 
-  Future<Map> create(Map note) async {
+  static Future<Map> create(Map json) async {
     final db = await instance.database;
-
-    final json = note;
-    final columns = '${LanguageField.id}, ${LanguageField.code}, ${LanguageField.text},  ${LanguageField.is_use}';
-    final values = '${json[LanguageKey.id]}, ${json[LanguageKey.code]}, ${json[LanguageKey.text]},${json[LanguageKey.isUse]}';
-
-    var data = await db.rawInsert('INSERT INTO $languageTable ($columns) VALUES ($values)');
+    var data = await db.rawInsert(
+        'INSERT INTO $languageTable(${LanguageField.id}, ${LanguageField.code}, ${LanguageField.text},${LanguageField.is_use}) VALUES(?, ?, ?,?)',
+        [json[LanguageKey.id],json[LanguageKey.code], json[LanguageKey.text], json[LanguageKey.isUse]]);
     print('create: ${data}');
     return json;
   }
 
 
+  // ignore: missing_return
+  static Future<Map> currentSelectedLanguage() async {
+    final db = await instance.database;
+    final maps = await db.query(languageTable);
+    print('currentSelctedLanguage: ${maps}');
+    Map elementReturn;
+    if(maps.length > 0) {
+      maps.forEach((element) {
+        print('currentSelctedLanguage: ${element[LanguageField.is_use]}');
+        if(element[LanguageField.is_use] == 1) {
+          print('element: ${element}');
+          elementReturn =  element;
+        }
+      });
+      return elementReturn;
+    }
+  }
 
-  Future<Map> readById(int id) async {
+
+  static Future<Map> readById(int id) async {
     final db = await instance.database;
     final maps = await db.query(
       languageTable,
@@ -74,13 +88,31 @@ class LanguageDataBase {
     }
   }
 
-  Future<int> update(Map note) async {
+  static Future<int> update(Map note) async {
+    Map data = {
+      LanguageField.id: note[LanguageKey.id],
+      LanguageField.code: note[LanguageKey.code],
+      LanguageField.text: note[LanguageKey.text],
+      LanguageField.is_use: note[LanguageKey.isUse]
+    };
+
     final db = await instance.database;
     return db.update(
       languageTable,
-      note,
+      data,
       where: '${LanguageField.id} = ?',
       whereArgs: [note[LanguageKey.id]],
+    );
+  }
+
+  static Future<int> delete(int id) async {
+    final db = await instance.database;
+    return await db.rawDelete('DELETE FROM $languageTable WHERE id = ?', [id]);
+
+    return await db.delete(
+      languageTable,
+      where: '${LanguageField.id} = ?',
+      whereArgs: [id],
     );
   }
 

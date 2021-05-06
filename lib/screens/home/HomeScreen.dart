@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:sale_management/screens/home/widgets/product_card.dart';
 import 'package:sale_management/screens/widgets/country_dropdown/country_page.dart';
 import 'package:sale_management/screens/widgets/simple_bar_chart.dart';
+import 'package:sale_management/share/database/language_db.dart';
 import 'package:sale_management/share/model/data/stock_details_data.dart';
 import 'package:sale_management/share/model/stock_details_model.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:toast/toast.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -37,6 +39,15 @@ class _HomeScreenState extends State<HomeScreen> {
         data: data,
       )
     ];
+  }
+
+  List<dynamic> vData = [];
+  @override
+  void initState() {
+    LanguageDataBase.selectAll().then((value) {
+      print('value: ${value}');
+      vData = value as List;
+    });
   }
 
   @override
@@ -153,6 +164,30 @@ class _HomeScreenState extends State<HomeScreen> {
                     showMessage(data: 'Testing');
                   },
                   child: Text("Testing Flat Button",style: TextStyle(fontSize: 20.0),),
+                ),
+
+                FlatButton(
+                  color: Colors.blue,
+                  textColor: Colors.white,
+                  padding: EdgeInsets.all(8.0),
+                  splashColor: Colors.blueAccent,
+                  onPressed: () {
+                    Toast.show(this.vData.toString(), context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+                  },
+                  child: Text("toast",style: TextStyle(fontSize: 20.0),),
+                ),
+
+                FlatButton(
+                  color: Colors.blue,
+                  textColor: Colors.white,
+                  padding: EdgeInsets.all(8.0),
+                  splashColor: Colors.blueAccent,
+                  onPressed: () {
+                    LanguageDataBase.deleteAll().then((value) {
+                      Toast.show(value.toString(), context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+                    });
+                  },
+                  child: Text("delete",style: TextStyle(fontSize: 20.0),),
                 ),
               ]),
             ),

@@ -10,7 +10,6 @@ import 'package:sale_management/screens/notification/notification_screen.dart';
 import 'package:sale_management/screens/sale/sale_screen.dart';
 import 'package:sale_management/screens/widgets/side_nav.dart';
 import 'package:sale_management/share/constant/constant_color.dart';
-import 'package:sale_management/share/static/language_static.dart';
 
 class Home extends StatefulWidget {
   Home():super();
@@ -212,7 +211,8 @@ class _HomeState extends State<Home> {
                     )
                 ),
                 onPressed: () {
-                  Navigator.of(context).pop(true);
+                  exit(0);
+                  // Navigator.of(context).pop(true);
                   // SystemNavigator.pop();
                 },
               ),

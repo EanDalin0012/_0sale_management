@@ -38,13 +38,13 @@ class LanguageDataBase {
       ''');
   }
 
-  static Future<Map> create(Map json) async {
+  static Future<int> create(Map json) async {
     final db = await instance.database;
     var data = await db.rawInsert(
         'INSERT INTO $languageTable(${LanguageField.id}, ${LanguageField.code}, ${LanguageField.text},${LanguageField.is_use}) VALUES(?, ?, ?,?)',
         [json[LanguageKey.id],json[LanguageKey.code], json[LanguageKey.text], json[LanguageKey.isUse]]);
     print('create: ${data}');
-    return json;
+    return data;
   }
 
 
@@ -64,6 +64,11 @@ class LanguageDataBase {
       });
       return elementReturn;
     }
+  }
+
+  static Future<List<dynamic>> selectAll() async {
+    final db = await instance.database;
+    return await db.query(languageTable);
   }
 
 

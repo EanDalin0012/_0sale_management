@@ -6,6 +6,7 @@ import 'package:sale_management/share/constant/text_style.dart';
 import 'package:sale_management/share/database/language_db.dart';
 import 'package:sale_management/share/model/key/language_key.dart';
 import 'package:sale_management/share/static/language_static.dart';
+import 'package:toast/toast.dart';
 
 class ChooseLanguageScreen extends StatefulWidget {
   @override
@@ -38,7 +39,7 @@ class _ChooseLanguageScreenState extends State<ChooseLanguageScreen> {
     size = MediaQuery.of(context).size;
     SizeConfig.init(context);
     height = (size.height - SizeConfig.screenHeight * 0.06 - SizeConfig.screenHeight * 0.06);
-
+ //   Toast.show('show language:'+MemoryStore.languageStore.toString(), context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
     return Scaffold(
         body: SingleChildScrollView(
           child: Container(
@@ -192,7 +193,9 @@ class _ChooseLanguageScreenState extends State<ChooseLanguageScreen> {
       }
     ];
     languageData.map((e) {
-      LanguageDataBase.create(e);
+      LanguageDataBase.create(e).then((value) {
+        Toast.show(value.toString(), context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+      });
     }).toList();
   }
 }

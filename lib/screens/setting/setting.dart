@@ -18,8 +18,8 @@ class _SettingScreenState extends State<SettingScreen> {
 
   var style = TextStyle(fontFamily: fontFamilyDefault, fontWeight: FontWeight.w500);
   var switchValue = true;
-  var language = '';
-  var languageCode = '';
+  var language = 'English';
+  var languageCode = 'en';
   @override
   void initState() {
     super.initState();
@@ -28,8 +28,11 @@ class _SettingScreenState extends State<SettingScreen> {
   @override
   Widget build(BuildContext context) {
 
-    this.language = MemoryStore.languageStore[LanguageKey.text];
-    this.languageCode = MemoryStore.languageStore[LanguageKey.code];
+    if(MemoryStore.languageStore != null) {
+      this.language = MemoryStore.languageStore[LanguageKey.text];
+      this.languageCode = MemoryStore.languageStore[LanguageKey.code];
+
+    }
 
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
@@ -204,14 +207,9 @@ class _SettingScreenState extends State<SettingScreen> {
         context: context,
         builder: (BuildContext context) {
           return Dialog(
-            // backgroundColor: Colors.lightBlue[50].withOpacity(0.4),
-            // shape: RoundedRectangleBorder(
-            //     borderRadius: BorderRadius.circular(20.0)
-            // ), //this right here
             child: LanguageChoice(
               code: this.languageCode,
               onChange: (value) {
-                print('${value}');
                 setState(() {
                   MemoryStore.languageStore = value;
                   this.language = value[LanguageKey.text];

@@ -8,6 +8,7 @@ import 'package:sale_management/screens/widgets/country_dropdown/provider/countr
 import 'package:sale_management/share/database/language_db.dart';
 import 'package:sale_management/share/model/key/language_key.dart';
 import 'package:sale_management/share/static/language_static.dart';
+import 'package:toast/toast.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,11 +30,11 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     LanguageDataBase.currentSelectedLanguage().then((value) {
+
       if (value != null) {
         setState(() {
           currentLanguage = value;
           MemoryStore.languageStore = currentLanguage;
-
         });
       } else {
         print('not found data');
@@ -53,6 +54,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    //Toast.show('show language:'+MemoryStore.languageStore.toString(), context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
     return ChangeNotifierProvider(
         create: (context) => CountryProvider(),
         child: MaterialApp(

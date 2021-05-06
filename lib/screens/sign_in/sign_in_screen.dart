@@ -1,8 +1,8 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:sale_management/screens/sign_in/widget/body_sign_in.dart';
-import 'package:sale_management/share/model/key/m_key.dart';
 import 'package:sale_management/share/static/language_static.dart';
-import 'package:sale_management/share/utils/local_storage.dart';
+import 'package:toast/toast.dart';
 
 class SignInScreen extends StatefulWidget {
   @override
@@ -10,14 +10,23 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
+  bool shouldPop = true;
+  GlobalKey<NavigatorState> _key = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    //Toast.show(MemoryStore.languageStore.toString(), context, gravity:  Toast.BOTTOM);
+     return Scaffold(
       // appBar: AppBar(
       //   title: Text("Sign In", style: TextStyle(fontFamily: fontFamilyDefault),),
       // ),
-      body: SignInBody(),
+      body: WillPopScope(
+          onWillPop: () async {
+            exit(0);
+            return false;
+          },
+          child: SignInBody()
+      ),
     );
   }
 }

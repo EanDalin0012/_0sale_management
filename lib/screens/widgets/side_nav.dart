@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sale_management/screens/sign_in/sign_in_screen.dart';
 import 'package:sale_management/share/constant/text_style.dart';
 import 'package:sale_management/screens/setting/setting.dart';
 
@@ -72,7 +73,13 @@ class SideNave extends StatelessWidget {
                                 Icons.power_settings_new,
                                 color: Colors.red,
                               ),
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.pop(context);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => SignInScreen()),
+                                );
+                              },
                             ),
                             SizedBox(
                               height: MediaQuery.of(context).padding.bottom,

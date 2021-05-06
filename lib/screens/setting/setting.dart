@@ -204,9 +204,10 @@ class _SettingScreenState extends State<SettingScreen> {
         context: context,
         builder: (BuildContext context) {
           return Dialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0)
-            ), //this right here
+            // backgroundColor: Colors.lightBlue[50].withOpacity(0.4),
+            // shape: RoundedRectangleBorder(
+            //     borderRadius: BorderRadius.circular(20.0)
+            // ), //this right here
             child: LanguageChoice(
               code: this.languageCode,
               onChange: (value) {

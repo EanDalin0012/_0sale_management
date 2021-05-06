@@ -50,7 +50,7 @@ class _LanguageChoiceState extends State<LanguageChoice> {
       code = widget.code;
     }
     return Container(
-        height: MediaQuery.of(context).size.height * 0.40,
+        height: MediaQuery.of(context).size.height * 0.37,
         child: Column(
           children: <Widget>[
             Container(
@@ -96,8 +96,8 @@ class _LanguageChoiceState extends State<LanguageChoice> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Container(
-              width: 55,
-              height: 55,
+              width: 45,
+              height: 45,
               margin: EdgeInsets.all(15),
               // decoration: BoxDecoration(
               //     color: Colors.red

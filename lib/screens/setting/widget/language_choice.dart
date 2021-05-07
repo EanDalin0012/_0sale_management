@@ -4,7 +4,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:sale_management/screens/size_config.dart';
 import 'package:sale_management/share/constant/text_style.dart';
 import 'package:sale_management/share/model/key/language_key.dart';
-import 'package:sale_management/share/static/language_static.dart';
 
 class LanguageChoice extends StatefulWidget {
   final ValueChanged<Map> onChange;

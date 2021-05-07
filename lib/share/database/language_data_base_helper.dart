@@ -44,6 +44,15 @@ class LanguageDatabaseHelper {
       // Directory documentsDirectory = await getApplicationDocumentsDirectory();
       String dir = (await getApplicationDocumentsDirectory()).path;
       String path = join(dir, _databaseName);
+      Fluttertoast.showToast(
+          msg: "_initDatabase path:"+path.toString(),
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0
+      );
       MemoryStore.path = path;
       // Open the database. Can also add an onUpdate callback parameter.
       return await openDatabase(path,

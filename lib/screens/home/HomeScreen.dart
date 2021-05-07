@@ -12,6 +12,11 @@ import 'package:sale_management/share/static/language_static.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 
+import 'dart:async';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
+
+
 class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -178,6 +183,29 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                   child: Text("toast",style: TextStyle(fontSize: 20.0),),
                 ),
+                FlatButton(
+                  color: Colors.blue,
+                  textColor: Colors.white,
+                  padding: EdgeInsets.all(8.0),
+                  splashColor: Colors.blueAccent,
+                  onPressed: () async {
+                    try {
+                      Directory documentsDirectory = await getApplicationDocumentsDirectory();
+                      Toast.show('documentsDirectory: ${documentsDirectory}', context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+                      Directory appDocDir = await getApplicationDocumentsDirectory();
+                      String appDocPath = appDocDir.path;
+
+                      Toast.show('appDocPath: ${appDocPath}', context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+
+                    }catch(e) {
+                      Toast.show('catch: ${e}', context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+                    }
+
+
+
+                  },
+                  child: Text("Test Get Path",style: TextStyle(fontSize: 20.0),),
+                ),
 
                 FlatButton(
                   color: Colors.blue,
@@ -189,7 +217,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Toast.show(value.toString(), context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
                     });
                   },
-                  child: Text("delete",style: TextStyle(fontSize: 20.0),),
+                  child: Text("delete All LanguageDataBase",style: TextStyle(fontSize: 20.0),),
                 ),
                 FlatButton(
                   color: Colors.blue,

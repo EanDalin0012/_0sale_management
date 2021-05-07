@@ -34,7 +34,7 @@ class LanguageDataBase {
 
     await db.execute('''
       CREATE TABLE $languageTable ( 
-        ${LanguageField.id} $idType, 
+        ${LanguageField.id} $integerType, 
         ${LanguageField.code} $textType,
         ${LanguageField.text} $textType,
         ${LanguageField.is_use} $boolType
@@ -51,6 +51,28 @@ class LanguageDataBase {
     return data;
   }
 
+  static Future<int> update(Map json) async {
+    final db = await instance.database;
+
+    int count = await db.rawUpdate(
+        'UPDATE  $languageTable SET ${LanguageField.code} = ?, ${LanguageField.text}, ${LanguageField.is_use} = ? WHERE ${LanguageField.id} = ?',
+        [json[LanguageKey.code], json[LanguageKey.text], json[LanguageKey.isUse],json[LanguageKey.id] ]);
+    print('updated: $count');
+
+    return count;
+  }
+
+  static Future<Map> getLanguageById(int id) async {
+    final db = await instance.database;
+    print('getLanguageById: ${id}');
+    List<dynamic> vData = await db.rawQuery('SELECT * FROM $languageTable WHERE id = ?', [id]);
+    print('vData: ${vData}');
+    if(vData.length == 1) {
+      return vData[0];
+    } else {
+      return vData[0];
+    }
+  }
 
   // ignore: missing_return
   static Future<Map> currentSelectedLanguage() async {
@@ -97,7 +119,7 @@ class LanguageDataBase {
     }
   }
 
-  static Future<int> update(Map note) async {
+  static Future<int> update1(Map note) async {
     Map data = {
       LanguageField.id: note[LanguageKey.id],
       LanguageField.code: note[LanguageKey.code],

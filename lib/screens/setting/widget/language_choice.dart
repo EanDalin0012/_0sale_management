@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:sale_management/screens/size_config.dart';
 import 'package:sale_management/share/constant/text_style.dart';
 import 'package:sale_management/share/model/key/language_key.dart';
 
@@ -123,11 +122,7 @@ class _LanguageChoiceState extends State<LanguageChoice> {
   Widget _buildIconCheck() {
     return Container(
       margin: EdgeInsets.only(right: 15),
-      child: SvgPicture.asset(
-        'assets/icons/success_green_check_mark.svg',
-        height: getProportionateScreenWidth(20),
-        color: Color(0xFF32b8a1),
-      ),
+      child: Image(image: AssetImage('assets/icons/success-green-check-mark.png')),
     );
   }
 

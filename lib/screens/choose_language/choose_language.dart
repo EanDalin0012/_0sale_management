@@ -71,10 +71,6 @@ class _ChooseLanguageScreenState extends State<ChooseLanguageScreen> {
                     width: size.width,
                     height: 45,
                     color: Colors.red,
-                    // margin: EdgeInsets.only(
-                    //   left: 5,
-                    //   right: 5
-                    // ),
                     child: Center(child: Text('Next', style: TextStyle(fontWeight: FontWeight.w700, color: Colors.white, fontFamily: 'roboto', fontSize: 18))),
                   ),
                 ),
@@ -94,29 +90,6 @@ class _ChooseLanguageScreenState extends State<ChooseLanguageScreen> {
       onTap: () {
         setState(() {
           code = map[LanguageKey.code];
-          if(map[LanguageKey.code] == 'kh') {
-            MemoryStore.languageStore = {
-              LanguageKey.id: 1,
-              LanguageKey.code: 'kh',
-              LanguageKey.text: 'ខ្មែរ',
-              LanguageKey.isUse: code == 'kh' ? true: false
-              };
-          } else if(map[LanguageKey.code] == 'zn') {
-            MemoryStore.languageStore = {
-              LanguageKey.id: 3,
-              LanguageKey.code: 'zn',
-              LanguageKey.text: '中文',
-              LanguageKey.isUse: code == 'zn' ? true: false
-            };
-          } else {
-            MemoryStore.languageStore = {
-              LanguageKey.id: 2,
-              LanguageKey.code: 'en',
-              LanguageKey.text: 'English',
-              LanguageKey.isUse: code == 'en' ? true: false
-            };
-          }
-          saveLanguage();
         });
       },
       child: Container(
@@ -157,11 +130,10 @@ class _ChooseLanguageScreenState extends State<ChooseLanguageScreen> {
   Widget _buildIconCheck() {
     return Container(
       margin: EdgeInsets.only(right: 15),
-      child: SvgPicture.asset(
-          'assets/icons/success_green_check_mark.svg',
-          height: getProportionateScreenWidth(20),
-          color: Color(0xFF32b8a1),
-        ),
+      child: Image(
+          width: 30,
+          height: 30,
+          image: AssetImage('assets/icons/success-green-check-mark.png')),
     );
   }
 
@@ -193,8 +165,18 @@ class _ChooseLanguageScreenState extends State<ChooseLanguageScreen> {
       }
     ];
     languageData.map((e) {
-      LanguageDataBase.create(e).then((value) {
-        Toast.show(value.toString(), context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+
+      LanguageDataBase.getLanguageById(e[LanguageKey.id]).then((value) {
+        if(value != null) {
+          LanguageDataBase.update(e).then((value) {
+            Toast.show('Update Success: ${value}', context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+          });
+
+        } else {
+          LanguageDataBase.create(e).then((value) {
+            Toast.show('Insert Success: ${value}', context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+          });
+        }
       });
     }).toList();
   }

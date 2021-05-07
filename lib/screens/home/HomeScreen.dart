@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:sale_management/screens/home/widgets/product_card.dart';
 import 'package:sale_management/screens/widgets/country_dropdown/country_page.dart';
 import 'package:sale_management/screens/widgets/simple_bar_chart.dart';
+import 'package:sale_management/share/database/language_data_base_helper.dart';
 import 'package:sale_management/share/database/language_db.dart';
 import 'package:sale_management/share/model/data/stock_details_data.dart';
 import 'package:sale_management/share/model/stock_details_model.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:sale_management/share/static/language_static.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 
@@ -189,6 +191,36 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                   child: Text("delete",style: TextStyle(fontSize: 20.0),),
                 ),
+                FlatButton(
+                  color: Colors.blue,
+                  textColor: Colors.white,
+                  padding: EdgeInsets.all(8.0),
+                  splashColor: Colors.blueAccent,
+                  onPressed: () {
+                    _read();
+                  },
+                  child: Text("world get",style: TextStyle(fontSize: 20.0),),
+                ),
+                FlatButton(
+                  color: Colors.blue,
+                  textColor: Colors.white,
+                  padding: EdgeInsets.all(8.0),
+                  splashColor: Colors.blueAccent,
+                  onPressed: () {
+                    _save();
+                  },
+                  child: Text("world save",style: TextStyle(fontSize: 20.0),),
+                ),
+                FlatButton(
+                  color: Colors.blue,
+                  textColor: Colors.white,
+                  padding: EdgeInsets.all(8.0),
+                  splashColor: Colors.blueAccent,
+                  onPressed: () {
+                    Toast.show('${MemoryStore.path}', context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+                  },
+                  child: Text("world Path db",style: TextStyle(fontSize: 20.0),),
+                ),
               ]),
             ),
 
@@ -315,4 +347,28 @@ class _HomeScreenState extends State<HomeScreen> {
     // _showToast();
 
   }
+
+  _read() async {
+    LanguageDatabaseHelper helper = LanguageDatabaseHelper.instance;
+    int rowId = 1;
+    Word word = await helper.queryWord(rowId);
+    if (word == null) {
+      print('read row $rowId: empty');
+    } else {
+      print('read row $rowId: ${word.word} ${word.frequency}');
+    }
+    Toast.show(word.toString(), context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+  }
+
+  _save() async {
+    Word word = Word();
+    word.word = 'hello';
+    word.frequency = 15;
+    LanguageDatabaseHelper helper = LanguageDatabaseHelper.instance;
+    int id = await helper.insert(word);
+    print('inserted row: $id');
+    Toast.show('${id}', context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+  }
+
+
 }

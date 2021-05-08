@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:sale_management/screens/constants.dart';
 import 'package:sale_management/screens/size_config.dart';
 import 'package:sale_management/share/constant/text_style.dart';
+import 'package:sale_management/share/helper/keyboard.dart';
 import 'package:sale_management/share/model/category.dart';
 import 'package:sale_management/screens/package_product/widgets/package_product_form_add.dart';
 class PackageProductAdd extends StatefulWidget {
@@ -38,6 +39,7 @@ class _PackageProductAddState extends State<PackageProductAdd> {
               children: <Widget>[
                 InkWell(
                   onTap: () {
+                    KeyboardUtil.hideKeyboard(context);
                     _save();
                   },
                   child: Container(

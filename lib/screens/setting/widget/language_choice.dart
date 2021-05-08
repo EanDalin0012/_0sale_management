@@ -121,6 +121,8 @@ class _LanguageChoiceState extends State<LanguageChoice> {
 
   Widget _buildIconCheck() {
     return Container(
+      width: 40,
+      height: 30,
       margin: EdgeInsets.only(right: 15),
       child: Image(image: AssetImage('assets/icons/success-green-check-mark.png')),
     );

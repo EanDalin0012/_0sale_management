@@ -8,6 +8,7 @@ import 'package:sale_management/share/model/product.dart';
 import 'package:sale_management/share/model/package_product.dart';
 import 'package:sale_management/share/services/load_data_local.dart';
 import 'package:sale_management/screens/package_product/widgets/package_product_form_edit.dart';
+import 'package:sale_management/screens/package_product/success_screen.dart';
 
 class PackageProductEdit extends StatefulWidget {
 
@@ -57,6 +58,12 @@ class _PackageProductAddState extends State<PackageProductEdit> {
               InkWell(
                 onTap: () {
                   _save();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SuccessScreen(
+                      isEditScreen: true,
+                    )),
+                  );
                 },
                 child: Container(
                   width: size.width,

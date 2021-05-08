@@ -6,6 +6,8 @@ import 'package:sale_management/share/constant/text_style.dart';
 import 'package:sale_management/share/helper/keyboard.dart';
 import 'package:sale_management/share/model/category.dart';
 import 'package:sale_management/screens/package_product/widgets/package_product_form_add.dart';
+import 'package:sale_management/screens/package_product/success_screen.dart';
+
 class PackageProductAdd extends StatefulWidget {
   @override
   _PackageProductAddState createState() => _PackageProductAddState();
@@ -41,15 +43,17 @@ class _PackageProductAddState extends State<PackageProductAdd> {
                   onTap: () {
                     KeyboardUtil.hideKeyboard(context);
                     _save();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SuccessScreen(
+                        isAddScreen: true,
+                      )),
+                    );
                   },
                   child: Container(
                     width: size.width,
                     height: 45,
                     color: Colors.red,
-                    // margin: EdgeInsets.only(
-                    //   left: 5,
-                    //   right: 5
-                    // ),
                     child: Center(child: Text('SAVE', style: TextStyle(fontWeight: FontWeight.w700, color: Colors.white, fontFamily: 'roboto', fontSize: 18))),
                   ),
                 ),
@@ -64,7 +68,7 @@ class _PackageProductAddState extends State<PackageProductAdd> {
 
   AppBar _appBar() {
     return AppBar(
-        title: Text('Package of Product', style: TextStyle(fontFamily: 'roboto', fontWeight: FontWeight.w700)),
+        title: Text('Package of Product', style: TextStyle(fontFamily: fontFamilyDefault, fontWeight: FontWeight.w700)),
         backgroundColor: Colors.purple[900]
     );
   }
@@ -82,10 +86,7 @@ class _PackageProductAddState extends State<PackageProductAdd> {
                         children: <Widget>[
                           SizedBox(height: SizeConfig.screenHeight * 0.04), // 4%
                           Text("Register Package Product", style: headingStyle),
-                          Text(
-                            "Complete your details",
-                            textAlign: TextAlign.center,
-                          ),
+                          Text("Complete your details",textAlign: TextAlign.center,),
                         ],
                       ),
                     ),

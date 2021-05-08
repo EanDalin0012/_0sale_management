@@ -5,6 +5,7 @@ import 'package:sale_management/screens/size_config.dart';
 import 'package:sale_management/screens/widgets/custom_suffix_icon/custom_suffix_icon.dart';
 import 'package:sale_management/screens/widgets/product_dropdown/product_page.dart';
 import 'package:sale_management/share/model/product.dart';
+import 'package:sale_management/screens/package_product/widgets/prefix_product.dart';
 
 class PackageProductForm extends StatefulWidget {
   @override
@@ -234,22 +235,9 @@ class _PackageProductFormState extends State<PackageProductForm> {
           labelText: "Product",
           hintText: "Select product",
           floatingLabelBehavior: FloatingLabelBehavior.always,
-          prefixIcon: this.product != null ? prefixProduct() : null,
+          prefixIcon: this.product != null ? PrefixProduct(url: this.product.url) : null,
           suffixIcon: CustomSufFixIcon( svgPaddingLeft: 15,svgIcon: "assets/icons/expand_more_black_24dp.svg"),
         ),
       );
   }
-  Widget prefixProduct() {
-    return Container(
-      width: 36,
-      height: 36,
-      padding: const EdgeInsets.all(7.0),
-      child: CircleAvatar(
-        radius: 30.0,
-        backgroundImage:NetworkImage(this.product.url),
-        backgroundColor: Colors.transparent,
-      )
-    );
-  }
-
 }

@@ -15,6 +15,8 @@ import 'dart:async';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:sale_management/screens/testing/flutter_read_write_file_and_path.dart';
+import 'package:sale_management/screens/testing/dropdown_fusuc_testing.dart';
+
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -262,6 +264,20 @@ class _HomeScreenState extends State<HomeScreen> {
                     );
                   },
                   child: Text("new",style: TextStyle(fontSize: 20.0),),
+                ),
+
+                FlatButton(
+                  color: Colors.blue,
+                  textColor: Colors.white,
+                  padding: EdgeInsets.all(8.0),
+                  splashColor: Colors.blueAccent,
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => DropDownMyTesting()),
+                    );
+                  },
+                  child: Text("DropDownMyTesting",style: TextStyle(fontSize: 20.0),),
                 ),
               ]),
             ),

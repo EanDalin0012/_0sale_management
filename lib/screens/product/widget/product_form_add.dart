@@ -16,7 +16,6 @@ class _ProductFormAddState extends State<ProductFormAdd> {
   bool remember = false;
   final List<String> errors = [];
   Size size;
-  final _focusNode = FocusNode();
 
   void addError({String error}) {
     if (!errors.contains(error))
@@ -32,19 +31,19 @@ class _ProductFormAddState extends State<ProductFormAdd> {
       });
   }
 
-  @override
-  void dispose() {
-    _focusNode.dispose();
-    super.dispose();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _focusNode.addListener(() {
-      print("Has focus: ${_focusNode.hasFocus}");
-    });
-  }
+  // @override
+  // void dispose() {
+  //   _focusNode.dispose();
+  //   super.dispose();
+  // }
+  //
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _focusNode.addListener(() {
+  //     print("Has focus: ${_focusNode.hasFocus}");
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {

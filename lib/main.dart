@@ -6,9 +6,7 @@ import 'package:sale_management/screens/sign_in/sign_in_screen.dart';
 import 'package:sale_management/screens/theme.dart';
 import 'package:sale_management/screens/widgets/country_dropdown/provider/country_provider.dart';
 import 'package:sale_management/share/database/language_db.dart';
-import 'package:sale_management/share/model/key/language_key.dart';
 import 'package:sale_management/share/static/language_static.dart';
-import 'package:toast/toast.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

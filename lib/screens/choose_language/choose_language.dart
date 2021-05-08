@@ -5,7 +5,6 @@ import 'package:sale_management/screens/size_config.dart';
 import 'package:sale_management/share/constant/text_style.dart';
 import 'package:sale_management/share/database/language_db.dart';
 import 'package:sale_management/share/model/key/language_key.dart';
-import 'package:sale_management/share/static/language_static.dart';
 import 'package:toast/toast.dart';
 
 class ChooseLanguageScreen extends StatefulWidget {
@@ -165,13 +164,11 @@ class _ChooseLanguageScreenState extends State<ChooseLanguageScreen> {
       }
     ];
     languageData.map((e) {
-
       LanguageDataBase.getLanguageById(e[LanguageKey.id]).then((value) {
         if(value != null) {
           LanguageDataBase.update(e).then((value) {
             Toast.show('Update Success: ${value}', context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
           });
-
         } else {
           LanguageDataBase.create(e).then((value) {
             Toast.show('Insert Success: ${value}', context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);

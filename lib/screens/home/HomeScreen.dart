@@ -11,11 +11,10 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:sale_management/share/static/language_static.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
-
 import 'dart:async';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
-
+import 'package:sale_management/screens/testing/flutter_read_write_file_and_path.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -248,6 +247,21 @@ class _HomeScreenState extends State<HomeScreen> {
                     Toast.show('${MemoryStore.path}', context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
                   },
                   child: Text("world Path db",style: TextStyle(fontSize: 20.0),),
+                ),
+                FlatButton(
+                  color: Colors.blue,
+                  textColor: Colors.white,
+                  padding: EdgeInsets.all(8.0),
+                  splashColor: Colors.blueAccent,
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => FlutterReadWriteFilePath(
+                        storage: Storage(),
+                      )),
+                    );
+                  },
+                  child: Text("new",style: TextStyle(fontSize: 20.0),),
                 ),
               ]),
             ),

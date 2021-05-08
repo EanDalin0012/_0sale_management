@@ -55,7 +55,7 @@ class LanguageDataBase {
     final db = await instance.database;
 
     int count = await db.rawUpdate(
-        'UPDATE  $languageTable SET ${LanguageField.code} = ?, ${LanguageField.text}, ${LanguageField.is_use} = ? WHERE ${LanguageField.id} = ?',
+        'UPDATE  $languageTable SET ${LanguageField.code} = ?, ${LanguageField.text} = ?, ${LanguageField.is_use} = ? WHERE ${LanguageField.id} = ?',
         [json[LanguageKey.code], json[LanguageKey.text], json[LanguageKey.isUse],json[LanguageKey.id] ]);
     print('updated: $count');
 
@@ -63,15 +63,18 @@ class LanguageDataBase {
   }
 
   static Future<Map> getLanguageById(int id) async {
-    final db = await instance.database;
-    print('getLanguageById: ${id}');
-    List<dynamic> vData = await db.rawQuery('SELECT * FROM $languageTable WHERE id = ?', [id]);
-    print('vData: ${vData}');
-    if(vData.length == 1) {
-      return vData[0];
-    } else {
-      return vData[0];
+    try {
+      final db = await instance.database;
+      print('getLanguageById: ${id}');
+      List<dynamic> vData = await db.rawQuery('SELECT * FROM $languageTable WHERE id = ?', [id]);
+      print('vData: ${vData}');
+      if(vData !=null) {
+        return vData[0];
+      }
+    }catch(e) {
+      print('e :${e}');
     }
+
   }
 
   // ignore: missing_return

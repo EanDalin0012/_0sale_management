@@ -168,7 +168,6 @@ class _ProductScreenState extends State<ProductScreen> {
             color: Colors.purple[900].withOpacity(0.5),
           ),
           itemBuilder: (context, index) {
-            print('p name" ${this.vData[index]['name']}');
             return _buildListTile(
                 dataItem: this.vData[index]
             );},

@@ -5,7 +5,9 @@ import 'package:sale_management/share/constant/text_style.dart';
 class SuccessScreen extends StatelessWidget {
   final bool isAddScreen;
   final bool isEditScreen;
-  SuccessScreen({Key key,this.isAddScreen, this.isEditScreen}): super(key: key);
+  final Map vData;
+  SuccessScreen({Key key,this.isAddScreen, this.isEditScreen, this.vData}): super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,7 +15,7 @@ class SuccessScreen extends StatelessWidget {
         leading: SizedBox(),
         title: Text("Success", style: TextStyle(fontFamily: fontFamilyDefault, fontWeight: FontWeight.w500)),
       ),
-      body: SuccessBody(isAddScreen: this.isAddScreen, isEditScreen: this.isEditScreen),
+      body: SuccessBody(vData: this.vData, isAddScreen: this.isAddScreen, isEditScreen: this.isEditScreen),
     );
   }
 }

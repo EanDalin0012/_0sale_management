@@ -4,11 +4,13 @@ import 'package:sale_management/screens/size_config.dart';
 import 'package:sale_management/screens/widgets/default_button/default_button.dart';
 import 'package:sale_management/screens/package_product/package_product.dart';
 import 'package:sale_management/share/constant/text_style.dart';
+import 'package:sale_management/share/model/key/package_product_key.dart';
 
 class SuccessBody extends StatelessWidget {
   final bool isAddScreen;
   final bool isEditScreen;
-  SuccessBody({Key key,this.isEditScreen, this.isAddScreen}): super(key: key);
+  final Map vData;
+  SuccessBody({Key key,this.isEditScreen, this.isAddScreen, this.vData}): super(key: key);
 
   final headingStyle = TextStyle(
       fontSize: getProportionateScreenWidth(28),
@@ -46,7 +48,7 @@ class SuccessBody extends StatelessWidget {
                 if(this.isEditScreen == true)
                   Text("Update Package Product", style: headingStyle),
 
-                Text("Price: is completed",textAlign: TextAlign.center,),
+                Text("${this.vData[PackageProductKey.name]}: is completed",textAlign: TextAlign.center,),
               ],
             ),
           ),

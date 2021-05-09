@@ -8,7 +8,7 @@ import 'package:sale_management/screens/widgets/product_dropdown/product_page.da
 import 'package:sale_management/share/helper/keyboard.dart';
 import 'package:sale_management/share/model/product.dart';
 import 'package:sale_management/screens/package_product/widgets/prefix_product.dart';
-
+import 'package:sale_management/share/model/key/package_product_key.dart';
 
 class PackageProductForm extends StatefulWidget {
 
@@ -21,11 +21,11 @@ class PackageProductForm extends StatefulWidget {
 class _PackageProductFormState extends State<PackageProductForm> {
   var productNameController = new TextEditingController();
 
-  var name;
-  var productName;
-  var qty;
-  var price;
-  var remark;
+  var productController = new TextEditingController();
+  var nameController = new TextEditingController();
+  var qtyController = new TextEditingController();
+  var priceController = new TextEditingController();
+  var remarkController = new TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
   String email;
@@ -35,7 +35,7 @@ class _PackageProductFormState extends State<PackageProductForm> {
   Size size;
   ProductModel product;
   var autofocus = false;
-
+  var isClickSave = false;
 
   void addError({String error}) {
 
@@ -114,14 +114,9 @@ class _PackageProductFormState extends State<PackageProductForm> {
   TextFormField _buildPackageNameField() {
     return TextFormField(
       keyboardType: TextInputType.text,
-      onSaved: (newValue) => name = newValue,
-      onChanged: (value) {
-        _formKey.currentState.validate();
-        if (value.isNotEmpty) {
-          name = value;
-        }
-        return null;
-      },
+      textInputAction: TextInputAction.next,
+      controller: nameController,
+      onChanged: (value) => checkFormValid(),
       validator: (value) {
         if (value.isEmpty) {
           addError(error: kEmailNullError);
@@ -141,11 +136,8 @@ class _PackageProductFormState extends State<PackageProductForm> {
   TextFormField _buildQuantityField() {
     return TextFormField(
       keyboardType: TextInputType.number,
-      onSaved: (newValue) => qty = newValue,
-      onChanged: (value) {
-        _formKey.currentState.validate();
-        this.qty = value;
-      },
+      textInputAction: TextInputAction.next,
+      onChanged: (value) => checkFormValid(),
       validator: (value) {
         if (value.isEmpty) {
           addError(error: kEmailNullError);
@@ -165,11 +157,9 @@ class _PackageProductFormState extends State<PackageProductForm> {
   TextFormField _buildPriceField() {
     return TextFormField(
       keyboardType: TextInputType.number,
-      onSaved: (newValue) => price = newValue,
-      onChanged: (value) {
-        _formKey.currentState.validate();
-        price = value;
-      },
+      textInputAction: TextInputAction.next,
+      controller: priceController,
+      onChanged: (value) => checkFormValid(),
       validator: (value) {
         if (value.isEmpty) {
           addError(error: kEmailNullError);
@@ -189,9 +179,8 @@ class _PackageProductFormState extends State<PackageProductForm> {
   TextFormField _buildRemarkField() {
     return TextFormField(
       keyboardType: TextInputType.text,
-      onChanged: (value) {
-        this.remark = value;
-      },
+      controller: remarkController,
+      onChanged: (value) => checkFormValid(),
       decoration: InputDecoration(
         labelText: "Remark",
         hintText: "Enter remark",
@@ -211,19 +200,13 @@ class _PackageProductFormState extends State<PackageProductForm> {
           setState(() {
             this.product = product;
             productNameController.text = this.product.name;
-            _formKey.currentState.validate();
+            checkFormValid();
           });
         },
         readOnly: true,
         controller: productNameController,
         keyboardType: TextInputType.text,
-        onChanged: (value) {
-          _formKey.currentState.validate();
-          if (value.isNotEmpty) {
-            productName = value;
-          }
-          return null;
-        },
+        onChanged: (value) => checkFormValid(),
         validator: (value) {
           if (value.isEmpty) {
             addError(error: kEmailNullError);
@@ -242,14 +225,28 @@ class _PackageProductFormState extends State<PackageProductForm> {
   }
 
   void mySave() {
+    this.isClickSave = true;
     if( _formKey.currentState.validate()) {
       print('validate');
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => SuccessScreen(
           isAddScreen: true,
+          vData: {
+            PackageProductKey.name: this.nameController.text,
+            PackageProductKey.productId: this.product.id,
+            PackageProductKey.quantity: this.qtyController.text,
+            PackageProductKey.price: this.priceController.text,
+            PackageProductKey.remark: this.remarkController.text
+          },
         )),
       );
+    }
+  }
+
+  void checkFormValid() {
+    if(isClickSave) {
+      _formKey.currentState.validate();
     }
   }
 

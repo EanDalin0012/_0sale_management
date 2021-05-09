@@ -1,12 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:sale_management/screens/constants.dart';
+import 'package:sale_management/screens/package_product/success_screen.dart';
 import 'package:sale_management/screens/size_config.dart';
 import 'package:sale_management/screens/widgets/custom_suffix_icon/custom_suffix_icon.dart';
 import 'package:sale_management/screens/widgets/product_dropdown/product_page.dart';
+import 'package:sale_management/share/helper/keyboard.dart';
+import 'package:sale_management/share/model/package_product.dart';
 import 'package:sale_management/share/model/product.dart';
 import 'package:sale_management/screens/package_product/widgets/prefix_product.dart';
+import 'package:sale_management/share/model/key/package_product_key.dart';
 
 class PackageProductFormEdit extends StatefulWidget {
+  final PackageProductModel packageProduct;
+
+  PackageProductFormEdit({
+    Key key,
+    this.packageProduct
+  }): super(key: key);
+
+
   @override
   _PackageProductFormState createState() => _PackageProductFormState();
 }
@@ -20,13 +32,13 @@ class _PackageProductFormState extends State<PackageProductFormEdit> {
   final List<String> errors = [];
   Size size;
   ProductModel product;
+  var isClickUpdate = false;
 
   var productController = new TextEditingController();
   var nameController = new TextEditingController();
   var qtyController = new TextEditingController();
   var priceController = new TextEditingController();
   var remarkController = new TextEditingController();
-
 
   void addError({String error}) {
     if (!errors.contains(error))
@@ -49,40 +61,70 @@ class _PackageProductFormState extends State<PackageProductFormEdit> {
       key: _formKey,
       child: Column(
         children: <Widget>[
-          _buildPackageNameField(),
-          SizedBox(height: SizeConfig.screenHeight * 0.02),
-          _buildProductField(),
-          SizedBox(height: SizeConfig.screenHeight * 0.02),
-          _buildQuantityField(),
-          SizedBox(height: SizeConfig.screenHeight * 0.02),
-          _buildPriceField(),
-          SizedBox(height: SizeConfig.screenHeight * 0.02),
-          _buildRemarkField(),
-          SizedBox(height: SizeConfig.screenHeight * 0.04),
+          _body(),
+          GestureDetector(
+            onTap: () {
+              KeyboardUtil.hideKeyboard(context);
+              myUpdate();
+            },
+            child: Container(
+              height: 45,
+              width: MediaQuery.of(context).size.width,
+              color: Colors.redAccent,
+              child: Center(child: Text('Update', style: TextStyle(fontWeight: FontWeight.w700, color: Colors.white, fontFamily: 'roboto', fontSize: 18))),
+            ),
+          )
         ],
       ),
     );
   }
 
+  Widget _body() {
+  return Expanded(
+    child: Padding(
+      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+      child: SingleChildScrollView(
+        physics: ClampingScrollPhysics(),
+        child:  Column(
+          children: <Widget>[
+            Center(
+              child: Column(
+                children: <Widget>[
+                  SizedBox(height: SizeConfig.screenHeight * 0.04), // 4%
+                  Text("Update Package Product", style: headingStyle),
+                  Text("Complete your details",textAlign: TextAlign.center,),
+                ],
+              ),
+            ),
+            SizedBox(height: SizeConfig.screenHeight * 0.04),
+            _buildPackageNameField(),
+            SizedBox(height: SizeConfig.screenHeight * 0.02),
+            _buildProductField(),
+            SizedBox(height: SizeConfig.screenHeight * 0.02),
+            _buildQuantityField(),
+            SizedBox(height: SizeConfig.screenHeight * 0.02),
+            _buildPriceField(),
+            SizedBox(height: SizeConfig.screenHeight * 0.02),
+            _buildRemarkField(),
+            SizedBox(height: SizeConfig.screenHeight * 0.04),
+
+          ],
+        )
+      )
+    ),
+  );
+  }
+
   TextFormField _buildPackageNameField() {
     return TextFormField(
       keyboardType: TextInputType.text,
+      textInputAction: TextInputAction.next,
       controller: nameController,
-      onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kEmailNullError);
-        } else if (emailValidatorRegExp.hasMatch(value)) {
-          removeError(error: kInvalidEmailError);
-        }
-        return null;
-      },
+      onChanged: (value) => checkFormValid(),
       validator: (value) {
         if (value.isEmpty) {
           addError(error: kEmailNullError);
-          return "";
-        } else if (!emailValidatorRegExp.hasMatch(value)) {
-          addError(error: kInvalidEmailError);
-          return "";
+          return "Invalid package name.";
         }
         return null;
       },
@@ -98,22 +140,13 @@ class _PackageProductFormState extends State<PackageProductFormEdit> {
   TextFormField _buildQuantityField() {
     return TextFormField(
       keyboardType: TextInputType.number,
+      textInputAction: TextInputAction.next,
       controller: qtyController,
-      onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kEmailNullError);
-        } else if (emailValidatorRegExp.hasMatch(value)) {
-          removeError(error: kInvalidEmailError);
-        }
-        return null;
-      },
+      onChanged: (value) => checkFormValid(),
       validator: (value) {
         if (value.isEmpty) {
           addError(error: kEmailNullError);
-          return "";
-        } else if (!emailValidatorRegExp.hasMatch(value)) {
-          addError(error: kInvalidEmailError);
-          return "";
+          return "Invalid quantity.";
         }
         return null;
       },
@@ -129,22 +162,12 @@ class _PackageProductFormState extends State<PackageProductFormEdit> {
   TextFormField _buildPriceField() {
     return TextFormField(
       keyboardType: TextInputType.number,
+      textInputAction: TextInputAction.next,
       controller: priceController,
-      onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kEmailNullError);
-        } else if (emailValidatorRegExp.hasMatch(value)) {
-          removeError(error: kInvalidEmailError);
-        }
-        return null;
-      },
+      onChanged: (value) => checkFormValid(),
       validator: (value) {
         if (value.isEmpty) {
-          addError(error: kEmailNullError);
-          return "";
-        } else if (!emailValidatorRegExp.hasMatch(value)) {
-          addError(error: kInvalidEmailError);
-          return "";
+          return "Invalid price.";
         }
         return null;
       },
@@ -161,24 +184,7 @@ class _PackageProductFormState extends State<PackageProductFormEdit> {
     return TextFormField(
       keyboardType: TextInputType.text,
       controller: remarkController,
-      onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kEmailNullError);
-        } else if (emailValidatorRegExp.hasMatch(value)) {
-          removeError(error: kInvalidEmailError);
-        }
-        return null;
-      },
-      validator: (value) {
-        if (value.isEmpty) {
-          addError(error: kEmailNullError);
-          return "";
-        } else if (!emailValidatorRegExp.hasMatch(value)) {
-          addError(error: kInvalidEmailError);
-          return "";
-        }
-        return null;
-      },
+      onChanged: (value) => checkFormValid(),
       decoration: InputDecoration(
         labelText: "Remark",
         hintText: "Enter remark",
@@ -195,29 +201,23 @@ class _PackageProductFormState extends State<PackageProductFormEdit> {
           context,
           MaterialPageRoute(builder: (context) => ProductPage(productModel: this.product,)),
         );
+        if(product == null) {
+          return;
+        }
+
         setState(() {
           this.product = product;
           productController.text = this.product.name;
+          checkFormValid();
         });
       },
       readOnly: true,
       controller: productController,
       keyboardType: TextInputType.text,
-      onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kEmailNullError);
-        } else if (emailValidatorRegExp.hasMatch(value)) {
-          removeError(error: kInvalidEmailError);
-        }
-        return null;
-      },
+      onChanged: (value) => checkFormValid(),
       validator: (value) {
         if (value.isEmpty) {
-          addError(error: kEmailNullError);
-          return "";
-        } else if (!emailValidatorRegExp.hasMatch(value)) {
-          addError(error: kInvalidEmailError);
-          return "";
+          return "Invalid product. Please select product!";
         }
         return null;
       },
@@ -229,6 +229,32 @@ class _PackageProductFormState extends State<PackageProductFormEdit> {
         suffixIcon: CustomSufFixIcon( svgPaddingLeft: 15,svgIcon: "assets/icons/expand_more_black_24dp.svg"),
       ),
     );
+  }
+
+  void myUpdate() {
+    this.isClickUpdate = true;
+    if( _formKey.currentState.validate()) {
+      print('validate');
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => SuccessScreen(
+          isEditScreen: true,
+          vData: {
+            PackageProductKey.name: this.nameController.text,
+            PackageProductKey.productId: this.product.id,
+            PackageProductKey.quantity: this.qtyController.text,
+            PackageProductKey.price: this.priceController.text,
+            PackageProductKey.remark: this.remarkController.text
+          },
+        )),
+      );
+    }
+  }
+
+  void checkFormValid() {
+    if(isClickUpdate) {
+      _formKey.currentState.validate();
+    }
   }
 
 }

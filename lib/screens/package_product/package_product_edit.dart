@@ -8,20 +8,21 @@ import 'package:sale_management/share/model/product.dart';
 import 'package:sale_management/share/model/package_product.dart';
 import 'package:sale_management/share/services/load_data_local.dart';
 import 'package:sale_management/screens/package_product/widgets/package_product_form_edit.dart';
-import 'package:sale_management/screens/package_product/success_screen.dart';
 
 class PackageProductEdit extends StatefulWidget {
 
   final PackageProductModel packageProduct;
   PackageProductEdit({
+    Key key,
     @required this.packageProduct
-  });
+  }):super(key: key);
 
   @override
   _PackageProductAddState createState() => _PackageProductAddState();
 }
 
 class _PackageProductAddState extends State<PackageProductEdit> {
+
   _PackageProductAddState() {
     _fetchProductItems();
   }
@@ -50,35 +51,13 @@ class _PackageProductAddState extends State<PackageProductEdit> {
 
     return Scaffold(
       appBar: _appBar(),
-      body: Column(
-        children: <Widget>[
-          _body(),
-          Stack(
-            children: <Widget>[
-              InkWell(
-                onTap: () {
-                  _save();
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => SuccessScreen(
-                      isEditScreen: true,
-                    )),
-                  );
-                },
-                child: Container(
-                  width: size.width,
-                  height: 45,
-                  color: Colors.red,
-                  child: Center(child: Text('Update', style: TextStyle(fontWeight: FontWeight.w700, color: Colors.white, fontFamily: fontFamilyDefault, fontSize: 18))),
-                ),
-              ),
-            ],
-          )
-        ],
+      body: SafeArea(
+        child: PackageProductFormEdit(
+          packageProduct: widget.packageProduct,
+        )
       ),
     );
   }
-
 
   AppBar _appBar() {
     return AppBar(

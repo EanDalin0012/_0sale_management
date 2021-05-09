@@ -38,7 +38,6 @@ class _ChooseLanguageScreenState extends State<ChooseLanguageScreen> {
     size = MediaQuery.of(context).size;
     SizeConfig.init(context);
     height = (size.height - SizeConfig.screenHeight * 0.06 - SizeConfig.screenHeight * 0.06);
- //   Toast.show('show language:'+MemoryStore.languageStore.toString(), context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
     return Scaffold(
         body: SingleChildScrollView(
           child: Container(

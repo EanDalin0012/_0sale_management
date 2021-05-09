@@ -90,7 +90,7 @@ class _ProductPageState extends State<ProductPage> {
     return ListTile(
       onTap: () => selectProduct(dataItem),
       title: Text( dataItem.name,
-        style: TextStyle( color: Colors.black87, fontSize: 20, fontWeight: FontWeight.w700,fontFamily: fontFamilyDefault),
+        style: TextStyle( color: dropColor, fontSize: 20, fontWeight: FontWeight.w700,fontFamily: fontFamilyDefault),
       ),
       leading: _buildLeading(dataItem.url),
       subtitle: Text(

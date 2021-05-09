@@ -30,7 +30,7 @@ const kGoodMidGray1 = Color.fromARGB(210, 241, 241, 239);
 
 const Color primaryColor = Colors.deepPurpleAccent;
 const Color secondaryColor = Colors.deepOrangeAccent;
-
+const dropColor = Color(0xFF3f496d);
 const kHeadingTextStyle = TextStyle(
   fontSize: 20,
   fontWeight: FontWeight.w800,

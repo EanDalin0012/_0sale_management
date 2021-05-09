@@ -204,7 +204,6 @@ class _PackageProductFormState extends State<PackageProductFormEdit> {
         if(product == null) {
           return;
         }
-
         setState(() {
           this.product = product;
           productController.text = this.product.name;

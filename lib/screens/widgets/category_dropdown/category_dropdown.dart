@@ -123,7 +123,7 @@ class _CategoryDropdownPageState extends State<CategoryDropdownPage> {
     return ListTile(
       onTap: () => onSelectedItem(dataItem),
       title: Text( dataItem[CategoryKey.name],
-        style: TextStyle( color: Colors.black87, fontSize: 20, fontWeight: FontWeight.w700,fontFamily: fontFamilyDefault),
+        style: TextStyle( color: dropColor, fontSize: 20, fontWeight: FontWeight.w700,fontFamily: fontFamilyDefault),
       ),
       subtitle: Text(
           dataItem[CategoryKey.remark],

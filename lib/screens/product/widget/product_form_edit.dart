@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sale_management/screens/constants.dart';
 import 'package:sale_management/screens/size_config.dart';
 import 'package:sale_management/screens/widgets/custom_suffix_icon/custom_suffix_icon.dart';
-import 'package:sale_management/share/model/key/m_key.dart';
+import 'package:sale_management/share/model/key/product_key.dart';
 
 class ProductFormEdit extends StatefulWidget {
   final Map productItem;

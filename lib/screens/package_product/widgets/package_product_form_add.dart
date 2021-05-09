@@ -179,6 +179,9 @@ class _PackageProductFormState extends State<PackageProductForm> {
             context,
             MaterialPageRoute(builder: (context) => ProductPage(productModel: this.product,)),
           );
+          if(product == null) {
+            return;
+          }
           setState(() {
             this.product = product;
             productNameController.text = this.product.name;

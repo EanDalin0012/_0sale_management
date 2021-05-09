@@ -8,7 +8,7 @@ import 'package:sale_management/share/components/show_dialog/show_dialog.dart';
 import 'package:sale_management/share/constant/constant_color.dart';
 import 'package:sale_management/share/constant/text_style.dart';
 import 'package:sale_management/share/helper/keyboard.dart';
-import 'package:sale_management/share/model/key/m_key.dart';
+import 'package:sale_management/share/model/key/product_key.dart';
 import 'package:sale_management/screens/product/new_product.dart';
 import 'package:sale_management/screens/product/edit_product.dart';
 

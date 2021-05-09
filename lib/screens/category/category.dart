@@ -9,7 +9,7 @@ import 'package:sale_management/screens/widgets/search_widget/search_widget.dart
 import 'package:sale_management/share/components/show_dialog/show_dialog.dart';
 import 'package:sale_management/share/constant/constant_color.dart';
 import 'package:sale_management/share/constant/text_style.dart';
-import 'package:sale_management/share/model/key/m_key.dart';
+import 'package:sale_management/share/model/key/category_key.dart';
 
 class CategoryScreen extends StatefulWidget {
   @override

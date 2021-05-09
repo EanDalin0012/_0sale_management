@@ -19,8 +19,8 @@ class PackageProductForm extends StatefulWidget {
 }
 
 class _PackageProductFormState extends State<PackageProductForm> {
-  var productNameController = new TextEditingController();
 
+  var productNameController = new TextEditingController();
   var productController = new TextEditingController();
   var nameController = new TextEditingController();
   var qtyController = new TextEditingController();
@@ -36,21 +36,6 @@ class _PackageProductFormState extends State<PackageProductForm> {
   ProductModel product;
   var autofocus = false;
   var isClickSave = false;
-
-  void addError({String error}) {
-
-    if (!errors.contains(error))
-      setState(() {
-        errors.add(error);
-      });
-  }
-
-  void removeError({String error}) {
-    if (errors.contains(error))
-      setState(() {
-        errors.remove(error);
-      });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +104,6 @@ class _PackageProductFormState extends State<PackageProductForm> {
       onChanged: (value) => checkFormValid(),
       validator: (value) {
         if (value.isEmpty) {
-          addError(error: kEmailNullError);
           return "Invalid package name.";
         }
         return null;
@@ -140,7 +124,6 @@ class _PackageProductFormState extends State<PackageProductForm> {
       onChanged: (value) => checkFormValid(),
       validator: (value) {
         if (value.isEmpty) {
-          addError(error: kEmailNullError);
           return "Invalid quantity.";
         }
         return null;
@@ -162,7 +145,6 @@ class _PackageProductFormState extends State<PackageProductForm> {
       onChanged: (value) => checkFormValid(),
       validator: (value) {
         if (value.isEmpty) {
-          addError(error: kEmailNullError);
           return "Invalid price.";
         }
         return null;
@@ -209,7 +191,6 @@ class _PackageProductFormState extends State<PackageProductForm> {
         onChanged: (value) => checkFormValid(),
         validator: (value) {
           if (value.isEmpty) {
-            addError(error: kEmailNullError);
             return "Invalid product.";
           }
           return null;

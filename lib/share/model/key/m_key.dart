@@ -33,11 +33,6 @@ class MemberKey {
   static const url                  = "url";
 }
 
-class CategoryKey {
-  static const id                   = "id";
-  static const name                 = "name";
-  static const remark               = "remark";
-}
 
 class VendorKey {
   static const id                   = "id";

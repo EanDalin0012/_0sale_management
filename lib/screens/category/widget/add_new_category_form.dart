@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:sale_management/screens/category/category_success_screen.dart';
 import 'package:sale_management/screens/constants.dart';
 import 'package:sale_management/screens/size_config.dart';
 import 'package:sale_management/screens/widgets/custom_suffix_icon/custom_suffix_icon.dart';
+import 'package:sale_management/share/helper/keyboard.dart';
+import 'package:sale_management/share/model/key/category_key.dart';
+
 
 class AddNewCategoryForm extends StatefulWidget {
   @override
@@ -16,19 +20,10 @@ class _AddNewCategoryFormState extends State<AddNewCategoryForm> {
   bool remember = false;
   final List<String> errors = [];
   Size size;
-  void addError({String error}) {
-    if (!errors.contains(error))
-      setState(() {
-        errors.add(error);
-      });
-  }
+  var isClickSave = false;
 
-  void removeError({String error}) {
-    if (errors.contains(error))
-      setState(() {
-        errors.remove(error);
-      });
-  }
+  var nameController = new TextEditingController();
+  var remarkController = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -37,10 +32,51 @@ class _AddNewCategoryFormState extends State<AddNewCategoryForm> {
         key: _formKey,
       child: Column(
           children: <Widget>[
-            _buildNameField(),
-            SizedBox(height: SizeConfig.screenHeight * 0.02),
-            _buildRemarkField(),
+            _body(),
+            GestureDetector(
+              onTap: () {
+                KeyboardUtil.hideKeyboard(context);
+                save();
+              },
+              child: Container(
+                height: 45,
+                width: MediaQuery.of(context).size.width,
+                color: Colors.redAccent,
+                child: Center(child: Text('Save', style: TextStyle(fontWeight: FontWeight.w700, color: Colors.white, fontFamily: 'roboto', fontSize: 18))),
+              ),
+            )
           ]
+      ),
+    );
+  }
+
+  Widget _body() {
+    return Expanded(
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+        child: SingleChildScrollView(
+          physics: ClampingScrollPhysics(),
+          child: Column(
+            children: <Widget>[
+              Center(
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(height: SizeConfig.screenHeight * 0.04), // 4%
+                    Text("Register Category", style: headingStyle),
+                    Text(
+                      "Complete your details",
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: SizeConfig.screenHeight * 0.04),
+              _buildNameField(),
+              SizedBox(height: SizeConfig.screenHeight * 0.02),
+              _buildRemarkField(),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -48,30 +84,18 @@ class _AddNewCategoryFormState extends State<AddNewCategoryForm> {
   TextFormField _buildNameField() {
     return TextFormField(
       keyboardType: TextInputType.text,
-      onSaved: (newValue) => email = newValue,
-      onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kEmailNullError);
-        } else if (emailValidatorRegExp.hasMatch(value)) {
-          removeError(error: kInvalidEmailError);
-        }
-        return null;
-      },
+      textInputAction: TextInputAction.next,
+      controller: nameController,
+      onChanged: (value) => checkFormValid(),
       validator: (value) {
         if (value.isEmpty) {
-          addError(error: kEmailNullError);
-          return "";
-        } else if (!emailValidatorRegExp.hasMatch(value)) {
-          addError(error: kInvalidEmailError);
-          return "";
+          return "Invalid name.";
         }
         return null;
       },
       decoration: InputDecoration(
         labelText: "Name",
         hintText: "Enter category name",
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: CustomSufFixIcon( svgPaddingLeft: 15,svgIcon: "assets/icons/help_outline_black_24dp.svg"),
       ),
@@ -81,37 +105,36 @@ class _AddNewCategoryFormState extends State<AddNewCategoryForm> {
   TextFormField _buildRemarkField() {
     return TextFormField(
       keyboardType: TextInputType.text,
-      onSaved: (newValue) => email = newValue,
-      onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kEmailNullError);
-        } else if (emailValidatorRegExp.hasMatch(value)) {
-          removeError(error: kInvalidEmailError);
-        }
-        return null;
-      },
-      validator: (value) {
-        if (value.isEmpty) {
-          addError(error: kEmailNullError);
-          return "";
-        } else if (!emailValidatorRegExp.hasMatch(value)) {
-          addError(error: kInvalidEmailError);
-          return "";
-        }
-        return null;
-      },
+      controller: remarkController,
       decoration: InputDecoration(
         labelText: "Remark",
         hintText: "Enter remark",
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
-        floatingLabelBehavior: FloatingLabelBehavior.always,
+       floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: CustomSufFixIcon( svgPaddingLeft: 15,svgIcon: "assets/icons/border_color_black_24dp.svg"),
       ),
     );
   }
-}
 
-Function onClick() {
-  print('onClick');
+  void save() {
+    this.isClickSave = true;
+    if( _formKey.currentState.validate()) {
+      print('validate');
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => CategorySuccessScreen(
+          isAddScreen: true,
+          vData: {
+            CategoryKey.name: nameController.text,
+            CategoryKey.remark: remarkController.text
+          },
+        )),
+      );
+    }
+  }
+
+  void checkFormValid() {
+    if(isClickSave) {
+      _formKey.currentState.validate();
+    }
+  }
 }

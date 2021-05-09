@@ -155,7 +155,6 @@ class _PackageProductScreenState extends State<PackageProductScreen> {
     return TextFormField(
       keyboardType: TextInputType.emailAddress,
       style: TextStyle(color: Colors.white, fontSize: 20),
-      // onSaved: (newValue) => email = newValue,
       onChanged: (value) {
         this.isItemChanged = true;
         if(value != null || value.trim() != '') {
@@ -199,8 +198,7 @@ class _PackageProductScreenState extends State<PackageProductScreen> {
             children: <Widget>[
               FaIcon(FontAwesomeIcons.edit,size: 20,color: Colors.purple[900]),
               SizedBox(width: 10,),
-              Text(
-                'Edit',
+              Text('Edit',
                 style: menuStyle,
               ),
             ],

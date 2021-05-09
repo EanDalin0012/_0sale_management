@@ -1,6 +1,7 @@
 import 'dart:convert';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:sale_management/screens/widgets/circular_progress_indicator/circular_progress_loading.dart';
+import 'package:sale_management/screens/widgets/search_widget/search_widget.dart';
 import 'package:sale_management/share/constant/constant_color.dart';
 import 'package:sale_management/share/model/key/category_key.dart';
 import 'package:flutter/material.dart';
@@ -8,9 +9,9 @@ import 'package:flutter/services.dart';
 import 'package:sale_management/share/constant/text_style.dart';
 
 class CategoryDropdownPage extends StatefulWidget {
-  final Map vData;
+  final Map vCategory;
 
-  const CategoryDropdownPage({Key key, this.vData}) : super(key: key);
+  CategoryDropdownPage({Key key, this.vCategory}) : super(key: key);
 
   @override
   _CategoryDropdownPageState createState() => _CategoryDropdownPageState();
@@ -27,6 +28,7 @@ class _CategoryDropdownPageState extends State<CategoryDropdownPage> {
   List<dynamic> vData = [];
   List<dynamic> vDataTmp = [];
   var vDataLength = 0;
+  Size size;
 
   @override
   void initState() {
@@ -36,6 +38,7 @@ class _CategoryDropdownPageState extends State<CategoryDropdownPage> {
 
   @override
   Widget build(BuildContext context) {
+    size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: _buildAppBar(),
       body: Column(
@@ -52,21 +55,45 @@ class _CategoryDropdownPageState extends State<CategoryDropdownPage> {
 
     return AppBar(
       backgroundColor: Colors.purple[900],
-      title: Text('Select $label'),
+      title: Text('$label'),
       actions: [
         IconButton(
-          icon: Icon(isNative ? Icons.close : Icons.search),
-          onPressed: () => setState(() => this.isNative = !isNative),
+          icon: Icon(this.isNative ? Icons.close : Icons.search),
+          onPressed: ()  {
+            setState(()  {
+              if(this.isNative) {
+                this.vData = vDataTmp;
+                this.vDataLength = this.vData.length;
+              }
+              this.isNative = !this.isNative;
+            });
+          },
         ),
         const SizedBox(width: 8),
       ],
       bottom: this.isNative ? PreferredSize(preferredSize: Size.fromHeight(60),
-        child:  buildSearchWidget(
-          text: text,
-          // onChanged: (text) => setState(() => this.text = text),
-          hintText: 'Search $label',
+        child:  Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+                width: size.width - 20,
+                height: 65,
+                margin: EdgeInsets.only(left: 10),
+                padding: EdgeInsets.only(bottom: 10, top: 10),
+                child: SearchWidget(
+                  hintText: 'Search name',
+                  onChange: (value) {
+                    setState(() {
+                      this.vData = onItemChanged(value);
+                      this.vDataLength = this.vData.length;
+                    });
+                  },
+                )
+            ),
+          ],
         ),
-      ): null,
+      ) : null,
     );
   }
 
@@ -89,12 +116,10 @@ class _CategoryDropdownPageState extends State<CategoryDropdownPage> {
   Widget _buildListTile({
     @required Map dataItem
   }) {
-    var categoryID = '';
-    var obj = widget.vData[CategoryKey.id];
-    if(obj != null) {
-      categoryID = obj;
+    var isCheck = false;
+    if(widget.vCategory != null && widget.vCategory[CategoryKey.id] == dataItem[CategoryKey.id] ) {
+      isCheck = true;
     }
-
     return ListTile(
       onTap: () => onSelectedItem(dataItem),
       title: Text( dataItem[CategoryKey.name],
@@ -104,65 +129,15 @@ class _CategoryDropdownPageState extends State<CategoryDropdownPage> {
           dataItem[CategoryKey.remark],
         style: TextStyle(fontSize: 12,fontWeight: FontWeight.w700, fontFamily: fontFamilyDefault, color: primaryColor),
       ),
-      trailing: widget.vData[CategoryKey.id] == dataItem[CategoryKey.id]? _buildCheckIcon() : null,
+      trailing:  isCheck ? _buildIconCheck() : null,
     );
   }
 
-  Widget buildSearchWidget({
-    @required String text,
-    @required String hintText,
-    @required VoidCallback onTap,
-    Widget leading,
-  }) {
-    final styleActive = TextStyle(color: Colors.black);
-    final styleHint = TextStyle(color: Colors.black54);
-    final style = text.isEmpty ? styleHint : styleActive;
+  Widget _buildIconCheck() {
     return Container(
-      height: 40,
-      margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        color: Colors.white,
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 8),
-      child: TextField(
-        controller: controller,
-        decoration: InputDecoration(
-          icon: InkWell(
-              onTap: () {
-                print('data search');
-              },
-              child: Icon(Icons.search, color: style.color)),
-          suffixIcon: text.isNotEmpty ? GestureDetector(
-            child: Icon(Icons.close, color: style.color),
-            onTap: () {
-              controller.clear();
-              FocusScope.of(context).requestFocus(FocusNode());
-            },
-          ) : null,
-          hintText: hintText,
-          hintStyle: style,
-          border: InputBorder.none,
-        ),
-        style: styleInput,
-        onChanged: (value) {
-          this.isItemChanged = true;
-          if(value != null || value.trim() != '') {
-            setState(() {
-              vData = onItemChanged(value);
-            });
-          }
-        },
-      ),
-    );
-  }
-
-  Widget _buildCheckIcon() {
-    return Container(
-      margin: EdgeInsets.only(
-          left: 100
-      ),
-      child: Center(child: FaIcon(FontAwesomeIcons.checkCircle, size: 25 , color: Colors.deepPurple)),
+      width: 40,
+      height: 30,
+      child: Image(image: AssetImage('assets/icons/success-green-check-mark.png')),
     );
   }
 
@@ -171,16 +146,16 @@ class _CategoryDropdownPageState extends State<CategoryDropdownPage> {
   }
 
   onItemChanged(String value) {
-    var dataItems = vDataTmp.where((e) => e.name.toLowerCase().contains(value.toLowerCase())).toList();
+    var dataItems = vDataTmp.where((e) => e[CategoryKey.name].toLowerCase().contains(value.toLowerCase())).toList();
     return dataItems;
   }
 
   _fetchListItems() async {
     final data = await rootBundle.loadString('assets/json_data/category_list.json');
     Map mapItems = jsonDecode(data);
-    print('${mapItems}');
     setState(() {
       this.vData = mapItems['categoryList'];
+      this.vDataTmp = this.vData;
       this.vDataLength = this.vData.length;
     });
     return this.vData;

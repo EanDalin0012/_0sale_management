@@ -4,6 +4,7 @@ import 'package:sale_management/screens/size_config.dart';
 import 'package:sale_management/screens/widgets/custom_suffix_icon/custom_suffix_icon.dart';
 import 'package:sale_management/share/helper/keyboard.dart';
 import 'package:sale_management/screens/widgets/category_dropdown/category_dropdown.dart';
+import 'package:sale_management/share/model/key/category_key.dart';
 
 
 class ProductFormAdd extends StatefulWidget {
@@ -124,16 +125,20 @@ class _ProductFormAddState extends State<ProductFormAdd> {
   Widget _buildCategoryField() {
     return TextFormField(
         onTap: () async {
-          print('categoryController');
+
           final category = await Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => CategoryDropdownPage(vData: this.categoryMap,)),
+            MaterialPageRoute(builder: (context) => CategoryDropdownPage(vCategory: this.categoryMap,)),
           );
-          // setState(() {
-          //   this.category = product;
-          //
-          //   checkFormValid();
-          // });
+
+          if(category == null) {
+            return;
+          }
+          setState(() {
+            this.categoryMap = category;
+            this.categoryController.text = this.categoryMap[CategoryKey.name];
+            checkFormValid();
+          });
         },
         keyboardType: TextInputType.text,
         controller: categoryController,

@@ -131,8 +131,6 @@ class _AddMemberFormState extends State<EditVendorForm> {
       decoration: InputDecoration(
         labelText: "Name",
         hintText: "Enter vendor name",
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: CustomSufFixIcon( svgPaddingLeft: 15,svgIcon: "assets/icons/help_outline_black_24dp.svg"),
       ),

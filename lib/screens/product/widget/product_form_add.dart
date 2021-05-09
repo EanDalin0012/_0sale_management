@@ -5,7 +5,8 @@ import 'package:sale_management/screens/widgets/custom_suffix_icon/custom_suffix
 import 'package:sale_management/share/helper/keyboard.dart';
 import 'package:sale_management/screens/widgets/category_dropdown/category_dropdown.dart';
 import 'package:sale_management/share/model/key/category_key.dart';
-
+import 'package:sale_management/screens/product/product_success_screen.dart';
+import 'package:sale_management/share/model/key/product_key.dart';
 
 class ProductFormAdd extends StatefulWidget {
   @override
@@ -125,12 +126,10 @@ class _ProductFormAddState extends State<ProductFormAdd> {
   Widget _buildCategoryField() {
     return TextFormField(
         onTap: () async {
-
           final category = await Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => CategoryDropdownPage(vCategory: this.categoryMap,)),
           );
-
           if(category == null) {
             return;
           }
@@ -143,6 +142,12 @@ class _ProductFormAddState extends State<ProductFormAdd> {
         keyboardType: TextInputType.text,
         controller: categoryController,
         onChanged: (value) => checkFormValid(),
+        validator: (value) {
+          if (value.isEmpty) {
+            return "Invalid category.";
+          }
+          return null;
+        },
         readOnly: true,
         decoration: InputDecoration(
           labelText: "Category",
@@ -171,19 +176,17 @@ class _ProductFormAddState extends State<ProductFormAdd> {
     this.isClickSave = true;
     if( _formKey.currentState.validate()) {
       print('validate');
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(builder: (context) => SuccessScreen(
-      //     isAddScreen: true,
-      //     vData: {
-      //       PackageProductKey.name: this.nameController.text,
-      //       PackageProductKey.productId: this.product.id,
-      //       PackageProductKey.quantity: this.qtyController.text,
-      //       PackageProductKey.price: this.priceController.text,
-      //       PackageProductKey.remark: this.remarkController.text
-      //     },
-      //   )),
-      // );
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ProductSuccessScreen(
+          isAddScreen: true,
+          vData: {
+            ProductKey.name: this.nameController.text,
+            ProductKey.category: categoryController.text,
+            ProductKey.remark: this.remarkController.text,
+          },
+        )),
+      );
     }
   }
 

@@ -3,7 +3,7 @@ import 'package:sale_management/screens/product/product.dart';
 import 'package:sale_management/screens/size_config.dart';
 import 'package:sale_management/screens/widgets/default_button/default_button.dart';
 import 'package:sale_management/share/constant/text_style.dart';
-import 'package:sale_management/share/model/key/category_key.dart';
+import 'package:sale_management/share/model/key/product_key.dart';
 
 class ProductSuccessBody extends StatelessWidget {
   final bool isAddScreen;
@@ -43,11 +43,11 @@ class ProductSuccessBody extends StatelessWidget {
               children: <Widget>[
                 SizedBox(height: SizeConfig.screenHeight * 0.04), // 4%
                 if (this.isAddScreen == true)
-                  Text("Register Category", style: headingStyle),
+                  Text("Register Product", style: headingStyle),
                 if(this.isEditScreen == true)
-                  Text("Update Category", style: headingStyle),
+                  Text("Update Product", style: headingStyle),
 
-                Text("${this.vData[CategoryKey.name]}: is completed",textAlign: TextAlign.center,),
+                Text("${this.vData[ProductKey.name]}: is completed",textAlign: TextAlign.center,),
               ],
             ),
           ),

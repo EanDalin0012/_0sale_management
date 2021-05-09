@@ -63,7 +63,7 @@ class _EditCategoryFormState extends State<EditCategoryForm> {
                 height: 45,
                 width: MediaQuery.of(context).size.width,
                 color: Colors.redAccent,
-                child: Center(child: Text('Save', style: TextStyle(fontWeight: FontWeight.w700, color: Colors.white, fontFamily: 'roboto', fontSize: 18))),
+                child: Center(child: Text('Update', style: TextStyle(fontWeight: FontWeight.w700, color: Colors.white, fontFamily: 'roboto', fontSize: 18))),
               ),
             )
           ]

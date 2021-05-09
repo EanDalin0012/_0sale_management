@@ -188,7 +188,6 @@ class _AddMemberFormState extends State<EditVendorForm> {
   void update() {
     this.isClickUpdate = true;
     if( _formKey.currentState.validate()) {
-      print('validate');
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => VendorSuccessScreen(

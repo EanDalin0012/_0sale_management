@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sale_management/screens/home/Home.dart';
 import 'package:sale_management/screens/size_config.dart';
 import 'package:sale_management/screens/widgets/circular_progress_indicator/circular_progress_loading.dart';
 import 'package:sale_management/screens/widgets/product_dropdown/product_page.dart';
@@ -49,21 +50,29 @@ class _PackageProductScreenState extends State<PackageProductScreen> {
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
-    return Scaffold(
-        appBar: _buildAppBar(),
-        body: InkWell(
-          onTap: () {
-            KeyboardUtil.hideKeyboard(context);
-          },
-          child: Column(
-            children: <Widget>[
-              _container(),
-              if (items.length > 0 ) _buildBody() else CircularProgressLoading(),
-              SizedBox(height: 60,)
-            ],
+    return WillPopScope(
+      onWillPop:  () async {
+        return Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Home()),
+        );
+      },
+      child: Scaffold(
+          appBar: _buildAppBar(),
+          body: InkWell(
+            onTap: () {
+              KeyboardUtil.hideKeyboard(context);
+            },
+            child: Column(
+              children: <Widget>[
+                _container(),
+                if (items.length > 0 ) _buildBody() else CircularProgressLoading(),
+                SizedBox(height: 60,)
+              ],
+            ),
           ),
-        ),
-        floatingActionButton: _floatingActionButton()
+          floatingActionButton: _floatingActionButton()
+      ),
     );
   }
 

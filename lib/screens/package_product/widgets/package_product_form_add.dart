@@ -1,24 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sale_management/screens/constants.dart';
+import 'package:sale_management/screens/package_product/success_screen.dart';
 import 'package:sale_management/screens/size_config.dart';
 import 'package:sale_management/screens/widgets/custom_suffix_icon/custom_suffix_icon.dart';
 import 'package:sale_management/screens/widgets/product_dropdown/product_page.dart';
+import 'package:sale_management/share/helper/keyboard.dart';
 import 'package:sale_management/share/model/product.dart';
 import 'package:sale_management/screens/package_product/widgets/prefix_product.dart';
 
+
 class PackageProductForm extends StatefulWidget {
+
+  PackageProductForm({Key key}) : super(key: key);
+
   @override
   _PackageProductFormState createState() => _PackageProductFormState();
 }
 
 class _PackageProductFormState extends State<PackageProductForm> {
+  var productNameController = new TextEditingController();
 
-  var productController = new TextEditingController();
-  var nameController = new TextEditingController();
-  var qtyController = new TextEditingController();
-  var priceController = new TextEditingController();
-  var remarkController = new TextEditingController();
+  var name;
+  var productName;
+  var qty;
+  var price;
+  var remark;
 
   final _formKey = GlobalKey<FormState>();
   String email;
@@ -31,6 +38,7 @@ class _PackageProductFormState extends State<PackageProductForm> {
 
 
   void addError({String error}) {
+
     if (!errors.contains(error))
       setState(() {
         errors.add(error);
@@ -51,51 +59,79 @@ class _PackageProductFormState extends State<PackageProductForm> {
       key: _formKey,
       child: Column(
         children: <Widget>[
-          _buildPackageNameField(),
-          SizedBox(height: SizeConfig.screenHeight * 0.02),
-          _buildProductField(),
-          SizedBox(height: SizeConfig.screenHeight * 0.02),
-          _buildQuantityField(),
-          SizedBox(height: SizeConfig.screenHeight * 0.02),
-          _buildPriceField(),
-          SizedBox(height: SizeConfig.screenHeight * 0.02),
-          _buildRemarkField(),
-          SizedBox(height: SizeConfig.screenHeight * 0.04),
+          _body(),
+          GestureDetector(
+            onTap: () {
+              KeyboardUtil.hideKeyboard(context);
+              mySave();
+            },
+            child: Container(
+              height: 45,
+              width: MediaQuery.of(context).size.width,
+              color: Colors.redAccent,
+              child: Center(child: Text('Save', style: TextStyle(fontWeight: FontWeight.w700, color: Colors.white, fontFamily: 'roboto', fontSize: 18))),
+            ),
+          )
         ],
       ),
     );
   }
 
+  Widget _body() {
+    return Expanded(
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+        child: SingleChildScrollView(
+          physics: ClampingScrollPhysics(),
+          child:  Column(
+            children: <Widget>[
+              Center(
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(height: SizeConfig.screenHeight * 0.04), // 4%
+                    Text("Register Package Product", style: headingStyle),
+                    Text("Complete your details",textAlign: TextAlign.center,),
+                  ],
+                ),
+              ),
+              SizedBox(height: SizeConfig.screenHeight * 0.04),
+              _buildPackageNameField(),
+              SizedBox(height: SizeConfig.screenHeight * 0.02),
+              _buildProductField(),
+              SizedBox(height: SizeConfig.screenHeight * 0.02),
+              _buildQuantityField(),
+              SizedBox(height: SizeConfig.screenHeight * 0.02),
+              _buildPriceField(),
+              SizedBox(height: SizeConfig.screenHeight * 0.02),
+              _buildRemarkField(),
+              SizedBox(height: SizeConfig.screenHeight * 0.04),
+            ],
+          ),
+        )
+      ),
+    );
+  }
   TextFormField _buildPackageNameField() {
     return TextFormField(
-      onTap: () {
-          print('_buildPackageNameField');
-      },
       keyboardType: TextInputType.text,
-      controller: nameController,
+      onSaved: (newValue) => name = newValue,
       onChanged: (value) {
+        _formKey.currentState.validate();
         if (value.isNotEmpty) {
-          removeError(error: kEmailNullError);
-        } else if (emailValidatorRegExp.hasMatch(value)) {
-          removeError(error: kInvalidEmailError);
+          name = value;
         }
         return null;
       },
       validator: (value) {
         if (value.isEmpty) {
           addError(error: kEmailNullError);
-          return "";
-        } else if (!emailValidatorRegExp.hasMatch(value)) {
-          addError(error: kInvalidEmailError);
-          return "";
+          return "Invalid package name.";
         }
         return null;
       },
       decoration: InputDecoration(
         labelText: "Name",
         hintText: "Enter package name",
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: CustomSufFixIcon( svgPaddingLeft: 15,svgIcon: "assets/icons/help_outline_black_24dp.svg"),
       ),
@@ -105,22 +141,15 @@ class _PackageProductFormState extends State<PackageProductForm> {
   TextFormField _buildQuantityField() {
     return TextFormField(
       keyboardType: TextInputType.number,
-      controller: qtyController,
+      onSaved: (newValue) => qty = newValue,
       onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kEmailNullError);
-        } else if (emailValidatorRegExp.hasMatch(value)) {
-          removeError(error: kInvalidEmailError);
-        }
-        return null;
+        _formKey.currentState.validate();
+        this.qty = value;
       },
       validator: (value) {
         if (value.isEmpty) {
           addError(error: kEmailNullError);
-          return "";
-        } else if (!emailValidatorRegExp.hasMatch(value)) {
-          addError(error: kInvalidEmailError);
-          return "";
+          return "Invalid quantity.";
         }
         return null;
       },
@@ -136,30 +165,21 @@ class _PackageProductFormState extends State<PackageProductForm> {
   TextFormField _buildPriceField() {
     return TextFormField(
       keyboardType: TextInputType.number,
-        controller: priceController,
+      onSaved: (newValue) => price = newValue,
       onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kEmailNullError);
-        } else if (emailValidatorRegExp.hasMatch(value)) {
-          removeError(error: kInvalidEmailError);
-        }
-        return null;
+        _formKey.currentState.validate();
+        price = value;
       },
       validator: (value) {
         if (value.isEmpty) {
           addError(error: kEmailNullError);
-          return "";
-        } else if (!emailValidatorRegExp.hasMatch(value)) {
-          addError(error: kInvalidEmailError);
-          return "";
+          return "Invalid price.";
         }
         return null;
       },
       decoration: InputDecoration(
         labelText: "Price",
         hintText: "Enter price",
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: CustomSufFixIcon( svgPaddingLeft: 15,svgIcon: "assets/icons/help_outline_black_24dp.svg"),
       ),
@@ -169,24 +189,8 @@ class _PackageProductFormState extends State<PackageProductForm> {
   TextFormField _buildRemarkField() {
     return TextFormField(
       keyboardType: TextInputType.text,
-      onSaved: (newValue) => email = newValue,
       onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kEmailNullError);
-        } else if (emailValidatorRegExp.hasMatch(value)) {
-          removeError(error: kInvalidEmailError);
-        }
-        return null;
-      },
-      validator: (value) {
-        if (value.isEmpty) {
-          addError(error: kEmailNullError);
-          return "";
-        } else if (!emailValidatorRegExp.hasMatch(value)) {
-          addError(error: kInvalidEmailError);
-          return "";
-        }
-        return null;
+        this.remark = value;
       },
       decoration: InputDecoration(
         labelText: "Remark",
@@ -206,28 +210,24 @@ class _PackageProductFormState extends State<PackageProductForm> {
           );
           setState(() {
             this.product = product;
-            productController.text = this.product.name;
-
+            productNameController.text = this.product.name;
+            _formKey.currentState.validate();
           });
         },
         readOnly: true,
-        controller: productController,
+        controller: productNameController,
         keyboardType: TextInputType.text,
         onChanged: (value) {
+          _formKey.currentState.validate();
           if (value.isNotEmpty) {
-            removeError(error: kEmailNullError);
-          } else if (emailValidatorRegExp.hasMatch(value)) {
-            removeError(error: kInvalidEmailError);
+            productName = value;
           }
           return null;
         },
         validator: (value) {
           if (value.isEmpty) {
             addError(error: kEmailNullError);
-            return "";
-          } else if (!emailValidatorRegExp.hasMatch(value)) {
-            addError(error: kInvalidEmailError);
-            return "";
+            return "Invalid product.";
           }
           return null;
         },
@@ -240,4 +240,17 @@ class _PackageProductFormState extends State<PackageProductForm> {
         ),
       );
   }
+
+  void mySave() {
+    if( _formKey.currentState.validate()) {
+      print('validate');
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => SuccessScreen(
+          isAddScreen: true,
+        )),
+      );
+    }
+  }
+
 }

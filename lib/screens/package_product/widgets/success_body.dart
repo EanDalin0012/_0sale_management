@@ -71,7 +71,7 @@ class SuccessBody extends StatelessWidget {
               press: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => CategoryScreen()),
+                  MaterialPageRoute(builder: (context) => PackageProductScreen()),
                 );
 
               },

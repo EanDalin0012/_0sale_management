@@ -18,7 +18,6 @@ class _AddNewCategoryFormState extends State<AddNewCategoryForm> {
   String email;
   String password;
   bool remember = false;
-  final List<String> errors = [];
   Size size;
   var isClickSave = false;
 

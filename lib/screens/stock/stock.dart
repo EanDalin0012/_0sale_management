@@ -10,6 +10,7 @@ import 'package:sale_management/share/constant/text_style.dart';
 import 'package:sale_management/share/model/key/m_key.dart';
 import 'package:sale_management/screens/stock/add_stock.dart';
 import 'package:sale_management/screens/stock/edit_stock.dart';
+import 'package:sale_management/share/model/key/member_key.dart';
 
 class StockScreen extends StatefulWidget {
   @override

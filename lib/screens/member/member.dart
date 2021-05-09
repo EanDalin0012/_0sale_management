@@ -2,12 +2,14 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sale_management/screens/home/Home.dart';
 import 'package:sale_management/screens/member/edit_member.dart';
 import 'package:sale_management/screens/widgets/search_widget/search_widget.dart';
 import 'package:sale_management/share/constant/constant_color.dart';
 import 'package:sale_management/share/constant/text_style.dart';
 import 'package:sale_management/screens/member/add_member.dart';
-import 'package:sale_management/share/model/key/m_key.dart';
+import 'package:sale_management/share/helper/keyboard.dart';
+import 'package:sale_management/share/model/key/member_key.dart';
 
 class MemberScreen extends StatefulWidget {
   @override
@@ -33,11 +35,24 @@ class _MemberScreenState extends State<MemberScreen> {
     return Scaffold(
       appBar: _buildAppBar(),
       body: SafeArea(
-        child: Column(
-          children: <Widget>[
-            _container(),
-            if (this.vDataLength > 0 ) _buildBody() else _buildLoadingScreen()
-          ],
+        child: WillPopScope(
+          onWillPop:  () async {
+            return Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Home()),
+            );
+          },
+          child: GestureDetector(
+            onTap: () {
+              KeyboardUtil.hideKeyboard(context);
+            },
+            child: Column(
+              children: <Widget>[
+                _container(),
+                if (this.vDataLength > 0 ) _buildBody() else _buildLoadingScreen()
+              ],
+            ),
+          ),
         ),
       ),
         floatingActionButton: _floatingActionButton()
@@ -219,7 +234,7 @@ class _MemberScreenState extends State<MemberScreen> {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) =>
-              EditMemberScreen(member: item)
+              EditMemberScreen(vMember: item)
           ),
         );
       } else if (value == 1) {

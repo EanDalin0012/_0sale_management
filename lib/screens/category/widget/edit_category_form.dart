@@ -27,21 +27,7 @@ class _EditCategoryFormState extends State<EditCategoryForm> {
   bool remember = false;
   final List<String> errors = [];
   Size size;
-
   var isClickUpdate = false;
-  void addError({String error}) {
-    if (!errors.contains(error))
-      setState(() {
-        errors.add(error);
-      });
-  }
-
-  void removeError({String error}) {
-    if (errors.contains(error))
-      setState(() {
-        errors.remove(error);
-      });
-  }
 
   @override
   Widget build(BuildContext context) {

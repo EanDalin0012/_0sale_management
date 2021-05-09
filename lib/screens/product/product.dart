@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sale_management/screens/home/Home.dart';
 import 'package:sale_management/screens/widgets/search_widget/search_widget.dart';
 import 'package:sale_management/share/components/show_dialog/show_dialog.dart';
 import 'package:sale_management/share/constant/constant_color.dart';
@@ -34,15 +35,23 @@ class _ProductScreenState extends State<ProductScreen> {
     return Scaffold(
         appBar: _buildAppBar(),
         body: SafeArea(
-          child: InkWell(
-            onTap: () {
-              KeyboardUtil.hideKeyboard(context);
+          child: WillPopScope(
+            onWillPop:  () async {
+              return Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Home()),
+              );
             },
-            child: Column(
-              children: <Widget>[
-                _container(),
-                if (vDataLength > 0 ) _buildBody() else _buildLoadingScreen()
-              ],
+            child: GestureDetector(
+              onTap: () {
+                KeyboardUtil.hideKeyboard(context);
+              },
+              child: Column(
+                children: <Widget>[
+                  _container(),
+                  if (vDataLength > 0 ) _buildBody() else _buildLoadingScreen()
+                ],
+              ),
             ),
           ),
         ),
@@ -59,8 +68,6 @@ class _ProductScreenState extends State<ProductScreen> {
           icon: Icon(isNative ? Icons.close : Icons.search),
           onPressed: () => setState(() {
             this.isNative = !isNative;
-            // this.isItemChanged = false;
-            // this.isFilterByProduct = false;
           }),
         ),
         const SizedBox(width: 8),
@@ -82,7 +89,6 @@ class _ProductScreenState extends State<ProductScreen> {
               ),
             ),
             _buildFilterByCategory()
-            // _buildFilterByProduct()
           ],
         ),
       ): null,
@@ -97,20 +103,6 @@ class _ProductScreenState extends State<ProductScreen> {
         icon: FaIcon(FontAwesomeIcons.filter,size: 25 , color: Colors.white,),
         tooltip: 'Increase volume by 10',
         onPressed: () async {
-          // final product = await Navigator.push(
-          //   context,
-          //   MaterialPageRoute(builder: (context) => ProductPage(
-          //     productModel: this.product,
-          //   )),
-          // );
-          //
-          // if (product == null) return;
-          // this.isItemChanged = false;
-          // this.isFilterByProduct = true;
-          // setState(() {
-          //   this.product = product;
-          //   this.items = this._doFilterByProduct(this.product);
-          // });
         },
       ),
     );

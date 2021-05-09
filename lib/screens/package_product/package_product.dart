@@ -375,17 +375,6 @@ class _PackageProductScreenState extends State<PackageProductScreen> {
     );
   }
 
-  Widget _buildLoadingScreen() {
-    return Center(
-      child: Container(
-        width: 50,
-        height: 50,
-        child: CircularProgressIndicator(),
-      ),
-    );
-  }
-
-
   onItemChanged(String value) {
     var dataItems = itemsTmp.where((e) => e.name.toLowerCase().contains(value.toLowerCase())).toList();
     return dataItems;

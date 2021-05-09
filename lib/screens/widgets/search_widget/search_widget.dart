@@ -18,11 +18,9 @@ class SearchWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final styleActive = TextStyle(color: Colors.black, fontSize: 15);
     final styleHint = TextStyle(color: Colors.black54);
-    final style = this.text == null ? styleHint : styleActive;
-    var styleInput = TextStyle(color: Colors.black, fontSize: 17, fontWeight: FontWeight.w500, fontFamily: fontFamilyDefault);
 
     return TextFormField(
-        keyboardType: TextInputType.emailAddress,
+        keyboardType: TextInputType.text,
         style: TextStyle(color: Colors.white, fontSize: 20),
         decoration: InputDecoration(
             labelStyle: TextStyle(color: Colors.white, fontSize: 20),

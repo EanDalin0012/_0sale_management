@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sale_management/screens/home/Home.dart';
 import 'package:sale_management/screens/vendor/edit_vendor.dart';
 import 'package:sale_management/screens/widgets/search_widget/search_widget.dart';
 import 'package:sale_management/share/components/show_dialog/show_dialog.dart';
@@ -9,7 +10,7 @@ import 'package:sale_management/share/constant/constant_color.dart';
 import 'package:sale_management/share/constant/text_style.dart';
 import 'package:sale_management/screens/vendor/add_vendor.dart';
 import 'package:sale_management/screens/widgets/circular_progress_indicator/circular_progress_loading.dart';
-import 'package:sale_management/share/model/key/m_key.dart';
+import 'package:sale_management/share/model/key/vendor_key.dart';
 
 class VendorScreen extends StatefulWidget {
   @override
@@ -34,11 +35,19 @@ class _VendorState extends State<VendorScreen> {
     return Scaffold(
       appBar: _buildAppBar(),
       body: SafeArea(
-          child: Column(
-            children: <Widget>[
-              _container(),
-              if (vDataLength > 0 ) _buildBody() else CircularProgressLoading()
-            ],
+          child: WillPopScope(
+            onWillPop:  () async {
+              return Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Home()),
+              );
+            },
+            child: Column(
+              children: <Widget>[
+                _container(),
+                if (vDataLength > 0 ) _buildBody() else CircularProgressLoading()
+              ],
+            ),
           )
       ),
       floatingActionButton: _floatingActionButton()

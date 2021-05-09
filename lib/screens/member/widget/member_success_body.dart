@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:sale_management/screens/member/member.dart';
 import 'package:sale_management/screens/size_config.dart';
+import 'package:sale_management/screens/vendor/vendor.dart';
 import 'package:sale_management/screens/widgets/default_button/default_button.dart';
 import 'package:sale_management/share/constant/text_style.dart';
-import 'package:sale_management/share/model/key/member_key.dart';
+import 'package:sale_management/share/model/key/vendor_key.dart';
 
 class MemberSuccessBody extends StatelessWidget {
   final bool isAddScreen;
@@ -25,7 +25,7 @@ class MemberSuccessBody extends StatelessWidget {
       onWillPop:  () async {
         return Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => MemberScreen()),
+          MaterialPageRoute(builder: (context) => VendorScreen()),
         );
       },
       child: Column(
@@ -43,11 +43,11 @@ class MemberSuccessBody extends StatelessWidget {
               children: <Widget>[
                 SizedBox(height: SizeConfig.screenHeight * 0.04), // 4%
                 if (this.isAddScreen == true)
-                  Text("Register Member", style: headingStyle),
+                  Text("Register Vendor", style: headingStyle),
                 if(this.isEditScreen == true)
-                  Text("Update Member", style: headingStyle),
+                  Text("Update Vendor", style: headingStyle),
 
-                Text("${this.vData[MemberKey.name]}: is completed",textAlign: TextAlign.center,),
+                Text("${this.vData[VendorKey.name]}: is completed",textAlign: TextAlign.center,),
               ],
             ),
           ),
@@ -72,7 +72,7 @@ class MemberSuccessBody extends StatelessWidget {
               press: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => MemberScreen()),
+                  MaterialPageRoute(builder: (context) => VendorScreen()),
                 );
 
               },

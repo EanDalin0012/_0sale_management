@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sale_management/screens/constants.dart';
 import 'package:sale_management/screens/size_config.dart';
 import 'package:sale_management/screens/widgets/custom_suffix_icon/custom_suffix_icon.dart';
+import 'package:sale_management/screens/widgets/package_product_dropdown/package_product_page.dart';
 import 'package:sale_management/screens/widgets/product_dropdown/product_page.dart';
 import 'package:sale_management/share/constant/text_style.dart';
 import 'package:sale_management/share/helper/keyboard.dart';
@@ -44,6 +45,7 @@ class _AddNewCategoryFormState extends State<AddImportForm> {
   var remarkController = new TextEditingController();
 
   Map product;
+  Map packageProduct;
 
   @override
   Widget build(BuildContext context) {
@@ -217,7 +219,10 @@ class _AddNewCategoryFormState extends State<AddImportForm> {
       onTap: () async {
         final packageProduct = await Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => ProductPage(productModel: this.product)),
+          MaterialPageRoute(builder: (context) => PackageProductPage(
+              product: this.product,
+              packageProduct: this.packageProduct,
+          )),
         );
         print('packageProduct: ${packageProduct}');
         if(packageProduct == null) {

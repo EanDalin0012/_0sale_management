@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sale_management/screens/package_product/package_product_add.dart';
+import 'package:sale_management/screens/widgets/circular_progress_indicator/circular_progress_loading.dart';
 import 'package:sale_management/screens/widgets/product_dropdown/product_page.dart';
+import 'package:sale_management/screens/widgets/search_widget/search_widget.dart';
 import 'package:sale_management/share/components/show_dialog/show_dialog.dart';
 import 'package:sale_management/share/constant/constant_color.dart';
 import 'package:sale_management/share/constant/text_style.dart';
+import 'package:sale_management/share/model/key/package_product_key.dart';
 import 'package:sale_management/share/model/key/product_key.dart';
 import 'package:sale_management/share/model/package_product.dart';
 import 'package:sale_management/share/services/load_data_local.dart';
@@ -14,7 +17,7 @@ import 'package:sale_management/share/utils/number_format.dart';
 
 class PackageProductPage extends StatefulWidget {
 
-  final PackageProductModel packageProduct;
+  final Map packageProduct;
   final Map product;
   const PackageProductPage({
     Key key,
@@ -40,15 +43,21 @@ class _PackageProductScreenState extends State<PackageProductPage> {
   TextEditingController _controller;
   var menuStyle = TextStyle( color: Colors.purple[900], fontWeight: FontWeight.w500, fontFamily: fontFamilyDefault);
 
-  List<PackageProductModel> items = [];
-  List<PackageProductModel> itemsTmp = [];
+  List<dynamic> items = [];
+  List<dynamic> itemsTmp = [];
   List<dynamic> productItems = [];
-  Map product;
 
+  List<dynamic> vProductData = [];
+  List<dynamic> vProductDataTmp = [];
+
+  Map product;
+  var itemsLength = 0;
 
   @override
   void initState() {
+    this._fetchItems();
     this._fetchProductItems();
+    super.initState();
   }
 
   @override
@@ -58,8 +67,7 @@ class _PackageProductScreenState extends State<PackageProductPage> {
         appBar: _buildAppBar(),
         body: Column(
           children: <Widget>[
-            _container(),
-            _buildBody(),
+            if (this.items.length > 0 ) _buildBody() else CircularProgressLoading(),
             SizedBox(height: 70,)
           ],
         ),
@@ -88,11 +96,19 @@ class _PackageProductScreenState extends State<PackageProductPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Container(
-              width: size.width,
-              child: _buildSearchWidget(
-                text: controller.text,
-                // onChanged: (text) => setState(() => this.text = text),
-                hintText: 'Search by name', onTap: () {  },
+              width: size.width - 70,
+              margin: EdgeInsets.only(left: 18),
+              padding: EdgeInsets.only(bottom: 10, top: 10),
+              child: SearchWidget(
+                hintText: 'Search name',
+                onChange: (value) {
+                  if(!value.isEmpty) {
+                    setState(() {
+                      items = onItemChanged(value);
+                    });
+                  }
+
+                },
               ),
             ),
             // _buildFilterByProduct()
@@ -104,30 +120,18 @@ class _PackageProductScreenState extends State<PackageProductPage> {
 
   Widget _buildBody () {
     return Expanded(
-        child: new FutureBuilder(
-            future: _fetchItems(),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                return Center(child: CircularProgressIndicator());
-              } else {
-                return ListView.separated(
-                  itemCount: items.length,
-                  separatorBuilder: (context, index) => Divider(
-                    color: Colors.purple[900].withOpacity(0.5),
-                  ),
-                  itemBuilder: (context, index) {
-                    return _buildListTile(
-                        dataItem: items[index]
-                    );
-                   },
-                );
-                // return ListView(
-                //   children: items.map((e) => _buildListTile1(dataItem: e)).toList(),
-                // );
-              }
-            }
+        child: ListView.separated(
+          itemCount: items.length,
+          separatorBuilder: (context, index) => Divider(
+            color: Colors.purple[900].withOpacity(0.5),
+          ),
+          itemBuilder: (context, index) {
+            return _buildListTile(
+                dataItem: items[index]
+            );
+          },
         )
-    );
+      );
   }
 
   Widget _buildFilterByProduct() {
@@ -158,126 +162,17 @@ class _PackageProductScreenState extends State<PackageProductPage> {
     );
   }
 
-  Widget _buildSearchWidget({
-    @required String text,
-    @required String hintText,
-    @required VoidCallback onTap,
-    Widget leading,
-  }) {
-    final styleActive = TextStyle(color: Colors.black, fontSize: 15);
-    final styleHint = TextStyle(color: Colors.black54);
-    final style = text.isEmpty ? styleHint : styleActive;
-    return Container(
-      height: 40,
-      margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        color: Colors.white,
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 8),
-      child: TextField(
-        controller: controller,
-        decoration: InputDecoration(
-          icon: InkWell(
-              onTap: () {
-                print('data search');
-              },
-              child: Icon(Icons.search, color: style.color)),
-          suffixIcon: text.isNotEmpty ? GestureDetector(
-            child: Icon(Icons.close, color: style.color),
-            onTap: () {
-              controller.clear();
-              FocusScope.of(context).requestFocus(FocusNode());
-            },
-          ) : null,
-          hintText: hintText,
-          hintStyle: style,
-          border: InputBorder.none,
-        ),
-        style: styleInput,
-        onChanged: (value) {
-          this.isItemChanged = true;
-          if(value != null || value.trim() != '') {
-            this.isItemChanged = true;
-            if(value != null || value.trim() != '') {
-              setState(() {
-                items = onItemChanged(value);
-              });
-            }
-          }
-        },
-      ),
-    );
-  }
-
-  _save() async {
-    // if (_controller.text.isEmpty) return;
-    // FocusScope.of(context).requestFocus(FocusNode());
-    // setState(() {
-    //   messages.insert(0, Message(rand.nextInt(2), _controller.text));
-    //   _controller.clear();
-    // });
-  }
-
-  Widget _offsetPopup(PackageProductModel item) => PopupMenuButton<int>(
-    itemBuilder: (context) => [
-      PopupMenuItem(
-          value: 2,
-          child: Row(
-            children: <Widget>[
-              FaIcon(FontAwesomeIcons.edit,size: 20,color: Colors.purple[900]),
-              SizedBox(width: 10,),
-              Text(
-                "Edit",
-                style: menuStyle,
-              ),
-            ],
-          )
-      ),
-      PopupMenuItem(
-          value: 3,
-          child: Row(
-            children: <Widget>[
-              FaIcon(FontAwesomeIcons.trash,size: 20,color: Colors.purple[900]),
-              SizedBox(width: 10,),
-              Text(
-                "Delete",
-                style: menuStyle,
-              ),
-            ],
-          )
-      ),
-    ],
-    icon: FaIcon(FontAwesomeIcons.ellipsisV,size: 20,color: Colors.black),
-    offset: Offset(0, 45),
-    onSelected: (value) {
-      if(value == 1) {
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(builder: (context) => VendorViewScreen(vendorModel)),
-        // );
-      } else if(value == 2) {
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(builder: (context) => EditCategoryScreen(categoryModel)),
-        // );
-      } else if (value == 3) {
-        _showDialog(item);
-      }
-    },
-  );
-
   Widget _buildListTile({
-    @required PackageProductModel dataItem
+    @required Map dataItem
   }) {
     return ListTile(
       onTap: () => selectPackageProduct(dataItem),
-      title: Text( dataItem.name,
+      title: Text( '${dataItem[PackageProductKey.name]}',
         style: TextStyle( color: Colors.black87, fontSize: 20, fontWeight: FontWeight.w700,fontFamily: fontFamilyDefault),
       ),
-      leading: _buildLeading(dataItem.productId),
+      leading: _buildLeading(dataItem[PackageProductKey.id]),
       subtitle: Text(
-        FormatNumber.usdFormat2Digit(dataItem.price.toString()).toString()+' \$,'+dataItem.remark,
+        FormatNumber.usdFormat2Digit(dataItem[PackageProductKey.price].toString()).toString()+' \$,'+dataItem[PackageProductKey.remark],
         style: TextStyle(fontSize: 12,fontWeight: FontWeight.w700, fontFamily: fontFamilyDefault, color: primaryColor),
       ),
       trailing: Container(
@@ -291,7 +186,7 @@ class _PackageProductScreenState extends State<PackageProductPage> {
                 Row(
                   children: <Widget>[
                     Text(
-                      dataItem.quantity.toString(),
+                      dataItem[PackageProductKey.quantity].toString(),
                       style: TextStyle(
                         color: Colors.black87,
                         fontSize: 18,
@@ -304,7 +199,7 @@ class _PackageProductScreenState extends State<PackageProductPage> {
             ),
             Column(
               children: <Widget>[
-                widget.packageProduct !=null && dataItem.id == widget.packageProduct.id ? _buildCheckIcon() : Container()
+                widget.packageProduct !=null && dataItem[PackageProductKey.id] == widget.packageProduct[PackageProductKey.id] ? _buildCheckIcon() : Container()
               ],
             ),
 
@@ -404,38 +299,30 @@ class _PackageProductScreenState extends State<PackageProductPage> {
   }
 
   _fetchItems() async {
-    if(isItemChanged == true) {
-      if(controller.text != null) {
-        setState(() {
-          isItemChanged = true;
-          items = onItemChanged(controller.text);
-        });
-      }
-      return items;
-    } else if(isFilterByProduct == true) {
-      this.items = this._doFilterByProduct(this.product);
-      return items;
-    } else if(this.isNative == false && this.itemsTmp.length > 0) {
-      this.items = itemsTmp;
-      return this.items;
-    } else {
-      print('item:');
-      final data = await rootBundle.loadString(
-          'assets/json_data/package_of_product_list.json');
-      Map valueMap = jsonDecode(data);
-      var dataItems = valueMap['packageProducts'];
-      var arrObjs = dataItems.map<PackageProductModel>((json) {
-        return PackageProductModel.fromJson(json);
-      }).toList();
-      this.itemsTmp = arrObjs;
-      var vData = _doFilterByProduct(widget.product);
-      this.items = vData;
+    print('item:');
+    final data = await rootBundle.loadString(
+        'assets/json_data/package_of_product_list.json');
+    Map valueMap = jsonDecode(data);
+    var dataItems = valueMap['packageProducts'];
+    setState(() {
+      this.items = dataItems;
       this.itemsTmp = this.items;
-      if(this.items.length <= 0) {
-        return [];
-      }
-      return this.items;
-    }
+      print('\n data:${items.length}');
+      var data = _doFilterByProduct(widget.product);
+      this.items = data;
+    });
+    return this.items;
+  }
+
+  _fetchProductListItems() async {
+    final data = await rootBundle.loadString('assets/json_data/product_list.json');
+    Map valueMap = jsonDecode(data);
+    var products = valueMap['products'];
+    setState(() {
+      this.vProductData = products;
+      this.vProductDataTmp = this.vProductData;
+    });
+    return vProductData;
   }
 
   Future<void> _fetchProductItems() async {
@@ -456,11 +343,11 @@ class _PackageProductScreenState extends State<PackageProductPage> {
   }
 
   _doFilterByProduct(Map product) {
-    var dataItems = itemsTmp.where((e) => e.productId.toString().contains(product[ProductKey.id].toString())).toList();
+    var dataItems = itemsTmp.where((e) => e[PackageProductKey.id].toString().contains(product[ProductKey.id].toString())).toList();
     return dataItems;
   }
 
-  void selectPackageProduct(PackageProductModel packageProductModel) {
+  void selectPackageProduct(Map packageProductModel) {
     Navigator.pop(context, packageProductModel);
   }
 

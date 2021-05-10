@@ -31,12 +31,6 @@ class _MemberTypeState extends State<MemberType> {
   }
 
   _save() async {
-    // if (_controller.text.isEmpty) return;
-    // FocusScope.of(context).requestFocus(FocusNode());
-    // setState(() {
-    //   messages.insert(0, Message(rand.nextInt(2), _controller.text));
-    //   _controller.clear();
-    // });
   }
 
   AppBar _appBar() {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sale_management/screens/constants.dart';
+import 'package:sale_management/screens/sale/sale_add_confirm.dart';
 import 'package:sale_management/screens/size_config.dart';
 import 'package:sale_management/screens/widgets/custom_suffix_icon/custom_suffix_icon.dart';
 import 'package:sale_management/screens/widgets/package_product_dropdown/package_product_page.dart';
@@ -12,9 +13,12 @@ import 'package:sale_management/share/model/key/package_product_key.dart';
 import 'package:sale_management/share/model/key/product_key.dart';
 import 'package:sale_management/share/model/key/m_key.dart';
 import 'package:sale_management/screens/package_product/widgets/prefix_product.dart';
+import 'package:sale_management/screens/widgets/vendor_dropdown/vendor_dropdown.dart';
+import 'package:sale_management/share/model/key/vendor_key.dart';
+import 'package:sale_management/share/utils/number_format.dart';
 
 class AddImportForm extends StatefulWidget {
-  final ValueChanged<int> onAddChange;
+  final ValueChanged<List<dynamic>> onAddChange;
 
   AddImportForm({Key key, this.onAddChange}):super(key: key);
 
@@ -48,6 +52,7 @@ class _AddNewCategoryFormState extends State<AddImportForm> {
 
   Map product;
   Map packageProduct;
+  Map vendor;
 
   var helperText = 'Please select product first.';
   var isSelectPackageProduct = false;
@@ -69,7 +74,7 @@ class _AddNewCategoryFormState extends State<AddImportForm> {
                 height: 45,
                 width: MediaQuery.of(context).size.width,
                 color: Colors.redAccent,
-                child: Center(child: Text('Save', style: TextStyle(fontWeight: FontWeight.w700, color: Colors.white, fontFamily: 'roboto', fontSize: 18))),
+                child: Center(child: Text('Next', style: TextStyle(fontWeight: FontWeight.w700, color: Colors.white, fontFamily: 'roboto', fontSize: 18))),
               ),
             )
           ]
@@ -150,7 +155,7 @@ class _AddNewCategoryFormState extends State<AddImportForm> {
     return TextFormField(
       keyboardType: TextInputType.number,
       textInputAction: TextInputAction.next,
-      controller: quantityController,
+      controller: totalController,
       onChanged: (value) => checkFormValid(),
       validator: (value) {
         if (value.isEmpty) {
@@ -171,7 +176,7 @@ class _AddNewCategoryFormState extends State<AddImportForm> {
   TextFormField _buildRemarkField() {
     return TextFormField(
       keyboardType: TextInputType.text,
-      controller: quantityController,
+      controller: remarkController,
       onChanged: (value) => checkFormValid(),
       decoration: InputDecoration(
         labelText: "Remark",
@@ -237,6 +242,12 @@ class _AddNewCategoryFormState extends State<AddImportForm> {
             setState(() {
               this.packageProduct = packageProduct;
               packageProductController.text = this.packageProduct[PackageProductKey.name];
+              quantityController.text = this.packageProduct[PackageProductKey.quantity].toString();
+              var calTotal = (double.parse(quantityController.text) * double.parse(this.packageProduct[PackageProductKey.price].toString())).toString();
+              totalController.text = FormatNumber.usdFormat2Digit(calTotal.toString()).toString();
+
+              this.helperText = 'Price : '+FormatNumber.usdFormat2Digit(this.packageProduct[PackageProductKey.price].toString()).toString() + ' USD';
+              this.isSelectPackageProduct = false;
               checkFormValid();
             });
         } else {
@@ -272,6 +283,22 @@ class _AddNewCategoryFormState extends State<AddImportForm> {
 
   TextFormField _buildVendorField() {
     return TextFormField(
+      onTap: () async {
+        final vendor = await Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => VendorDropDownPage(
+            vVendor: this.vendor
+          )),
+        );
+        if(vendor == null) {
+          return;
+        }
+        setState(() {
+          this.vendor = vendor;
+          vendorController.text = this.vendor[VendorKey.name];
+          checkFormValid();
+        });
+      },
       keyboardType: TextInputType.text,
       controller: vendorController,
       onChanged: (value) => checkFormValid(),
@@ -325,7 +352,15 @@ class _AddNewCategoryFormState extends State<AddImportForm> {
                 ImportAddKey.remark: this.remark
               };
               this.vData.add(data);
-              widget.onAddChange(this.vData.length);
+              widget.onAddChange(this.vData);
+              this.productController.clear();
+              this.packageProductController.clear();
+              this.isSelectPackageProduct = false;
+              this.helperText = 'Please select product first.';
+              this.vendorController.clear();
+              this.quantityController.clear();
+              this.totalController.clear();
+              this.remarkController.clear();
             });
           }
         },
@@ -334,21 +369,13 @@ class _AddNewCategoryFormState extends State<AddImportForm> {
   }
 
   void save() {
-    this.isClickSave = true;
-    if( _formKey.currentState.validate()) {
-      print('validate');
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(builder: (context) => MemberSuccessScreen(
-      //     isAddScreen: true,
-      //     vData: {
-      //       MemberKey.name: nameController.text,
-      //       MemberKey.phone: phoneController.text,
-      //       MemberKey.url: browsController.text,
-      //       MemberKey.remark: remarkController.text
-      //     },
-      //   )),
-      // );
+    if(this.vData.length > 0) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => SaleAddConfirm(
+          vData: this.vData,
+        )),
+      );
     }
   }
 

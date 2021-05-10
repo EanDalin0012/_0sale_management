@@ -154,9 +154,6 @@ class _VendorState extends State<VendorScreen> {
       title: Text( dataItem[VendorKey.name],
         style: TextStyle( color: Colors.black87, fontSize: 20, fontWeight: FontWeight.w700,fontFamily: fontFamilyDefault),
       ),
-      // leading: _buildLeading(
-      //     url: dataItem[ProductKey.url]
-      // ),
       subtitle: Text(
         dataItem[VendorKey.phone] + ',' +dataItem[VendorKey.email],
         style: TextStyle(fontSize: 12,fontWeight: FontWeight.w700, fontFamily: fontFamilyDefault, color: primaryColor),

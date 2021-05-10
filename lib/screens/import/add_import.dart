@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sale_management/share/constant/text_style.dart';
 import 'package:sale_management/screens/import/widget/add_import_form.dart';
+import 'package:sale_management/screens/import/widget/import_items.dart';
 
 class AddImportScreen extends StatefulWidget {
   AddImportScreen({Key key}):super(key: key);
@@ -21,9 +22,10 @@ class _AddImportScreenState extends State<AddImportScreen> {
       appBar: _buildAppBar(),
       body: SafeArea(
         child: AddImportForm(
-          onAddChange: (itemCount) {
+          onAddChange: (items) {
             setState(() {
-              this.cartArrowDownCount = itemCount;
+              this.vData = items;
+              this.cartArrowDownCount = this.vData.length;
             });
           },
         )
@@ -37,9 +39,7 @@ class _AddImportScreenState extends State<AddImportScreen> {
         backgroundColor: Colors.purple[900],
         actions: <Widget>[
           GestureDetector(
-            onTap: () {
-              // _showModelSheet();
-            },
+            onTap: () => _showModelSheet(),
             child: Container(
               height: 80,
               width: 55,
@@ -67,5 +67,40 @@ class _AddImportScreenState extends State<AddImportScreen> {
     );
   }
 
+
+  Container _showModelSheet() {
+    var orientation = MediaQuery.of(context).orientation;
+    double height = (MediaQuery.of(context).copyWith().size.height * 0.9);
+    setState(() {
+      if(orientation != Orientation.portrait){
+        height = MediaQuery.of(context).copyWith().size.height * 0.5;
+      }
+    });
+
+    showModalBottomSheet(
+        backgroundColor: Colors.transparent,
+        context: context,
+        isScrollControlled: true,
+        builder: (BuildContext builder) {
+          return Container(
+            height: height,
+            width: MediaQuery.of(context).size.width,
+            padding: EdgeInsets.only(top: 3),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                color: Colors.deepPurpleAccent.withOpacity(0.5)
+            ),
+            child: ImportItems(
+              vData: this.vData,
+              onChanged: (vChangeData) {
+                setState(() {
+                  this.vData = vChangeData;
+                  this.cartArrowDownCount = this.vData.length;
+                });
+              },
+            ),
+          );
+        });
+  }
 
 }

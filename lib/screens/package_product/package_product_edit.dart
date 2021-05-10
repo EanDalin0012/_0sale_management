@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:sale_management/screens/constants.dart';
 import 'package:sale_management/screens/size_config.dart';
 import 'package:sale_management/share/constant/text_style.dart';
-import 'package:sale_management/share/model/category.dart';
 import 'package:sale_management/share/model/key/product_key.dart';
 import 'package:sale_management/share/model/package_product.dart';
 import 'package:sale_management/share/services/load_data_local.dart';
@@ -94,13 +93,6 @@ class _PackageProductAddState extends State<PackageProductEdit> {
         )
     );
   }
-
-
-  _save() {
-    var categoryModel = new CategoryModel(nameValueController.text, remarkValueController.text);
-    print(categoryModel.toString());
-  }
-
 
   Widget buildListTile({
     @required String title,

@@ -3,8 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sale_management/share/components/show_dialog/show_dialog.dart';
 import 'package:sale_management/share/constant/constant_color.dart';
 import 'package:sale_management/share/constant/text_style.dart';
-import 'package:sale_management/share/model/category.dart';
-import 'package:sale_management/share/model/data/category.dart';
+import 'package:sale_management/share/model/key/vendor_key.dart';
 
 class MemberType extends StatefulWidget {
   @override
@@ -14,7 +13,7 @@ class MemberType extends StatefulWidget {
 class _MemberTypeState extends State<MemberType> {
   bool isSearch = false;
   TextEditingController _controller;
-  List<CategoryModel> categories = categoriesData;
+  List<dynamic> categories = [];
   var menuStyle = TextStyle( color: Colors.purple[900], fontWeight: FontWeight.w500, fontFamily: fontFamilyDefault);
 
   @override
@@ -153,7 +152,7 @@ class _MemberTypeState extends State<MemberType> {
     );
   }
 
-  Widget _offsetPopup(CategoryModel categoryModel) => PopupMenuButton<int>(
+  Widget _offsetPopup(Map categoryModel) => PopupMenuButton<int>(
     itemBuilder: (context) => [
       PopupMenuItem(
           value: 2,
@@ -201,11 +200,11 @@ class _MemberTypeState extends State<MemberType> {
     },
   );
 
-  Widget _showDialog(CategoryModel _vendorModel) {
+  Widget _showDialog(Map _vendorModel) {
     ShowDialog.showDialogYesNo(
         buildContext: context,
-        title: Text(_vendorModel.name),
-        content: Text('Do you want to delete category : '+_vendorModel.name+'?'),
+        title: Text(_vendorModel[VendorKey.name]),
+        content: Text('Do you want to delete category : '+_vendorModel[VendorKey.name]+'?'),
         btnRight: 'Yes',
         onPressedBntRight: () {
           print('onPressedBntRight');

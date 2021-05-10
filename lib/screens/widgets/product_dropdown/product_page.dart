@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sale_management/screens/widgets/circular_progress_indicator/circular_progress_loading.dart';
+import 'package:sale_management/screens/widgets/search_widget/search_widget.dart';
 import 'package:sale_management/share/constant/constant_color.dart';
 import 'package:sale_management/share/constant/text_style.dart';
 import 'package:sale_management/share/model/key/product_key.dart';
+import 'package:sale_management/screens/widgets/icon_check/icon_check.dart';
 
 class ProductPage extends StatefulWidget {
   final Map productModel;
@@ -40,9 +42,18 @@ class _ProductPageState extends State<ProductPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBar(),
-      body: vDataLength > 0 ? Container(
-        child: ListView.separated(
-        itemCount: vDataLength,
+      body: Column(
+          children: <Widget>[
+            if (this.vData.length > 0 ) _buildBody() else CircularProgressLoading(),
+          ]
+      ),
+    );
+  }
+
+  Widget _buildBody () {
+    return Expanded(
+      child: ListView.separated(
+        itemCount: this.vData.length,
         separatorBuilder: (context, index) => Divider(
           color: Colors.purple[900].withOpacity(0.5),
         ),
@@ -51,8 +62,7 @@ class _ProductPageState extends State<ProductPage> {
               dataItem: this.vData[index]
           );
         },
-      )
-      ) : Container(),
+      ),
     );
   }
 
@@ -70,10 +80,21 @@ class _ProductPageState extends State<ProductPage> {
         const SizedBox(width: 8),
       ],
       bottom: this.isNative ? PreferredSize(preferredSize: Size.fromHeight(60),
-        child:  buildSearchWidget(
-          text: text,
-          // onChanged: (text) => setState(() => this.text = text),
-          hintText: 'Search $label',
+        child:  Container(
+          margin: EdgeInsets.only(left: 15, right: 15),
+          padding: EdgeInsets.only(bottom: 10, top: 10),
+          child: SearchWidget(
+            hintText: 'Search name',
+            onChange: (value) {
+              if(!value.isEmpty) {
+                setState(() {
+                  this.vData = onItemChanged(value);
+                  this.vDataLength = this.vData.length;
+                });
+              }
+
+            },
+          ),
         ),
       ): null,
     );
@@ -97,21 +118,10 @@ class _ProductPageState extends State<ProductPage> {
       subtitle: Text('${dataItem[ProductKey.remark]}',
         style: TextStyle(fontSize: 12,fontWeight: FontWeight.w700, fontFamily: fontFamilyDefault, color: primaryColor),
       ),
-      trailing: Container(
-        width: 130,
-        child: (dataItem[ProductKey.name]).toLowerCase() == productName ? _buildCheckIcon() : null,
-      ),
+      trailing: (dataItem[ProductKey.name]).toLowerCase() == productName ? IconCheck() : null,
     );
   }
 
-  Widget _buildCheckIcon() {
-    return Container(
-      margin: EdgeInsets.only(
-        left: 100
-      ),
-      child: Center(child: FaIcon(FontAwesomeIcons.checkCircle, size: 25 , color: Colors.deepPurple)),
-    );
-  }
 
   Widget buildSearchWidget({
     @required String text,

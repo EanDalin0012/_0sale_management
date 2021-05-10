@@ -5,8 +5,10 @@ import 'package:sale_management/screens/size_config.dart';
 import 'package:sale_management/screens/widgets/custom_suffix_icon/custom_suffix_icon.dart';
 import 'package:sale_management/screens/widgets/package_product_dropdown/package_product_page.dart';
 import 'package:sale_management/screens/widgets/product_dropdown/product_page.dart';
+import 'package:sale_management/share/constant/constant_color.dart';
 import 'package:sale_management/share/constant/text_style.dart';
 import 'package:sale_management/share/helper/keyboard.dart';
+import 'package:sale_management/share/model/key/package_product_key.dart';
 import 'package:sale_management/share/model/key/product_key.dart';
 import 'package:sale_management/share/model/key/m_key.dart';
 import 'package:sale_management/screens/package_product/widgets/prefix_product.dart';
@@ -46,6 +48,9 @@ class _AddNewCategoryFormState extends State<AddImportForm> {
 
   Map product;
   Map packageProduct;
+
+  var helperText = 'Please select product first.';
+  var isSelectPackageProduct = false;
 
   @override
   Widget build(BuildContext context) {
@@ -191,6 +196,7 @@ class _AddNewCategoryFormState extends State<AddImportForm> {
         setState(() {
           this.product = product;
           productController.text = this.product[ProductKey.name];
+          this.helperText = '';
           checkFormValid();
         });
       },
@@ -217,22 +223,28 @@ class _AddNewCategoryFormState extends State<AddImportForm> {
   TextFormField _buildPackageProductField() {
     return TextFormField(
       onTap: () async {
-        final packageProduct = await Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => PackageProductPage(
-              product: this.product,
-              packageProduct: this.packageProduct,
-          )),
-        );
-        print('packageProduct: ${packageProduct}');
-        if(packageProduct == null) {
-          return;
+        if(this.product != null) {
+            final packageProduct = await Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => PackageProductPage(
+                product: this.product,
+                packageProduct: this.packageProduct,
+              )),
+            );
+            if(packageProduct == null) {
+              return;
+            }
+            setState(() {
+              this.packageProduct = packageProduct;
+              packageProductController.text = this.packageProduct[PackageProductKey.name];
+              checkFormValid();
+            });
+        } else {
+          setState(() {
+            this.isSelectPackageProduct = true;
+          });
         }
-        // setState(() {
-        //   this.product = product;
-        //   productController.text = this.product.name;
-        //   checkFormValid();
-        // });
+
       },
       keyboardType: TextInputType.text,
       controller: packageProductController,
@@ -249,6 +261,8 @@ class _AddNewCategoryFormState extends State<AddImportForm> {
       decoration: InputDecoration(
         labelText: "Package Product",
         hintText: "Select package product",
+        helperText: helperText,
+        helperStyle: TextStyle(color: isSelectPackageProduct ? Colors.redAccent : dropColor),
         floatingLabelBehavior: FloatingLabelBehavior.always,
         prefixIcon: this.product != null ? PrefixProduct(url: this.product[ProductKey.url]) : null,
         suffixIcon: CustomSufFixIcon( svgPaddingLeft: 15,svgIcon: "assets/icons/expand_more_black_24dp.svg"),
@@ -317,46 +331,6 @@ class _AddNewCategoryFormState extends State<AddImportForm> {
         },
       ),
     );
-  }
-
-  Future<void> _isValid({
-    @required String body,
-  }) {
-    var padding = EdgeInsets.all(5);
-    return showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            // title: Text('Are you sure?'),
-            content: Text(body, style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, fontFamily: fontFamilyDefault),),
-            actions: <Widget>[
-              FlatButton(
-                child: Container(
-                    padding: padding,
-                    decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: Center(
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            FaIcon(FontAwesomeIcons.timesCircle,size: 25,color: Colors.white),
-                            SizedBox(width: 5,),
-                            Center(child: Text('Close', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700, fontFamily: fontFamilyDefault, color: Colors.white),)),
-                            SizedBox(width: 5,),
-                          ],
-
-                        )
-                    )
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop(false);
-                },
-              ),
-            ],
-          );
-        });
   }
 
   void save() {

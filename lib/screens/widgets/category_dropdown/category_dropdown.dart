@@ -7,6 +7,7 @@ import 'package:sale_management/share/model/key/category_key.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sale_management/share/constant/text_style.dart';
+import 'package:sale_management/screens/widgets/icon_check/icon_check.dart';
 
 class CategoryDropdownPage extends StatefulWidget {
   final Map vCategory;
@@ -129,17 +130,10 @@ class _CategoryDropdownPageState extends State<CategoryDropdownPage> {
           dataItem[CategoryKey.remark],
         style: TextStyle(fontSize: 12,fontWeight: FontWeight.w700, fontFamily: fontFamilyDefault, color: primaryColor),
       ),
-      trailing:  isCheck ? _buildIconCheck() : null,
+      trailing:  isCheck ? IconCheck() : null,
     );
   }
 
-  Widget _buildIconCheck() {
-    return Container(
-      width: 40,
-      height: 30,
-      child: Image(image: AssetImage('assets/icons/success-green-check-mark.png')),
-    );
-  }
 
   void onSelectedItem(Map data) {
     Navigator.pop(context, data);

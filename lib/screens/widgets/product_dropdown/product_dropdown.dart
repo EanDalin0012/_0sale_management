@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:sale_management/screens/widgets/product_dropdown/product_page.dart';
-import 'package:sale_management/share/model/product.dart';
 import 'package:sale_management/screens/widgets/product_dropdown/FlagImageWidget.dart';
+import 'package:sale_management/share/model/key/product_key.dart';
 
 class ProductDropdown extends StatefulWidget {
-  final ProductModel product;
-  final ValueChanged<ProductModel> onChanged;
+  final Map product;
+  final ValueChanged<Map> onChanged;
   final Color color;
 
   ProductDropdown({
@@ -18,17 +18,11 @@ class ProductDropdown extends StatefulWidget {
 }
 
 class _ProductDropdownState extends State<ProductDropdown> {
-  ProductModel product;
+  Map product;
 
   @override
   Widget build(BuildContext context) {
-
-    // if(widget.product !=null) {
-    //   this.product = widget.product;
-    // }
     this.product = widget.product;
-
-    Size size = MediaQuery.of(context).size;
     return  Container(
         child: buildSingleProduct(),
       );
@@ -52,7 +46,7 @@ class _ProductDropdownState extends State<ProductDropdown> {
 
     return buildCountryPicker(
       title: 'Select Country',
-      child: product == null ? buildListTile(
+      child: this.product == null ? buildListTile(
           title: 'Select Product',
           leading: Icon(
             Icons.info_outline,
@@ -60,11 +54,11 @@ class _ProductDropdownState extends State<ProductDropdown> {
           ),
           onTap: onTap
         ) : buildListTile(
-        title: product.name,
+        title: this.product[ProductKey.name],
         leading: FlagImageWidget(
           width: 40,
           height: 40,
-          url: product.url,
+          url: this.product[ProductKey.url],
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(60)),
             border: Border.all(color: Colors.grey, width: 0),

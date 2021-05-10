@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:sale_management/screens/constants.dart';
-import 'package:sale_management/screens/size_config.dart';
 import 'package:sale_management/share/constant/text_style.dart';
-import 'package:sale_management/share/helper/keyboard.dart';
 import 'package:sale_management/screens/import/widget/add_import_form.dart';
-import 'package:sale_management/screens/import/confirm_import.dart';
 
 class AddImportScreen extends StatefulWidget {
+  AddImportScreen({Key key}):super(key: key);
   @override
   _AddImportScreenState createState() => _AddImportScreenState();
 }
@@ -23,31 +20,13 @@ class _AddImportScreenState extends State<AddImportScreen> {
     return Scaffold(
       appBar: _buildAppBar(),
       body: SafeArea(
-        child: Column(
-          children: <Widget>[
-            _body(),
-            Stack(
-              children: <Widget>[
-                InkWell(
-                  onTap: () {
-                    KeyboardUtil.hideKeyboard(context);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => ConfirmSale(vData: this.vData,)),
-                    );
-
-                  },
-                  child: Container(
-                    width: size.width,
-                    height: 45,
-                    color: Colors.red,
-                    child: Center(child: Text('Next', style: TextStyle(fontWeight: FontWeight.w700, color: Colors.white, fontFamily: fontFamilyDefault, fontSize: 18))),
-                  ),
-                ),
-              ],
-            )
-          ],
-        ),
+        child: AddImportForm(
+          onAddChange: (itemCount) {
+            setState(() {
+              this.cartArrowDownCount = itemCount;
+            });
+          },
+        )
       ),
     );
   }
@@ -57,7 +36,7 @@ class _AddImportScreenState extends State<AddImportScreen> {
         title: Text('Import', style: TextStyle(fontFamily: fontFamilyDefault, fontWeight: FontWeight.w700)),
         backgroundColor: Colors.purple[900],
         actions: <Widget>[
-          InkWell(
+          GestureDetector(
             onTap: () {
               // _showModelSheet();
             },
@@ -88,32 +67,5 @@ class _AddImportScreenState extends State<AddImportScreen> {
     );
   }
 
-  Expanded _body() {
-    return Expanded(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
-          child: SingleChildScrollView(
-              physics: ClampingScrollPhysics(),
-              child: Column(
-                  children: <Widget>[
-                    Center(
-                      child: Column(
-                        children: <Widget>[
-                          SizedBox(height: SizeConfig.screenHeight * 0.04), // 4%
-                          Text("Import new product", style: headingStyle),
-                          Text(
-                            "Complete your details",
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: SizeConfig.screenHeight * 0.02),
-                    AddImportForm()
-                  ])
-          ),
-        )
-    );
-  }
 
 }

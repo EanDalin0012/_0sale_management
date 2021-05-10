@@ -3,10 +3,18 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sale_management/screens/constants.dart';
 import 'package:sale_management/screens/size_config.dart';
 import 'package:sale_management/screens/widgets/custom_suffix_icon/custom_suffix_icon.dart';
+import 'package:sale_management/screens/widgets/product_dropdown/product_page.dart';
 import 'package:sale_management/share/constant/text_style.dart';
+import 'package:sale_management/share/helper/keyboard.dart';
+import 'package:sale_management/share/model/key/product_key.dart';
 import 'package:sale_management/share/model/key/m_key.dart';
+import 'package:sale_management/screens/package_product/widgets/prefix_product.dart';
 
 class AddImportForm extends StatefulWidget {
+  final ValueChanged<int> onAddChange;
+
+  AddImportForm({Key key, this.onAddChange}):super(key: key);
+
   @override
   _AddNewCategoryFormState createState() => _AddNewCategoryFormState();
 }
@@ -17,9 +25,8 @@ class _AddNewCategoryFormState extends State<AddImportForm> {
   String email;
   String password;
   bool remember = false;
-  final List<String> errors = [];
   Size size;
-
+  var isClickSave = false;
   List<dynamic> vData = [];
   Map productItem;
   Map packageProductItem;
@@ -29,19 +36,14 @@ class _AddNewCategoryFormState extends State<AddImportForm> {
   var remark = '';
   var price = 0;
 
-  void addError({String error}) {
-    if (!errors.contains(error))
-      setState(() {
-        errors.add(error);
-      });
-  }
+  var productController = new TextEditingController();
+  var packageProductController = new TextEditingController();
+  var vendorController = new TextEditingController();
+  var quantityController = new TextEditingController();
+  var totalController = new TextEditingController();
+  var remarkController = new TextEditingController();
 
-  void removeError({String error}) {
-    if (errors.contains(error))
-      setState(() {
-        errors.remove(error);
-      });
-  }
+  Map product;
 
   @override
   Widget build(BuildContext context) {
@@ -50,56 +52,87 @@ class _AddNewCategoryFormState extends State<AddImportForm> {
       key: _formKey,
       child: Column(
           children: <Widget>[
-            _buildProductField(),
-            SizedBox(height: SizeConfig.screenHeight * 0.02),
-            _buildPackageProductField(),
-            SizedBox(height: SizeConfig.screenHeight * 0.02),
-            _buildVendorField(),
-            SizedBox(height: SizeConfig.screenHeight * 0.02),
-            _buildQuantityField(),
-            SizedBox(height: SizeConfig.screenHeight * 0.02),
-            _buildTotalField(),
-            SizedBox(height: SizeConfig.screenHeight * 0.02),
-            _buildRemarkField(),
-            SizedBox(height: SizeConfig.screenHeight * 0.02),
-            Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  _buildAddButton()
-                ]
+            _body(),
+            GestureDetector(
+              onTap: () {
+                KeyboardUtil.hideKeyboard(context);
+                save();
+              },
+              child: Container(
+                height: 45,
+                width: MediaQuery.of(context).size.width,
+                color: Colors.redAccent,
+                child: Center(child: Text('Save', style: TextStyle(fontWeight: FontWeight.w700, color: Colors.white, fontFamily: 'roboto', fontSize: 18))),
+              ),
             )
           ]
       ),
     );
   }
 
+  Widget _body() {
+    return Expanded(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+          child: SingleChildScrollView(
+            physics: ClampingScrollPhysics(),
+            child: Column(
+                children: <Widget>[
+                  Center(
+                    child: Column(
+                      children: <Widget>[
+                        SizedBox(height: SizeConfig.screenHeight * 0.04), // 4%
+                        Text("Import New Product", style: headingStyle),
+                        Text(
+                          "Complete your details.",
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: SizeConfig.screenHeight * 0.04),
+                  _buildProductField(),
+                  SizedBox(height: SizeConfig.screenHeight * 0.02),
+                  _buildPackageProductField(),
+                  SizedBox(height: SizeConfig.screenHeight * 0.02),
+                  _buildVendorField(),
+                  SizedBox(height: SizeConfig.screenHeight * 0.02),
+                  _buildQuantityField(),
+                  SizedBox(height: SizeConfig.screenHeight * 0.02),
+                  _buildTotalField(),
+                  SizedBox(height: SizeConfig.screenHeight * 0.02),
+                  _buildRemarkField(),
+                  SizedBox(height: SizeConfig.screenHeight * 0.02),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        _buildAddButton()
+                      ]
+                  ),
+                  SizedBox(height: SizeConfig.screenHeight * 0.04),
+
+                ]
+            )
+          )
+        )
+    );
+  }
+
   TextFormField _buildQuantityField() {
     return TextFormField(
       keyboardType: TextInputType.number,
-      onSaved: (newValue) => email = newValue,
-      onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kEmailNullError);
-        } else if (emailValidatorRegExp.hasMatch(value)) {
-          removeError(error: kInvalidEmailError);
-        }
-        return null;
-      },
+      textInputAction: TextInputAction.next,
+      controller: quantityController,
+      onChanged: (value) => checkFormValid(),
       validator: (value) {
         if (value.isEmpty) {
-          addError(error: kEmailNullError);
-          return "";
-        } else if (!emailValidatorRegExp.hasMatch(value)) {
-          addError(error: kInvalidEmailError);
-          return "";
+          return "Invalid quantity.";
         }
         return null;
       },
       decoration: InputDecoration(
         labelText: "Quantity",
         hintText: "Enter quantity",
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: CustomSufFixIcon( svgPaddingLeft: 15,svgIcon: "assets/icons/help_outline_black_24dp.svg"),
       ),
@@ -109,30 +142,18 @@ class _AddNewCategoryFormState extends State<AddImportForm> {
   TextFormField _buildTotalField() {
     return TextFormField(
       keyboardType: TextInputType.number,
-      onSaved: (newValue) => email = newValue,
-      onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kEmailNullError);
-        } else if (emailValidatorRegExp.hasMatch(value)) {
-          removeError(error: kInvalidEmailError);
-        }
-        return null;
-      },
+      textInputAction: TextInputAction.next,
+      controller: quantityController,
+      onChanged: (value) => checkFormValid(),
       validator: (value) {
         if (value.isEmpty) {
-          addError(error: kEmailNullError);
-          return "";
-        } else if (!emailValidatorRegExp.hasMatch(value)) {
-          addError(error: kInvalidEmailError);
-          return "";
+          return "Invalid total.";
         }
         return null;
       },
       decoration: InputDecoration(
         labelText: "Total",
         hintText: "Enter total",
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: CustomSufFixIcon( svgPaddingLeft: 15,svgIcon: "assets/icons/help_outline_black_24dp.svg"),
       ),
@@ -143,30 +164,11 @@ class _AddNewCategoryFormState extends State<AddImportForm> {
   TextFormField _buildRemarkField() {
     return TextFormField(
       keyboardType: TextInputType.text,
-      onSaved: (newValue) => email = newValue,
-      onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kEmailNullError);
-        } else if (emailValidatorRegExp.hasMatch(value)) {
-          removeError(error: kInvalidEmailError);
-        }
-        return null;
-      },
-      validator: (value) {
-        if (value.isEmpty) {
-          addError(error: kEmailNullError);
-          return "";
-        } else if (!emailValidatorRegExp.hasMatch(value)) {
-          addError(error: kInvalidEmailError);
-          return "";
-        }
-        return null;
-      },
+      controller: quantityController,
+      onChanged: (value) => checkFormValid(),
       decoration: InputDecoration(
         labelText: "Remark",
         hintText: "Enter remark",
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: CustomSufFixIcon( svgPaddingLeft: 15,svgIcon: "assets/icons/border_color_black_24dp.svg"),
       ),
@@ -176,32 +178,35 @@ class _AddNewCategoryFormState extends State<AddImportForm> {
 
   TextFormField _buildProductField() {
     return TextFormField(
-      keyboardType: TextInputType.text,
-      onSaved: (newValue) => email = newValue,
-      onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kEmailNullError);
-        } else if (emailValidatorRegExp.hasMatch(value)) {
-          removeError(error: kInvalidEmailError);
+      onTap: () async {
+        final product = await Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ProductPage(productModel: this.product)),
+        );
+        if(product == null) {
+          return;
         }
-        return null;
+        setState(() {
+          this.product = product;
+          productController.text = this.product[ProductKey.name];
+          checkFormValid();
+        });
       },
+      keyboardType: TextInputType.text,
+      controller: productController,
+      onChanged: (value) => checkFormValid(),
+      readOnly: true,
       validator: (value) {
         if (value.isEmpty) {
-          addError(error: kEmailNullError);
-          return "";
-        } else if (!emailValidatorRegExp.hasMatch(value)) {
-          addError(error: kInvalidEmailError);
-          return "";
+          return "Invalid product.";
         }
         return null;
       },
       decoration: InputDecoration(
         labelText: "Product",
         hintText: "Select product",
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
+        prefixIcon: this.product != null ? PrefixProduct(url: this.product[ProductKey.url]) : null,
         suffixIcon: CustomSufFixIcon( svgPaddingLeft: 15,svgIcon: "assets/icons/expand_more_black_24dp.svg"),
       ),
     );
@@ -209,32 +214,38 @@ class _AddNewCategoryFormState extends State<AddImportForm> {
 
   TextFormField _buildPackageProductField() {
     return TextFormField(
+      onTap: () async {
+        final packageProduct = await Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ProductPage(productModel: this.product)),
+        );
+        print('packageProduct: ${packageProduct}');
+        if(packageProduct == null) {
+          return;
+        }
+        // setState(() {
+        //   this.product = product;
+        //   productController.text = this.product.name;
+        //   checkFormValid();
+        // });
+      },
       keyboardType: TextInputType.text,
-      onSaved: (newValue) => email = newValue,
-      onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kEmailNullError);
-        } else if (emailValidatorRegExp.hasMatch(value)) {
-          removeError(error: kInvalidEmailError);
-        }
-        return null;
-      },
+      controller: packageProductController,
+      onChanged: (value) => checkFormValid(),
       validator: (value) {
-        if (value.isEmpty) {
-          addError(error: kEmailNullError);
-          return "";
-        } else if (!emailValidatorRegExp.hasMatch(value)) {
-          addError(error: kInvalidEmailError);
-          return "";
+        if(this.product == null) {
+          return "Invalid product.Please select product!";
+        } else if (this.product != null && value.isEmpty) {
+          return "Invalid package product.";
         }
         return null;
       },
+      readOnly: true,
       decoration: InputDecoration(
         labelText: "Package Product",
         hintText: "Select package product",
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
+        prefixIcon: this.product != null ? PrefixProduct(url: this.product[ProductKey.url]) : null,
         suffixIcon: CustomSufFixIcon( svgPaddingLeft: 15,svgIcon: "assets/icons/expand_more_black_24dp.svg"),
       ),
     );
@@ -243,30 +254,18 @@ class _AddNewCategoryFormState extends State<AddImportForm> {
   TextFormField _buildVendorField() {
     return TextFormField(
       keyboardType: TextInputType.text,
-      onSaved: (newValue) => email = newValue,
-      onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kEmailNullError);
-        } else if (emailValidatorRegExp.hasMatch(value)) {
-          removeError(error: kInvalidEmailError);
-        }
-        return null;
-      },
+      controller: vendorController,
+      onChanged: (value) => checkFormValid(),
       validator: (value) {
         if (value.isEmpty) {
-          addError(error: kEmailNullError);
-          return "";
-        } else if (!emailValidatorRegExp.hasMatch(value)) {
-          addError(error: kInvalidEmailError);
-          return "";
+          return "Invalid vendor.";
         }
         return null;
       },
+      readOnly: true,
       decoration: InputDecoration(
         labelText: "Vendor",
         hintText: "Select vendor",
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: CustomSufFixIcon( svgPaddingLeft: 15,svgIcon: "assets/icons/expand_more_black_24dp.svg"),
       ),
@@ -293,28 +292,10 @@ class _AddNewCategoryFormState extends State<AddImportForm> {
           ],
         ),
         onPressed: () {
-          setState(() {
-            if(this.productItem == null) {
-              _isValid(
-                  body: 'Please select product!'
-              );
-              return;
-            } else if (this.packageProductItem == null) {
-              _isValid(
-                  body: 'Please select package product!'
-              );
-              return;
-            } else if (this.quantity == null && this.quantity > 0) {
-              _isValid(
-                  body: 'Invalid Quantity!'
-              );
-              return;
-            } else if (this.total == null || this.total > 0) {
-              _isValid(
-                  body: 'Invalid Total!'
-              );
-              return;
-            } else {
+          this.isClickSave = true;
+          KeyboardUtil.hideKeyboard(context);
+          if( _formKey.currentState.validate()) {
+            setState(() {
               Map data = {
                 ImportAddKey.product: this.productItem,
                 ImportAddKey.packageProduct: this.packageProductItem,
@@ -325,8 +306,9 @@ class _AddNewCategoryFormState extends State<AddImportForm> {
                 ImportAddKey.remark: this.remark
               };
               this.vData.add(data);
-            }
-          });
+              widget.onAddChange(this.vData.length);
+            });
+          }
         },
       ),
     );
@@ -372,5 +354,29 @@ class _AddNewCategoryFormState extends State<AddImportForm> {
         });
   }
 
+  void save() {
+    this.isClickSave = true;
+    if( _formKey.currentState.validate()) {
+      print('validate');
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(builder: (context) => MemberSuccessScreen(
+      //     isAddScreen: true,
+      //     vData: {
+      //       MemberKey.name: nameController.text,
+      //       MemberKey.phone: phoneController.text,
+      //       MemberKey.url: browsController.text,
+      //       MemberKey.remark: remarkController.text
+      //     },
+      //   )),
+      // );
+    }
+  }
+
+  void checkFormValid() {
+    if(isClickSave) {
+      _formKey.currentState.validate();
+    }
+  }
 
 }

@@ -4,7 +4,7 @@ import 'package:sale_management/screens/constants.dart';
 import 'package:sale_management/screens/size_config.dart';
 import 'package:sale_management/share/constant/text_style.dart';
 import 'package:sale_management/share/model/category.dart';
-import 'package:sale_management/share/model/product.dart';
+import 'package:sale_management/share/model/key/product_key.dart';
 import 'package:sale_management/share/model/package_product.dart';
 import 'package:sale_management/share/services/load_data_local.dart';
 import 'package:sale_management/screens/package_product/widgets/package_product_form_edit.dart';
@@ -38,8 +38,8 @@ class _PackageProductAddState extends State<PackageProductEdit> {
   var textValue = 'Select Product';
   var colorValue = Colors.deepPurple;
   Map<String, Object> dropdownValue;
-  List<ProductModel> productItems = [];
-  ProductModel product;
+  List<dynamic> productItems = [];
+  Map product;
   Size size;
   @override
   Widget build(BuildContext context) {
@@ -152,10 +152,10 @@ class _PackageProductAddState extends State<PackageProductEdit> {
 
   }
 
-  ProductModel _searchProductById(int productId) {
+  Map _searchProductById(int productId) {
     if(this.productItems.length > 0) {
-      for(ProductModel p in productItems) {
-        if(p.id == productId) {
+      for(Map p in productItems) {
+        if(int.parse(p[ProductKey.id].toString()) == productId) {
           return p;
         }
       }

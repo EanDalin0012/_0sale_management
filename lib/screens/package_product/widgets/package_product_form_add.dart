@@ -6,9 +6,9 @@ import 'package:sale_management/screens/size_config.dart';
 import 'package:sale_management/screens/widgets/custom_suffix_icon/custom_suffix_icon.dart';
 import 'package:sale_management/screens/widgets/product_dropdown/product_page.dart';
 import 'package:sale_management/share/helper/keyboard.dart';
-import 'package:sale_management/share/model/product.dart';
 import 'package:sale_management/screens/package_product/widgets/prefix_product.dart';
 import 'package:sale_management/share/model/key/package_product_key.dart';
+import 'package:sale_management/share/model/key/product_key.dart';
 
 class PackageProductForm extends StatefulWidget {
 
@@ -33,7 +33,7 @@ class _PackageProductFormState extends State<PackageProductForm> {
   bool remember = false;
   final List<String> errors = [];
   Size size;
-  ProductModel product;
+  Map product;
   var autofocus = false;
   var isClickSave = false;
 
@@ -184,7 +184,7 @@ class _PackageProductFormState extends State<PackageProductForm> {
           }
           setState(() {
             this.product = product;
-            productNameController.text = this.product.name;
+            productNameController.text = this.product[ProductKey.name];
             checkFormValid();
           });
         },
@@ -202,7 +202,7 @@ class _PackageProductFormState extends State<PackageProductForm> {
           labelText: "Product",
           hintText: "Select product",
           floatingLabelBehavior: FloatingLabelBehavior.always,
-          prefixIcon: this.product != null ? PrefixProduct(url: this.product.url) : null,
+          prefixIcon: this.product != null ? PrefixProduct(url: this.product[ProductKey.url]) : null,
           suffixIcon: CustomSufFixIcon( svgPaddingLeft: 15,svgIcon: "assets/icons/expand_more_black_24dp.svg"),
         ),
       );
@@ -218,7 +218,7 @@ class _PackageProductFormState extends State<PackageProductForm> {
           isAddScreen: true,
           vData: {
             PackageProductKey.name: this.nameController.text,
-            PackageProductKey.productId: this.product.id,
+            PackageProductKey.productId: this.product[ProductKey.id],
             PackageProductKey.quantity: this.qtyController.text,
             PackageProductKey.price: this.priceController.text,
             PackageProductKey.remark: this.remarkController.text

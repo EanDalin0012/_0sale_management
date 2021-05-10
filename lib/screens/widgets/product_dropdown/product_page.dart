@@ -4,10 +4,10 @@ import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sale_management/share/constant/constant_color.dart';
 import 'package:sale_management/share/constant/text_style.dart';
-import 'package:sale_management/share/model/product.dart';
+import 'package:sale_management/share/model/key/product_key.dart';
 
 class ProductPage extends StatefulWidget {
-  final ProductModel productModel;
+  final Map productModel;
   const ProductPage({
     Key key,
     this.productModel,
@@ -26,8 +26,9 @@ class _ProductPageState extends State<ProductPage> {
   var isItemChanged = false;
   var styleInput = TextStyle(color: Colors.black, fontSize: 17, fontWeight: FontWeight.w500, fontFamily: fontFamilyDefault);
 
-  List<ProductModel> items = [];
-  List<ProductModel> itemsTmp = [];
+  int vDataLength = 0;
+  List<dynamic> vData = [];
+  List<dynamic> vDataTmp = [];
 
   @override
   void initState() {
@@ -39,15 +40,15 @@ class _ProductPageState extends State<ProductPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBar(),
-      body: items.length > 0 ? Container(
+      body: vDataLength > 0 ? Container(
         child: ListView.separated(
-        itemCount: items.length,
+        itemCount: vDataLength,
         separatorBuilder: (context, index) => Divider(
           color: Colors.purple[900].withOpacity(0.5),
         ),
         itemBuilder: (context, index) {
           return _buildListTile(
-              dataItem: items[index]
+              dataItem: this.vData[index]
           );
         },
       )
@@ -79,27 +80,26 @@ class _ProductPageState extends State<ProductPage> {
   }
 
   Widget _buildListTile({
-    @required ProductModel dataItem
+    @required Map dataItem
   }) {
     var productName = '';
     var obj = widget.productModel;
     if(obj != null) {
-      productName = obj.name.toLowerCase();
+      productName = obj[ProductKey.name].toLowerCase();
     }
 
     return ListTile(
       onTap: () => selectProduct(dataItem),
-      title: Text( dataItem.name,
+      title: Text('${dataItem[ProductKey.name]}',
         style: TextStyle( color: dropColor, fontSize: 20, fontWeight: FontWeight.w700,fontFamily: fontFamilyDefault),
       ),
-      leading: _buildLeading(dataItem.url),
-      subtitle: Text(
-        dataItem.name.toString(),
+      leading: _buildLeading(dataItem[ProductKey.url]),
+      subtitle: Text('${dataItem[ProductKey.remark]}',
         style: TextStyle(fontSize: 12,fontWeight: FontWeight.w700, fontFamily: fontFamilyDefault, color: primaryColor),
       ),
       trailing: Container(
         width: 130,
-        child: (dataItem.name.toString()).toLowerCase() == productName ? _buildCheckIcon() : null,
+        child: (dataItem[ProductKey.name]).toLowerCase() == productName ? _buildCheckIcon() : null,
       ),
     );
   }
@@ -154,7 +154,7 @@ class _ProductPageState extends State<ProductPage> {
           this.isItemChanged = true;
           if(value != null || value.trim() != '') {
             setState(() {
-              items = onItemChanged(value);
+              this.vData = onItemChanged(value);
             });
           }
         },
@@ -178,35 +178,24 @@ class _ProductPageState extends State<ProductPage> {
     );
   }
 
-  List<ProductModel> parseJson(String response) {
-    if (response == null) {
-      return [];
-    }
-    final parsed = json.decode(response.toString()).cast<
-        Map<String, dynamic>>();
-    // return parsed.map<ProductModel>((json) => new ProductModel.fromJson(json);
-    return null;
-  }
   _fetchListItems() async {
     final data = await rootBundle.loadString('assets/json_data/product_list.json');
     Map valueMap = jsonDecode(data);
     var products = valueMap['products'];
-    var objs = products.map<ProductModel>((json) {
-      return ProductModel.fromJson(json);
-    }).toList();
     setState(() {
-      items = objs;
-      itemsTmp = items;
-      return objs;
+      this.vData = products;
+      this.vDataTmp = this.vData;
+      this.vDataLength = this.vData.length;
     });
+    return vData;
   }
 
-  void selectProduct(ProductModel productModel) {
+  void selectProduct(Map productModel) {
     Navigator.pop(context, productModel);
   }
 
   onItemChanged(String value) {
-    var dataItems = itemsTmp.where((e) => e.name.toLowerCase().contains(value.toLowerCase())).toList();
+    var dataItems = vDataTmp.where((e) => e[ProductKey.name].toLowerCase().contains(value.toLowerCase())).toList();
     return dataItems;
   }
 }

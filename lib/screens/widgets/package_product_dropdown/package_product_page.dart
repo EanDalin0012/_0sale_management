@@ -7,7 +7,7 @@ import 'package:sale_management/screens/widgets/product_dropdown/product_page.da
 import 'package:sale_management/share/components/show_dialog/show_dialog.dart';
 import 'package:sale_management/share/constant/constant_color.dart';
 import 'package:sale_management/share/constant/text_style.dart';
-import 'package:sale_management/share/model/product.dart';
+import 'package:sale_management/share/model/key/product_key.dart';
 import 'package:sale_management/share/model/package_product.dart';
 import 'package:sale_management/share/services/load_data_local.dart';
 import 'package:sale_management/share/utils/number_format.dart';
@@ -15,7 +15,7 @@ import 'package:sale_management/share/utils/number_format.dart';
 class PackageProductPage extends StatefulWidget {
 
   final PackageProductModel packageProduct;
-  final ProductModel product;
+  final Map product;
   const PackageProductPage({
     Key key,
     this.packageProduct,
@@ -42,8 +42,8 @@ class _PackageProductScreenState extends State<PackageProductPage> {
 
   List<PackageProductModel> items = [];
   List<PackageProductModel> itemsTmp = [];
-  List<ProductModel> productItems = [];
-  ProductModel product;
+  List<dynamic> productItems = [];
+  Map product;
 
 
   @override
@@ -447,16 +447,16 @@ class _PackageProductScreenState extends State<PackageProductPage> {
 
   String _searchProductById(int productId) {
     if(this.productItems.length > 0) {
-      for(ProductModel p in productItems) {
-        if(p.id == productId) {
-          return p.url;
+      for(Map p in productItems) {
+        if(int.parse(p[ProductKey.id].toString()) == productId) {
+          return p[ProductKey.url];
         }
       }
     }
   }
 
-  _doFilterByProduct(ProductModel product) {
-    var dataItems = itemsTmp.where((e) => e.productId.toString().contains(product.id.toString())).toList();
+  _doFilterByProduct(Map product) {
+    var dataItems = itemsTmp.where((e) => e.productId.toString().contains(product[ProductKey.id].toString())).toList();
     return dataItems;
   }
 

@@ -10,8 +10,8 @@ import 'package:sale_management/screens/widgets/country_dropdown/flag_widget.dar
 import 'package:sale_management/share/constant/text_style.dart';
 import 'package:sale_management/share/model/country.dart';
 import 'package:sale_management/share/model/key/m_key.dart';
+import 'package:sale_management/share/model/key/product_key.dart';
 import 'package:sale_management/share/model/package_product.dart';
-import 'package:sale_management/share/model/product.dart';
 import 'package:sale_management/share/utils/number_format.dart';
 import 'package:sale_management/screens/sale/widgets/sale_items.dart';
 
@@ -37,7 +37,7 @@ class _PackageProductAddState extends State<SaleAddScreen> {
 
   Map<String, Object> dropdownValue;
   CountryModel country;
-  ProductModel product;
+  Map product;
   PackageProductModel packageProductModel;
   List<dynamic> vData = [];
   Size size;
@@ -211,9 +211,9 @@ class _PackageProductAddState extends State<SaleAddScreen> {
               return;
             } else {
               Map data = {
-                SaleAddItemKey.productId: this.product.id,
-                SaleAddItemKey.productUrl: this.product.url,
-                SaleAddItemKey.productName: this.product.name,
+                SaleAddItemKey.productId: this.product[ProductKey.id],
+                SaleAddItemKey.productUrl: this.product[ProductKey.url],
+                SaleAddItemKey.productName: this.product[ProductKey.name],
                 SaleAddItemKey.packageProductName: this.packageProductModel.name,
                 SaleAddItemKey.quantity: quantityValueController.text,
                 SaleAddItemKey.price: this.packageProductModel.price,

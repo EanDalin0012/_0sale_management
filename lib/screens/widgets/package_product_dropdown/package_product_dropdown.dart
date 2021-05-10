@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:sale_management/share/model/key/product_key.dart';
 import 'package:sale_management/share/model/package_product.dart';
 import 'package:sale_management/screens/widgets/product_dropdown/FlagImageWidget.dart';
 import 'package:sale_management/screens/widgets/package_product_dropdown/package_product_page.dart';
-import 'package:sale_management/share/model/product.dart';
 
 class PackageProductDropdown extends StatefulWidget {
   final ValueChanged<PackageProductModel> onChanged;
   final Color color;
-  final ProductModel product;
+  final Map product;
   final PackageProductModel packageProduct;
 
   PackageProductDropdown({
@@ -23,7 +23,7 @@ class PackageProductDropdown extends StatefulWidget {
 class _ProductDropdownState extends State<PackageProductDropdown> {
 
   PackageProductModel _packageProductModel;
-  List<ProductModel> productItems = [];
+  List<dynamic> productItems = [];
   var url = 'https://icons-for-free.com/iconfiles/png/512/part+1+p-1320568343314317876.png';
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,7 @@ class _ProductDropdownState extends State<PackageProductDropdown> {
     this._packageProductModel = widget.packageProduct;
     if(widget.product != null) {
       setState(() {
-        this.url = widget.product.url;
+        this.url = widget.product[ProductKey.url];
       });
     }
     return  Container(

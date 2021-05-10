@@ -1,14 +1,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:sale_management/share/model/product.dart';
 import 'package:sale_management/screens/widgets/product_dropdown/FlagImageWidget.dart';
+import 'package:sale_management/share/model/key/product_key.dart';
 
 class ProductListTileWidget extends StatelessWidget {
-  final ProductModel productModel;
+  final Map productModel;
   final bool isNative;
   final bool isSelected;
-  final ValueChanged<ProductModel> onSelectedProduct;
+  final ValueChanged<Map> onSelectedProduct;
 
   const ProductListTileWidget({
     Key key,
@@ -26,13 +26,13 @@ class ProductListTileWidget extends StatelessWidget {
         leading: FlagImageWidget(
           width: 40,
           height: 40,
-          url: productModel.url,
+          url: productModel[ProductKey.url],
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(60)),
             border: Border.all(color: Colors.grey, width: 2),
           ),
         ),
-        title: Text(productModel.name),
+        title: Text('${productModel[ProductKey.name]}'),
          trailing: isSelected ? _buildCheckIcon() : null,
     );
   }

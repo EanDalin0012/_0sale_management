@@ -111,10 +111,6 @@ class _CategoryState extends State<CategoryScreen> {
   Container _containerSearch() {
     return Container(
       height: 60,
-      // margin: const EdgeInsets.symmetric(
-      //   vertical: 8.0,
-      //   horizontal: 16.0,
-      // ),
       decoration: BoxDecoration(
         color: Colors.grey.shade200
       ),

@@ -11,7 +11,7 @@ import 'package:sale_management/share/components/show_dialog/show_dialog.dart';
 import 'package:sale_management/share/constant/constant_color.dart';
 import 'package:sale_management/share/constant/text_style.dart';
 import 'package:sale_management/share/helper/keyboard.dart';
-import 'package:sale_management/share/model/product.dart';
+import 'package:sale_management/share/model/key/product_key.dart';
 import 'package:sale_management/share/model/package_product.dart';
 import 'package:sale_management/share/services/load_data_local.dart';
 import 'package:sale_management/share/utils/number_format.dart';
@@ -34,10 +34,10 @@ class _PackageProductScreenState extends State<PackageProductScreen> {
   var styleInput = TextStyle(color: Colors.black, fontSize: 17, fontWeight: FontWeight.w500, fontFamily: fontFamilyDefault);
   var menuStyle = TextStyle( color: Colors.purple[900], fontWeight: FontWeight.w500, fontFamily: fontFamilyDefault);
 
-  List<PackageProductModel> items = [];
-  List<PackageProductModel> itemsTmp = [];
-  List<ProductModel> productItems = [];
-  ProductModel product;
+  List<dynamic> items = [];
+  List<dynamic> itemsTmp = [];
+  List<dynamic> productItems = [];
+  Map product;
   int itemLength = 0;
 
 
@@ -403,16 +403,17 @@ class _PackageProductScreenState extends State<PackageProductScreen> {
 
   String _searchProductById(int productId) {
     if(this.productItems.length > 0) {
-      for(ProductModel p in productItems) {
-          if(p.id == productId) {
-            return p.url;
+      for(Map p in productItems) {
+          if(int.parse(p[ProductKey.id].toString()) == productId) {
+            return p[ProductKey.url];
           }
       }
     }
   }
 
-  _doFilterByProduct(ProductModel product) {
-    var dataItems = itemsTmp.where((e) => e.productId.toString().contains(product.id.toString())).toList();
+  _doFilterByProduct(Map product) {
+    var dataItems = itemsTmp.where((e) => (e[ProductKey.id]).toString().contains(product[ProductKey.id].toString())
+       ).toList();
     return dataItems;
   }
 

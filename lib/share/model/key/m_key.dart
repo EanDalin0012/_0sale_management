@@ -1,11 +1,8 @@
 class SaleAddItemKey {
   static const total                = "total";
-  static const productId            = "productId";
-  static const productName          = "productName";
-  static const packageProductName   = "packageProductName";
-  static const productUrl           = "productUrl";
+  static const product              = "product";
+  static const packageProduct       = "packageProduct";
   static const quantity             = "quantity";
-  static const price                = "price";
   static const remark               = "remark";
 }
 

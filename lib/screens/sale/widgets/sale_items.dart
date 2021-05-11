@@ -1,15 +1,21 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sale_management/share/constant/constant_color.dart';
 import 'package:sale_management/share/constant/text_style.dart';
 import 'package:sale_management/share/model/key/m_key.dart';
+import 'package:sale_management/share/model/key/package_product_key.dart';
+import 'package:sale_management/share/model/key/product_key.dart';
+import 'package:sale_management/share/utils/number_format.dart';
 
 class SaleItems extends StatefulWidget {
   final List<dynamic> vData;
   final ValueChanged<List<dynamic>> onChanged;
   SaleItems({
+    Key key,
     @required this.vData,
     this.onChanged
-  });
+  }):super(key: key);
 
   @override
   _SaleItemsState createState() => _SaleItemsState();
@@ -20,10 +26,16 @@ class _SaleItemsState extends State<SaleItems> {
   var i = 0;
   @override
   SaleItems get widget => super.widget;
+  var total = 0.0;
 
   @override
   Widget build(BuildContext context) {
     i = 0;
+    this.total = 0;
+    if(widget.vData.length > 0) {
+      widget.vData.map((e) => this.total += double.parse(e[SaleAddItemKey.total].toString())).toList();
+    }
+
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
@@ -33,6 +45,10 @@ class _SaleItemsState extends State<SaleItems> {
         children: <Widget>[
           _widgetStack(context),
           drawerHandler(),
+          Text(
+              'Total : '+FormatNumber.usdFormat2Digit(total.toString() + ' USD'),
+            style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500, fontFamily: fontFamilyDefault, color: dropColor),
+          ),
           if (widget.vData.length > 0 )
             Column(
             children: <Widget>[
@@ -125,27 +141,28 @@ class _SaleItemsState extends State<SaleItems> {
         ],
         rows: widget.vData.map((e) {
           i += 1;
+          var product = e[SaleAddItemKey.product];
+          var packageProduct = e[SaleAddItemKey.packageProduct];
+          this.total += double.parse(e[SaleAddItemKey.total].toString());
           return DataRow(
               cells: <DataCell>[
                 DataCell(Text(i.toString())),
                 DataCell(
                     Row(
                         children: <Widget>[
-                          _buildLeading(e[SaleAddItemKey.productUrl].toString()),
+                          _buildLeading(product[ProductKey.url].toString()),
                           SizedBox(width: 10),
-                          Text(e[SaleAddItemKey.productName].toString())
+                          Text(product[ProductKey.name].toString())
                         ]
                     )
                 ),
-                DataCell(Text(e[SaleAddItemKey.packageProductName].toString())),
+                DataCell(Text(packageProduct[PackageProductKey.name].toString())),
                 DataCell(Text(e[SaleAddItemKey.quantity].toString())),
                 DataCell(Text(e[SaleAddItemKey.total].toString() + ' \$')),
                 DataCell(_buildRemoveButton(e))
               ]
           );
-        }
-
-        ).toList()
+        }).toList()
     );
   }
 
@@ -159,7 +176,6 @@ class _SaleItemsState extends State<SaleItems> {
           onPressed: () {
             setState(() {
               widget.vData.remove(item);
-              print('remove: ${widget.vData}');
               widget.onChanged(widget.vData);
             });
           },

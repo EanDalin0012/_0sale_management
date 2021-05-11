@@ -3,30 +3,38 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sale_management/screens/constants.dart';
 import 'package:sale_management/screens/size_config.dart';
 import 'package:sale_management/screens/widgets/custom_suffix_icon/custom_suffix_icon.dart';
+import 'package:sale_management/share/constant/constant_color.dart';
 import 'package:sale_management/share/constant/text_style.dart';
 import 'package:sale_management/share/model/key/m_key.dart';
+import 'package:sale_management/share/model/key/package_product_key.dart';
+import 'package:sale_management/share/model/key/product_key.dart';
 import 'package:sale_management/share/utils/number_format.dart';
 
 class SaleAddConfirm extends StatefulWidget {
   final List<dynamic> vData;
+  final ValueChanged<List<dynamic>> onChanged;
   SaleAddConfirm({
-    @required this.vData
-});
+    Key key,
+    @required this.vData,
+    this.onChanged
+  }):super(key: key);
+
   @override
   _SaleAddConfirmState createState() => _SaleAddConfirmState();
 }
 
 class _SaleAddConfirmState extends State<SaleAddConfirm> {
+
   var colorValue = Colors.deepPurple;
   Size size;
   var styleInput = TextStyle(color: Colors.black, fontSize: 17, fontWeight: FontWeight.w500, fontFamily: fontFamilyDefault);
-  var remarkValueController = new TextEditingController();
+  var remarkController = new TextEditingController();
   var nameValueController = new TextEditingController();
   var i = 0;
   double pay = 0.0;
   double vPay = 0.0;
   Map vCustomer;
-  String email;
+  var total = 0.0;
 
   @override
   void initState() {
@@ -38,6 +46,10 @@ class _SaleAddConfirmState extends State<SaleAddConfirm> {
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
     this.i = 0;
+    this.total = 0;
+    if(widget.vData.length > 0) {
+      widget.vData.map((e) => this.total += double.parse(e[SaleAddItemKey.total].toString())).toList();
+    }
     return Scaffold(
       appBar: _buildAppBar(),
       body: Container(
@@ -83,10 +95,6 @@ class _SaleAddConfirmState extends State<SaleAddConfirm> {
                       shadowColor: Colors.teal,
                       onPressed: () {
                         print('Fluter is pressed');
-
-                        // setState(() {
-                        //   _selected = !_selected;
-                        // });
                       }
                   ),
                 ],
@@ -103,6 +111,11 @@ class _SaleAddConfirmState extends State<SaleAddConfirm> {
                       SizedBox(height: SizeConfig.screenHeight * 0.02),
                     ]
                 ),
+              ),
+              SizedBox(height: SizeConfig.screenHeight * 0.02),
+              Text(
+                'Total : '+FormatNumber.usdFormat2Digit(total.toString()) + ' USD',
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500, fontFamily: fontFamilyDefault, color: dropColor),
               ),
               Divider(
                 color: Colors.purple[900].withOpacity(0.5),
@@ -151,41 +164,6 @@ class _SaleAddConfirmState extends State<SaleAddConfirm> {
     );
   }
 
-  Widget _container() {
-    return  Container(
-        color: Color(0xFF939BA9).withOpacity(0.5),
-        height: 40,
-        padding: EdgeInsets.only(
-            left: 10,
-            top: 10,
-            right: 20,
-            bottom: 10
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Text(
-                'Sale Conform',
-                style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.w500, fontFamily: fontFamilyDefault)
-            ),
-            Text(FormatNumber.usdFormat2Digit(pay.toString()) + ' USD', style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.w700, fontFamily: fontFamilyDefault),)
-          ],
-        ),
-    );
-  }
-
-  Widget buildListView() {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-        color: Colors.white,
-      ),
-    child: Column(
-
-      )
-    );
-  }
-
   Widget _buildDataTable() {
     return DataTable(
         columns: <DataColumn>[
@@ -210,19 +188,21 @@ class _SaleAddConfirmState extends State<SaleAddConfirm> {
         ],
         rows: widget.vData.map((e) {
           i += 1;
+          var product = e[SaleAddItemKey.product];
+          var packageProduct = e[SaleAddItemKey.packageProduct];
           return DataRow(
               cells: <DataCell>[
                 DataCell(Text(i.toString())),
                 DataCell(
                     Row(
                         children: <Widget>[
-                          _buildLeading(e[SaleAddItemKey.productUrl].toString()),
+                          _buildLeading(product[ProductKey.url].toString()),
                           SizedBox(width: 10),
-                          Text(e[SaleAddItemKey.productName].toString())
+                          Text(product[ProductKey.name].toString())
                         ]
                     )
                 ),
-                DataCell(Text(e[SaleAddItemKey.packageProductName].toString())),
+                DataCell(Text(packageProduct[PackageProductKey.name].toString())),
                 DataCell(Text(e[SaleAddItemKey.quantity].toString())),
                 DataCell(Text(e[SaleAddItemKey.total].toString() + ' \$')),
                 DataCell(_buildRemoveButton(e))
@@ -258,102 +238,12 @@ class _SaleAddConfirmState extends State<SaleAddConfirm> {
           onPressed: () {
             setState(() {
               widget.vData.remove(item);
+              widget.onChanged(widget.vData);
               pay = pay - double.parse(item[SaleAddItemKey.total]);
-              print('${item[SaleAddItemKey.total]}');
             });
           },
           icon: FaIcon(FontAwesomeIcons.minusCircle,size: 20 , color: Colors.white,),
           label: Text('Remove',style: TextStyle(fontFamily: fontFamilyDefault, fontWeight: FontWeight.w700, fontSize: 15, color: Colors.white))
-      ),
-    );
-  }
-
-
-  Padding _remarkField() {
-    return Padding(
-      padding: EdgeInsets.all(10),
-      child: TextField(
-        controller: remarkValueController,
-        style: styleInput,
-        decoration: InputDecoration(
-            hintText: 'Enter remark',
-            labelText: 'Remark',
-            // helperText: 'Remark',
-            labelStyle: labelStyle,
-            hintStyle: hintStyle,
-            // helperStyle: TextStyle(
-            //     color: Colors.blueGrey,
-            //     fontWeight: FontWeight.bold
-            // ),
-            // border: OutlineInputBorder(),
-            enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                    color: borderColorsTextField,
-                    width: 1.5,
-                    style: BorderStyle.solid
-                ),
-                borderRadius: BorderRadius.all(Radius.circular(5.0))
-            ),
-            focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                    color: Colors.indigo,
-                    width: 1.5,
-                    style: BorderStyle.solid
-                )
-            ),
-            prefixIcon: Icon(
-              Icons.edit,
-              color: Colors.black54,
-            )
-
-        ),
-      ),
-    );
-  }
-
-  Padding _nameField() {
-    return Padding(
-      padding: EdgeInsets.only(
-          right: 10,
-          left: 10,
-          top: 10
-      ),
-      child: TextField(
-        controller: nameValueController,
-        style: styleInput,
-        decoration: InputDecoration(
-            hintText: 'Enter category name',
-            labelText: 'Name',
-            // helperText: 'Category Name',
-            labelStyle: labelStyle,
-            hintStyle: hintStyle,
-            // helperStyle: TextStyle(
-            //     color: Colors.blueGrey,
-            //     fontWeight: FontWeight.bold,
-            //     fontFamily: 'roboto'
-            // ),
-            // border: OutlineInputBorder(),
-            enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                    color: borderColorsTextField,
-                    width: 1.5,
-                    style: BorderStyle.solid
-                ),
-                borderRadius: BorderRadius.all(Radius.circular(5.0))
-            ),
-            focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                    color: Colors.indigo,
-                    width: 1.5,
-                    style: BorderStyle.solid
-                )
-            ),
-            prefixIcon: Icon(
-              Icons.info_outline,
-              color: Colors.black54,
-            )
-
-        ),
       ),
     );
   }
@@ -384,30 +274,9 @@ class _SaleAddConfirmState extends State<SaleAddConfirm> {
   TextFormField _buildCustomerField() {
     return TextFormField(
       keyboardType: TextInputType.emailAddress,
-      onSaved: (newValue) => email = newValue,
-      onChanged: (value) {
-        // if (value.isNotEmpty) {
-        //   removeError(error: kEmailNullError);
-        // } else if (emailValidatorRegExp.hasMatch(value)) {
-        //   removeError(error: kInvalidEmailError);
-        // }
-        // return null;
-      },
-      validator: (value) {
-        // if (value.isEmpty) {
-        //   addError(error: kEmailNullError);
-        //   return "";
-        // } else if (!emailValidatorRegExp.hasMatch(value)) {
-        //   addError(error: kInvalidEmailError);
-        //   return "";
-        // }
-        // return null;
-      },
       decoration: InputDecoration(
         labelText: "Member",
         hintText: "Select member",
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: CustomSufFixIcon( svgPaddingLeft: 15,svgIcon: "assets/icons/expand_more_black_24dp.svg"),
       ),
@@ -416,49 +285,14 @@ class _SaleAddConfirmState extends State<SaleAddConfirm> {
 
   TextFormField _buildRemarkField() {
     return TextFormField(
-      keyboardType: TextInputType.emailAddress,
-      onSaved: (newValue) => email = newValue,
-      onChanged: (value) {
-        // if (value.isNotEmpty) {
-        //   removeError(error: kEmailNullError);
-        // } else if (emailValidatorRegExp.hasMatch(value)) {
-        //   removeError(error: kInvalidEmailError);
-        // }
-        // return null;
-      },
-      validator: (value) {
-        // if (value.isEmpty) {
-        // }
-        // return null;
-      },
+      keyboardType: TextInputType.text,
+      controller: remarkController,
       decoration: InputDecoration(
         labelText: "Remark",
         hintText: "Enter remark",
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: CustomSufFixIcon( svgPaddingLeft: 15,svgIcon: "assets/icons/border_color_black_24dp.svg"),
       ),
-    );
-  }
-
-  Widget _buildChip({String label, Color color}) {
-    return Chip(
-      labelPadding: EdgeInsets.all(2.0),
-      avatar: CircleAvatar(
-        // backgroundColor: Colors.white70,
-        child: CustomSufFixIcon(svgIcon: "assets/icons/help_outline_black_24dp.svg"),
-      ),
-      label: Text(
-        label,
-        style: TextStyle(
-          color: Colors.white,
-        ),
-      ),
-      backgroundColor: color,
-      elevation: 6.0,
-      shadowColor: Colors.grey[60],
-      padding: EdgeInsets.all(8.0),
     );
   }
 

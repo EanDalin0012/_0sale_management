@@ -1,36 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sale_management/screens/constants.dart';
+import 'package:sale_management/screens/package_product/widgets/prefix_product.dart';
+import 'package:sale_management/screens/sale/sale_add_confirm.dart';
 import 'package:sale_management/screens/size_config.dart';
 import 'package:sale_management/screens/widgets/custom_suffix_icon/custom_suffix_icon.dart';
+import 'package:sale_management/screens/widgets/package_product_dropdown/package_product_page.dart';
+import 'package:sale_management/screens/widgets/product_dropdown/product_page.dart';
+import 'package:sale_management/share/components/show_dialog/show_dialog.dart';
+import 'package:sale_management/share/constant/constant_color.dart';
 import 'package:sale_management/share/constant/text_style.dart';
+import 'package:sale_management/share/helper/keyboard.dart';
+import 'package:sale_management/share/model/key/m_key.dart';
+import 'package:sale_management/share/model/key/package_product_key.dart';
+import 'package:sale_management/share/model/key/product_key.dart';
+import 'package:sale_management/share/utils/number_format.dart';
 
 class SaleAddForm extends StatefulWidget {
+  final ValueChanged<List<dynamic>> onChange;
+  SaleAddForm({Key key, this.onChange}):super(key: key);
+
   @override
   _SaleAddFormState createState() => _SaleAddFormState();
 }
 
 class _SaleAddFormState extends State<SaleAddForm> {
 
-  final _formKey = GlobalKey<FormState>();
-  String email;
-  String password;
-  bool remember = false;
-  final List<String> errors = [];
-  Size size;
-  void addError({String error}) {
-    if (!errors.contains(error))
-      setState(() {
-        errors.add(error);
-      });
-  }
+  Map product;
+  Map packageProduct;
+  List<dynamic> vData = [];
 
-  void removeError({String error}) {
-    if (errors.contains(error))
-      setState(() {
-        errors.remove(error);
-      });
-  }
+  var productController = new TextEditingController();
+  var packageProductController = new TextEditingController();
+  var quantityController = new TextEditingController();
+  var totalController = new TextEditingController();
+
+  var helperText = 'Please select product first.';
+  var isSelectPackageProduct = false;
+  var isClickSave = false;
+  final _formKey = GlobalKey<FormState>();
+  Size size;
 
   @override
   Widget build(BuildContext context) {
@@ -40,45 +49,139 @@ class _SaleAddFormState extends State<SaleAddForm> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              _buildProductField(),
-              SizedBox(height: SizeConfig.screenHeight * 0.02),
-              _buildCategoryField(),
-              SizedBox(height: SizeConfig.screenHeight * 0.02),
-              _buildQuantityField(),
-              SizedBox(height: SizeConfig.screenHeight * 0.02),
-              _buildTotalField(),
+              _body(),
+              GestureDetector(
+                onTap: () {
+                  KeyboardUtil.hideKeyboard(context);
+                  save();
+                },
+                child: Container(
+                  height: 45,
+                  width: MediaQuery.of(context).size.width,
+                  color: Colors.redAccent,
+                  child: Center(child: Text('Next', style: TextStyle(fontWeight: FontWeight.w700, color: Colors.white, fontFamily: 'roboto', fontSize: 18))),
+                ),
+              )
+
             ],
           )
         );
   }
 
-  TextFormField _buildQuantityField() {
+  Widget _body() {
+    return Expanded(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+          child: SingleChildScrollView(
+            physics: ClampingScrollPhysics(),
+            child: Column(
+              children: <Widget>[
+                SizedBox(height: SizeConfig.screenHeight * 0.04), // 4%
+                Center(
+                  child: Column(
+                    children: <Widget>[
+                      Text("Add New Items", style: headingStyle),
+                      Text(
+                        "Complete your details.",
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: SizeConfig.screenHeight * 0.04), // 4%
+                _buildProductField(),
+                SizedBox(height: SizeConfig.screenHeight * 0.02),
+                _buildPackageProductField(),
+                SizedBox(height: SizeConfig.screenHeight * 0.02),
+                _buildQuantityField(),
+                SizedBox(height: SizeConfig.screenHeight * 0.02),
+                _buildTotalField(),
+                SizedBox(height: SizeConfig.screenHeight * 0.02),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      _buildAddButton()
+                    ]
+                ),
+                SizedBox(height: SizeConfig.screenHeight * 0.04), // 4%
+              ],
+            )
+          )
+        )
+    );
+  }
+
+  TextFormField _buildPackageProductField() {
     return TextFormField(
-      keyboardType: TextInputType.emailAddress,
-      onSaved: (newValue) => email = newValue,
-      onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kEmailNullError);
-        } else if (emailValidatorRegExp.hasMatch(value)) {
-          removeError(error: kInvalidEmailError);
+      onTap: () async {
+        if(this.product != null) {
+          final packageProduct = await Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => PackageProductPage(
+              product: this.product,
+              packageProduct: this.packageProduct,
+            )),
+          );
+          if(packageProduct == null) {
+            return;
+          }
+          setState(() {
+            this.packageProduct = packageProduct;
+            packageProductController.text = this.packageProduct[PackageProductKey.name];
+            quantityController.text = this.packageProduct[PackageProductKey.quantity].toString();
+            var calTotal = (double.parse(quantityController.text) * double.parse(this.packageProduct[PackageProductKey.price].toString())).toString();
+            totalController.text = FormatNumber.usdFormat2Digit(calTotal.toString()).toString();
+
+            this.helperText = 'Price : '+FormatNumber.usdFormat2Digit(this.packageProduct[PackageProductKey.price].toString()).toString() + ' USD';
+            this.isSelectPackageProduct = false;
+            checkFormValid();
+          });
+        } else {
+          setState(() {
+            this.isSelectPackageProduct = true;
+          });
+        }
+
+      },
+      keyboardType: TextInputType.text,
+      controller: packageProductController,
+      onChanged: (value) => checkFormValid(),
+      validator: (value) {
+        if(this.product == null) {
+          return "Invalid product.Please select product!";
+        } else if (this.product != null && value.isEmpty) {
+          return "Invalid package product.";
         }
         return null;
       },
+      readOnly: true,
+      decoration: InputDecoration(
+        labelText: "Package Product",
+        hintText: "Select package product",
+        helperText: helperText,
+        helperStyle: TextStyle(color: isSelectPackageProduct ? Colors.redAccent : dropColor),
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        prefixIcon: this.product != null ? PrefixProduct(url: this.product[ProductKey.url]) : null,
+        suffixIcon: CustomSufFixIcon( svgPaddingLeft: 15,svgIcon: "assets/icons/expand_more_black_24dp.svg"),
+      ),
+    );
+  }
+
+  TextFormField _buildQuantityField() {
+    return TextFormField(
+      keyboardType: TextInputType.number,
+      textInputAction: TextInputAction.next,
+      controller: quantityController,
+      onChanged: (value) => checkFormValid(),
       validator: (value) {
         if (value.isEmpty) {
-          addError(error: kEmailNullError);
-          return "";
-        } else if (!emailValidatorRegExp.hasMatch(value)) {
-          addError(error: kInvalidEmailError);
-          return "";
+          return "Invalid quanity.";
         }
         return null;
       },
       decoration: InputDecoration(
         labelText: "Quantity",
         hintText: "Enter quantity",
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: CustomSufFixIcon( svgPaddingLeft: 15,svgIcon: "assets/icons/help_outline_black_24dp.svg"),
       ),
@@ -87,97 +190,56 @@ class _SaleAddFormState extends State<SaleAddForm> {
 
   TextFormField _buildProductField() {
     return TextFormField(
-      keyboardType: TextInputType.text,
-      onSaved: (newValue) => email = newValue,
-      onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kEmailNullError);
-        } else if (emailValidatorRegExp.hasMatch(value)) {
-          removeError(error: kInvalidEmailError);
+      onTap: () async {
+        final product = await Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ProductPage(productModel: this.product)),
+        );
+        if(product == null) {
+          return;
         }
-        return null;
+        setState(() {
+          this.product = product;
+          productController.text = this.product[ProductKey.name];
+          this.helperText = '';
+          checkFormValid();
+        });
       },
+      keyboardType: TextInputType.text,
+      controller: productController,
+      onChanged: (value) => checkFormValid(),
+      readOnly: true,
       validator: (value) {
         if (value.isEmpty) {
-          addError(error: kEmailNullError);
-          return "";
-        } else if (!emailValidatorRegExp.hasMatch(value)) {
-          addError(error: kInvalidEmailError);
-          return "";
+          return "Invalid product.";
         }
         return null;
       },
       decoration: InputDecoration(
         labelText: "Product",
         hintText: "Select product",
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
+        prefixIcon: this.product != null ? PrefixProduct(url: this.product[ProductKey.url]) : null,
         suffixIcon: CustomSufFixIcon( svgPaddingLeft: 15,svgIcon: "assets/icons/expand_more_black_24dp.svg"),
       ),
     );
   }
 
-  TextFormField _buildCategoryField() {
-    return TextFormField(
-      keyboardType: TextInputType.text,
-      onSaved: (newValue) => email = newValue,
-      onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kEmailNullError);
-        } else if (emailValidatorRegExp.hasMatch(value)) {
-          removeError(error: kInvalidEmailError);
-        }
-        return null;
-      },
-      validator: (value) {
-        if (value.isEmpty) {
-          addError(error: kEmailNullError);
-          return "";
-        } else if (!emailValidatorRegExp.hasMatch(value)) {
-          addError(error: kInvalidEmailError);
-          return "";
-        }
-        return null;
-      },
-      decoration: InputDecoration(
-        labelText: "Category",
-        hintText: "Select category",
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: CustomSufFixIcon( svgPaddingLeft: 15,svgIcon: "assets/icons/expand_more_black_24dp.svg"),
-      ),
-    );
-  }
 
   TextFormField _buildTotalField() {
     return TextFormField(
-      keyboardType: TextInputType.emailAddress,
-      onSaved: (newValue) => email = newValue,
-      onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kEmailNullError);
-        } else if (emailValidatorRegExp.hasMatch(value)) {
-          removeError(error: kInvalidEmailError);
-        }
-        return null;
-      },
+      keyboardType: TextInputType.number,
+      controller: totalController,
+      onChanged: (value) => checkFormValid(),
       validator: (value) {
         if (value.isEmpty) {
-          addError(error: kEmailNullError);
-          return "";
-        } else if (!emailValidatorRegExp.hasMatch(value)) {
-          addError(error: kInvalidEmailError);
-          return "";
+          return "Invalid total.";
         }
         return null;
       },
       decoration: InputDecoration(
         labelText: "Total",
         hintText: "Enter total",
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: CustomSufFixIcon( svgPaddingLeft: 15,svgIcon: "assets/icons/help_outline_black_24dp.svg"),
       ),
@@ -204,48 +266,66 @@ class _SaleAddFormState extends State<SaleAddForm> {
           ],
         ),
         onPressed: () {
-          // setState(() {
-          //   if(this.product == null) {
-          //     _isValid(
-          //         body: 'Please select product!'
-          //     );
-          //     return;
-          //   } else if (this.packageProductModel == null) {
-          //     _isValid(
-          //         body: 'Please select package product!'
-          //     );
-          //     return;
-          //   } else if (this.quantityValueController.text == null || this.quantityValueController.text.trim() == '') {
-          //     _isValid(
-          //         body: 'Invalid Quantity!'
-          //     );
-          //     return;
-          //   } else if (this.totalValueController.text == null || this.totalValueController.text.trim() == '') {
-          //     _isValid(
-          //         body: 'Invalid Total!'
-          //     );
-          //     return;
-          //   } else {
-          //     Map data = {
-          //       SaleAddItemKey.productId: this.product.id,
-          //       SaleAddItemKey.productUrl: this.product.url,
-          //       SaleAddItemKey.productName: this.product.name,
-          //       SaleAddItemKey.packageProductName: this.packageProductModel.name,
-          //       SaleAddItemKey.quantity: quantityValueController.text,
-          //       SaleAddItemKey.price: this.packageProductModel.price,
-          //       SaleAddItemKey.total: totalValueController.text
-          //     };
-          //     this.vData.add(data);
-          //     this.cartArrowDownCount = this.vData.length;
-          //     this.product = null;
-          //     this.quantityValueController.text = '';
-          //     this.totalValueController.text = '';
-          //     this.packageProductModel = null;
-          //     this.price = 0.0;
-          //   }
-          // });
+            this.isClickSave = true;
+            KeyboardUtil.hideKeyboard(context);
+            if( _formKey.currentState.validate()) {
+              setState(() {
+                    Map data = {
+                      SaleAddItemKey.product: this.product,
+                      SaleAddItemKey.packageProduct: this.packageProduct,
+                      SaleAddItemKey.quantity: quantityController.text,
+                      SaleAddItemKey.total: totalController.text
+                    };
+                    this.vData.add(data);
+                    widget.onChange(this.vData);
+                    this.isClickSave = false;
+                    this.helperText = 'Please select product first.';
+                    this.packageProduct = null;
+                    this.product = null;
+                    this.quantityController.clear();
+                    this.totalController.clear();
+                    this.productController.clear();
+                    this.packageProductController.clear();
+              });
+            }
         },
       ),
+    );
+  }
+
+  void save() {
+    if(this.vData.length > 0) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => SaleAddConfirm(
+          vData: this.vData,
+          onChanged: (items) {
+            setState(() {
+              this.vData = items;
+              widget.onChange(this.vData);
+            });
+          },
+        )),
+      );
+    } else {
+      _showDialogCheckItems(content: 'Please add your import item(s).');
+    }
+  }
+
+  void checkFormValid() {
+    if(isClickSave) {
+      _formKey.currentState.validate();
+    }
+  }
+
+  void _showDialogCheckItems({String content}) {
+    ShowDialog.showConfirm(
+        buildContext: context,
+        btnConfirm: 'Conf',
+        content: Text(content),
+        onPressedConfirm: () {
+          print('confirm Click');
+        }
     );
   }
 }

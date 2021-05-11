@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sale_management/share/constant/constant_color.dart';
 import 'package:sale_management/share/constant/text_style.dart';
 import 'package:sale_management/share/model/key/import_add_key.dart';
 import 'package:sale_management/share/model/key/package_product_key.dart';
 import 'package:sale_management/share/model/key/product_key.dart';
+import 'package:sale_management/share/utils/number_format.dart';
 
 class ImportItems extends StatefulWidget {
   final List<dynamic> vData;
@@ -20,6 +22,7 @@ class ImportItems extends StatefulWidget {
 class _ImportItemsState extends State<ImportItems> {
   Color _iconColor = Colors.purple[900];
   var i = 0;
+  var total = 0.0;
 
   @override
   ImportItems get widget => super.widget;
@@ -27,6 +30,10 @@ class _ImportItemsState extends State<ImportItems> {
   @override
   Widget build(BuildContext context) {
     i = 0;
+    this.total = 0;
+    if(widget.vData.length > 0) {
+      widget.vData.map((e) => this.total += double.parse(e[ImportAddKey.total].toString())).toList();
+    }
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
@@ -36,12 +43,14 @@ class _ImportItemsState extends State<ImportItems> {
         children: <Widget>[
           _widgetStack(context),
           drawerHandler(),
+          Text(
+            'Total : '+FormatNumber.usdFormat2Digit(total.toString() + ' USD'),
+            style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500, fontFamily: fontFamilyDefault, color: dropColor),
+          ),
           if (widget.vData.length > 0 )
             Column(
               children: <Widget>[
-                Container(
-                  height: MediaQuery.of(context).size.height - 155,
-                  child: SingleChildScrollView(
+                SingleChildScrollView(
                     scrollDirection: Axis.vertical,
                     child: Container(
                       child: SingleChildScrollView(
@@ -54,7 +63,6 @@ class _ImportItemsState extends State<ImportItems> {
                       ),
                     ),
                   ),
-                ),
               ],
             ),
           // Container(

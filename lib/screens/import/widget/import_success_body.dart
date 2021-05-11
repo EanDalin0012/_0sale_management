@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:sale_management/screens/import/import.dart';
 import 'package:sale_management/screens/size_config.dart';
 import 'package:sale_management/screens/widgets/default_button/default_button.dart';
+import 'package:sale_management/share/constant/constant_color.dart';
 import 'package:sale_management/share/constant/text_style.dart';
+import 'package:sale_management/share/model/key/m_key.dart';
+import 'package:sale_management/share/utils/number_format.dart';
 
 class ImportSuccessBody extends StatelessWidget {
   final bool isAddScreen;
@@ -45,7 +48,10 @@ class ImportSuccessBody extends StatelessWidget {
                   Text("Register Import", style: headingStyle),
                 if(this.isEditScreen == true)
                   Text("Update Import", style: headingStyle),
-
+                Text(
+                  "\nTransaction ID: ${this.vData[ImportKey.transactionId]} \n\nTotal : ${FormatNumber.usdFormat2Digit(this.vData[ImportKey.total].toString())} USD",
+                  style: TextStyle(fontFamily: fontFamilyDefault, fontWeight: FontWeight.w500, color: dropColor),
+                ),
                 Text("completed",textAlign: TextAlign.center,),
               ],
             ),

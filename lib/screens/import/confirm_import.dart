@@ -4,11 +4,13 @@ import 'package:sale_management/screens/constants.dart';
 import 'package:sale_management/screens/import/import_success_screen.dart';
 import 'package:sale_management/screens/size_config.dart';
 import 'package:sale_management/screens/widgets/custom_suffix_icon/custom_suffix_icon.dart';
+import 'package:sale_management/share/constant/constant_color.dart';
 import 'package:sale_management/share/constant/text_style.dart';
 import 'package:sale_management/share/model/key/import_add_key.dart';
 import 'package:sale_management/share/model/key/m_key.dart';
 import 'package:sale_management/share/model/key/package_product_key.dart';
 import 'package:sale_management/share/model/key/product_key.dart';
+import 'package:sale_management/share/utils/number_format.dart';
 
 class ConfirmImport extends StatefulWidget {
   final List<dynamic> vData;
@@ -28,7 +30,7 @@ class _ConfirmImportState extends State<ConfirmImport> {
   double pay = 0.0;
   double vPay = 0.0;
   Map vCustomer;
-  String email;
+  var total = 0.0;
 
   @override
   void initState() {
@@ -40,6 +42,10 @@ class _ConfirmImportState extends State<ConfirmImport> {
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
     this.i = 0;
+    this.total = 0;
+    if(widget.vData.length > 0) {
+      widget.vData.map((e) => this.total += double.parse(e[SaleAddItemKey.total].toString())).toList();
+    }
     return Scaffold(
         appBar: _buildAppBar(),
         body: Container(
@@ -67,6 +73,11 @@ class _ConfirmImportState extends State<ConfirmImport> {
                       SizedBox(height: SizeConfig.screenHeight * 0.02),
                     ]
                 ),
+              ),
+              SizedBox(height: SizeConfig.screenHeight * 0.02),
+              Text(
+                'Total : '+FormatNumber.usdFormat2Digit(total.toString()) + ' USD',
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500, fontFamily: fontFamilyDefault, color: dropColor),
               ),
               Divider(
                 color: Colors.purple[900].withOpacity(0.5),
@@ -106,6 +117,10 @@ class _ConfirmImportState extends State<ConfirmImport> {
               context,
               MaterialPageRoute(builder: (context) => ImportSuccessScreen(
                 isAddScreen: true,
+                vData: {
+                  ImportKey.transactionId: 'BAE20210939',
+                  ImportKey.total: this.total
+                },
               )),
             );
           },

@@ -5,6 +5,7 @@ import 'package:sale_management/screens/size_config.dart';
 import 'package:sale_management/screens/widgets/custom_suffix_icon/custom_suffix_icon.dart';
 import 'package:sale_management/share/constant/constant_color.dart';
 import 'package:sale_management/share/constant/text_style.dart';
+import 'package:sale_management/share/helper/keyboard.dart';
 import 'package:sale_management/share/model/key/import_add_key.dart';
 import 'package:sale_management/share/model/key/m_key.dart';
 import 'package:sale_management/share/model/key/package_product_key.dart';
@@ -32,12 +33,13 @@ class _SaleAddConfirmState extends State<SaleAddConfirm> {
   var styleInput = TextStyle(color: Colors.black, fontSize: 17, fontWeight: FontWeight.w500, fontFamily: fontFamilyDefault);
   var remarkController = new TextEditingController();
   var nameValueController = new TextEditingController();
+  var phoneController = new TextEditingController();
   var i = 0;
   double pay = 0.0;
   double vPay = 0.0;
   Map vCustomer;
   var total = 0.0;
-
+  var selectedMember = false;
   @override
   void initState() {
     super.initState();
@@ -54,79 +56,9 @@ class _SaleAddConfirmState extends State<SaleAddConfirm> {
     }
     return Scaffold(
       appBar: _buildAppBar(),
-      body: Container(
-          height: size.height,
-          child: Column(
-            children: <Widget>[
-              Center(
-                child: Column(
-                  children: <Widget>[
-                    SizedBox(height: SizeConfig.screenHeight * 0.04), // 4%
-                    Text("Sale Items", style: headingStyle),
-                    Text(
-                      "Complete your details. \n Please check sale items then click confirm.",
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  InputChip(
-                      selected: true,
-                      label: Text('Flutter'),
-                      avatar: FlutterLogo(),
-                      elevation: 10,
-                      pressElevation: 5,
-                      shadowColor: Colors.teal,
-                      onPressed: () {
-                        print('Fluter is pressed');
-
-                        // setState(() {
-                        //   _selected = !_selected;
-                        // });
-                      }
-                  ),
-                  InputChip(
-                      selected: true,
-                      label: Text('Flutter'),
-                      // avatar: FlutterLogo(),
-                      elevation: 10,
-                      pressElevation: 5,
-                      shadowColor: Colors.teal,
-                      onPressed: () {
-                        print('Fluter is pressed');
-                      }
-                  ),
-                ],
-              ),
-
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
-                child: Column(
-                    children: <Widget>[
-                      SizedBox(height: SizeConfig.screenHeight * 0.02),
-                      _buildCustomerField(),
-                      SizedBox(height: SizeConfig.screenHeight * 0.02),
-                      _buildRemarkField(),
-                      SizedBox(height: SizeConfig.screenHeight * 0.02),
-                    ]
-                ),
-              ),
-              SizedBox(height: SizeConfig.screenHeight * 0.02),
-              Text(
-                'Total : '+FormatNumber.usdFormat2Digit(total.toString()) + ' USD',
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500, fontFamily: fontFamilyDefault, color: dropColor),
-              ),
-              Divider(
-                color: Colors.purple[900].withOpacity(0.5),
-              ),
-              _body(),
-              _buildConfirmButton ()
-            ],
-          ),
-        )
+      body: SafeArea(
+        child: _buildBody(),
+      ),
     );
   }
 
@@ -145,31 +77,76 @@ class _SaleAddConfirmState extends State<SaleAddConfirm> {
     );
   }
 
-  Widget _buildConfirmButton () {
+  Widget _buildBody () {
     setState(() {
       pay = vPay;
     });
     return Stack(
       children: <Widget>[
-        InkWell(
-          onTap: () {
+        Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Center(
+                  child: Column(
+                    children: <Widget>[
+                      SizedBox(height: SizeConfig.screenHeight * 0.02), // 4%
+                      Text("Sale Items", style: headingStyle),
+                      Text(
+                        "Complete your details. \n Please check sale items then click confirm.",
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: SizeConfig.screenHeight * 0.02),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    inputChipCustomer(),
+                    SizedBox(width: 15,),
+                    inputChipMember()
+                  ],
+                ),
 
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => SaleSuccessScreen(
-                isAddScreen: true,
-                vData: {
-                  ImportTransactionKey.transactionID: 'AXD20210320',
-                  ImportAddKey.total: this.total
-                },
-              )),
-            );
-          },
-          child: Container(
-            width: size.width,
-            height: 45,
-            color: Colors.redAccent,
-            child: Center(child: Text('Confirm', style: TextStyle(fontWeight: FontWeight.w700, color: Colors.white, fontFamily: 'roboto', fontSize: 18))),
+                this.selectedMember ? _buildIsMemberSelected() : _buildIsCustomerSelected(),
+
+                SizedBox(height: SizeConfig.screenHeight * 0.02),
+                Text(
+                  'Total : '+FormatNumber.usdFormat2Digit(total.toString()) + ' USD',
+                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500, fontFamily: fontFamilyDefault, color: dropColor),
+                ),
+                Divider(
+                  color: Colors.purple[900].withOpacity(0.5),
+                ),
+                _body(),
+              ],
+            ),
+          ),
+        ),
+        Positioned(
+          bottom: 0,
+          child: GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SaleSuccessScreen(
+                  isAddScreen: true,
+                  vData: {
+                    ImportTransactionKey.transactionID: 'AXD20210320',
+                    ImportAddKey.total: this.total
+                  },
+                )),
+              );
+            },
+            child: Container(
+              width: size.width,
+              height: 45,
+              color: Colors.redAccent,
+              child: Center(child: Text('Confirm', style: TextStyle(fontWeight: FontWeight.w700, color: Colors.white, fontFamily: 'roboto', fontSize: 18))),
+            ),
           ),
         ),
       ],
@@ -260,9 +237,8 @@ class _SaleAddConfirmState extends State<SaleAddConfirm> {
     );
   }
 
-  Expanded _body() {
-    return Expanded(
-        child: SingleChildScrollView(
+  Widget _body() {
+    return SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -279,11 +255,43 @@ class _SaleAddConfirmState extends State<SaleAddConfirm> {
                     ),
                   ),
                 ])
-        )
-    );
+        );
   }
 
   TextFormField _buildCustomerField() {
+    return TextFormField(
+      keyboardType: TextInputType.emailAddress,
+      decoration: InputDecoration(
+        labelText: "Customer",
+        hintText: "Enter customer name",
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        suffixIcon: CustomSufFixIcon( svgPaddingLeft: 15,svgIcon: "assets/icons/expand_more_black_24dp.svg"),
+      ),
+    );
+  }
+
+  TextFormField _buildPhoneField() {
+    return TextFormField(
+      keyboardType: TextInputType.phone,
+      textInputAction: TextInputAction.next,
+      controller: phoneController,
+      // onChanged: (value) => checkFormValid(),
+      validator: (value) {
+        if (value.isEmpty) {
+          return "Invalid phone.";
+        }
+        return null;
+      },
+      decoration: InputDecoration(
+        labelText: "Phone",
+        hintText: "Enter phone number",
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        suffixIcon: CustomSufFixIcon( svgPaddingLeft: 15,svgIcon: "assets/icons/help_outline_black_24dp.svg"),
+      ),
+    );
+  }
+
+  TextFormField _buildMemberField() {
     return TextFormField(
       keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
@@ -318,6 +326,78 @@ class _SaleAddConfirmState extends State<SaleAddConfirm> {
     setState(() {
       pay = vPay;
     });
+  }
+
+  Widget inputChipMember() {
+    return InputChip(
+      padding: EdgeInsets.all(2.0),
+      elevation: 5,
+      avatar: CircleAvatar(
+        backgroundColor: Colors.blue.shade600,
+        child: Text('M'),
+      ),
+      label: Text('Member', style: TextStyle(color: selectedMember ? Colors.white: Colors.black, fontFamily: fontFamilyDefault)),
+      selected: selectedMember,
+      selectedColor: Color(0xff32b8a1),
+      deleteIcon: selectedMember ? Icon(Icons.check_circle_outline_outlined, color: Colors.deepPurple,) : Icon(Icons.highlight_remove_outlined, color: Colors.indigo),
+      onSelected: (bool selected) {
+        setState(() {
+          selectedMember = selected;
+        });
+      },
+      onDeleted: () {},
+    );
+  }
+
+  Widget inputChipCustomer() {
+    return InputChip(
+      padding: EdgeInsets.all(2.0),
+      elevation: 5,
+      avatar: CircleAvatar(
+        backgroundColor: Colors.blue.shade600,
+        child: Text('C'),
+      ),
+      label: Text('Customer', style: TextStyle(color: !selectedMember ? Colors.white: Colors.black, fontFamily: fontFamilyDefault),),
+      selected: !selectedMember,
+      selectedColor: Color(0xff32b8a1),
+      deleteIcon: !selectedMember ? Icon(Icons.check_circle_outline_outlined, color: Colors.indigo,) : Icon(Icons.highlight_remove_outlined, color: Colors.indigo,),
+      onSelected: (bool selected) {
+        setState(() {
+          selectedMember = !selected;
+        });
+      },
+      onDeleted: () {},
+    );
+  }
+
+  Widget _buildIsCustomerSelected() {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+      child: Column(
+          children: <Widget>[
+          SizedBox(height: SizeConfig.screenHeight * 0.02),
+          _buildCustomerField(),
+          SizedBox(height: SizeConfig.screenHeight * 0.02),
+            _buildPhoneField(),
+            SizedBox(height: SizeConfig.screenHeight * 0.02),
+          _buildRemarkField(),
+        ]
+      ),
+    );
+  }
+
+  Widget _buildIsMemberSelected() {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+      child: Column(
+          children: <Widget>[
+            SizedBox(height: SizeConfig.screenHeight * 0.02),
+            _buildMemberField(),
+            SizedBox(height: SizeConfig.screenHeight * 0.02),
+            _buildRemarkField(),
+          ]
+      ),
+    );
   }
 
 }

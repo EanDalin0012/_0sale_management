@@ -5,10 +5,12 @@ import 'package:sale_management/screens/size_config.dart';
 import 'package:sale_management/screens/widgets/custom_suffix_icon/custom_suffix_icon.dart';
 import 'package:sale_management/share/constant/constant_color.dart';
 import 'package:sale_management/share/constant/text_style.dart';
+import 'package:sale_management/share/model/key/import_add_key.dart';
 import 'package:sale_management/share/model/key/m_key.dart';
 import 'package:sale_management/share/model/key/package_product_key.dart';
 import 'package:sale_management/share/model/key/product_key.dart';
 import 'package:sale_management/share/utils/number_format.dart';
+import 'package:sale_management/screens/sale/sale_success_screen.dart';
 
 class SaleAddConfirm extends StatefulWidget {
   final List<dynamic> vData;
@@ -152,11 +154,21 @@ class _SaleAddConfirmState extends State<SaleAddConfirm> {
         InkWell(
           onTap: () {
 
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => SaleSuccessScreen(
+                isAddScreen: true,
+                vData: {
+                  ImportTransactionKey.transactionID: 'AXD20210320',
+                  ImportAddKey.total: this.total
+                },
+              )),
+            );
           },
           child: Container(
             width: size.width,
             height: 45,
-            color: Colors.red,
+            color: Colors.redAccent,
             child: Center(child: Text('Confirm', style: TextStyle(fontWeight: FontWeight.w700, color: Colors.white, fontFamily: 'roboto', fontSize: 18))),
           ),
         ),

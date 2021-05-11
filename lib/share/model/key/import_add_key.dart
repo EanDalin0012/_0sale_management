@@ -8,3 +8,7 @@ class ImportAddKey {
   static const price                = 'price';
   static const remark               = "remark";
 }
+
+class ImportTransactionKey {
+  static const transactionID              = "transactionID";
+}

@@ -256,12 +256,10 @@ class _ProductScreenState extends State<ProductScreen> {
         buildContext: context,
         title: Text(item[ProductKey.name]),
         content: Text('Do you want to delete package of product : '+item[ProductKey.name]+'?'),
-        btnRight: 'Yes',
-        onPressedBntRight: () {
+        onPressedYes: () {
           print('onPressedBntRight');
         },
-        btnLeft: 'No',
-        onPressedBntLeft: () {
+        onPressedNo: () {
           print('onPressedBntLeft');
         }
     );

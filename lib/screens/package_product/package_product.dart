@@ -305,12 +305,10 @@ class _PackageProductScreenState extends State<PackageProductScreen> {
         buildContext: context,
         title: Text(item.name),
         content: Text('Do you want to delete package of product : '+item.name+'?'),
-        btnRight: 'Yes',
-        onPressedBntRight: () {
+        onPressedYes: () {
           print('onPressedBntRight');
         },
-        btnLeft: 'No',
-        onPressedBntLeft: () {
+        onPressedNo: () {
           print('onPressedBntLeft');
         }
     );

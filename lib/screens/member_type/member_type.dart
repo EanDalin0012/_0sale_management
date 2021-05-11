@@ -199,12 +199,11 @@ class _MemberTypeState extends State<MemberType> {
         buildContext: context,
         title: Text(_vendorModel[VendorKey.name]),
         content: Text('Do you want to delete category : '+_vendorModel[VendorKey.name]+'?'),
-        btnRight: 'Yes',
-        onPressedBntRight: () {
+
+        onPressedYes: () {
           print('onPressedBntRight');
         },
-        btnLeft: 'No',
-        onPressedBntLeft: () {
+        onPressedNo: () {
           print('onPressedBntLeft');
         }
     );

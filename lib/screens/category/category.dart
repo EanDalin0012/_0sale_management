@@ -267,12 +267,12 @@ class _CategoryState extends State<CategoryScreen> {
         buildContext: context,
         title: Text(category[CategoryKey.name]),
         content: Text('Do you want to delete category : '+category[CategoryKey.name]+'?'),
-        btnRight: 'Yes',
-        onPressedBntRight: () {
+        btnYes: 'Yes',
+        onPressedYes: () {
           print('onPressedBntRight');
         },
-        btnLeft: 'No',
-        onPressedBntLeft: () {
+        btnNo: 'No',
+        onPressedNo: () {
           print('onPressedBntLeft');
         }
     );

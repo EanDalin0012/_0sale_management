@@ -42,7 +42,7 @@ class _SaleAddConfirmState extends State<SaleAddConfirm> {
   var selectedMember = false;
   final _formCustomerKey = GlobalKey<FormState>();
   final _formMemberKey = GlobalKey<FormState>();
-
+  var isClickConfirm  = false;
   @override
   void initState() {
     super.initState();
@@ -114,7 +114,7 @@ class _SaleAddConfirmState extends State<SaleAddConfirm> {
                   ],
                 ),
 
-                this.selectedMember ? _buildIsMemberSelected() : _buildIsCustomerSelected(),
+                this.selectedMember ? _buildIsMemberSelected() :  _buildIsCustomerSelected(),
 
                 SizedBox(height: SizeConfig.screenHeight * 0.02),
                 Text(
@@ -133,16 +133,7 @@ class _SaleAddConfirmState extends State<SaleAddConfirm> {
           bottom: 0,
           child: GestureDetector(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SaleSuccessScreen(
-                  isAddScreen: true,
-                  vData: {
-                    ImportTransactionKey.transactionID: 'AXD20210320',
-                    ImportAddKey.total: this.total
-                  },
-                )),
-              );
+              !this.selectedMember ? validationCustomer() : validationMember();
             },
             child: Container(
               width: size.width,
@@ -265,7 +256,13 @@ class _SaleAddConfirmState extends State<SaleAddConfirm> {
     return TextFormField(
       keyboardType: TextInputType.text,
       textInputAction: TextInputAction.next,
-
+      onChanged: (value) => checkFormValid(),
+      validator: (value) {
+        if (value.isEmpty) {
+          return "Invalid customer name.";
+        }
+        return null;
+      },
       decoration: InputDecoration(
         labelText: "Customer",
         hintText: "Enter customer name",
@@ -280,7 +277,7 @@ class _SaleAddConfirmState extends State<SaleAddConfirm> {
       keyboardType: TextInputType.phone,
       textInputAction: TextInputAction.next,
       controller: phoneController,
-      // onChanged: (value) => checkFormValid(),
+      onChanged: (value) => checkFormValid(),
       validator: (value) {
         if (value.isEmpty) {
           return "Invalid phone.";
@@ -299,6 +296,12 @@ class _SaleAddConfirmState extends State<SaleAddConfirm> {
   TextFormField _buildMemberField() {
     return TextFormField(
       keyboardType: TextInputType.text,
+      validator: (value) {
+        if (value.isEmpty) {
+          return "Invalid member.";
+        }
+        return null;
+      },
       decoration: InputDecoration(
         labelText: "Member",
         hintText: "Select member",
@@ -338,7 +341,7 @@ class _SaleAddConfirmState extends State<SaleAddConfirm> {
       padding: EdgeInsets.all(2.0),
       elevation: 5,
       avatar: CircleAvatar(
-        backgroundColor: Colors.blue.shade600,
+        backgroundColor: this.selectedMember ? Colors.blue.shade600 : Colors.redAccent,
         child: Text('M'),
       ),
       label: Text('Member', style: TextStyle(color: selectedMember ? Colors.white: Colors.black, fontFamily: fontFamilyDefault)),
@@ -359,11 +362,11 @@ class _SaleAddConfirmState extends State<SaleAddConfirm> {
       padding: EdgeInsets.all(2.0),
       elevation: 5,
       avatar: CircleAvatar(
-        backgroundColor: Colors.blue.shade600,
+        backgroundColor: !this.selectedMember ? Colors.blue.shade600 : Colors.redAccent,
         child: Text('C'),
       ),
-      label: Text('Customer', style: TextStyle(color: !selectedMember ? Colors.white: Colors.black, fontFamily: fontFamilyDefault),),
-      selected: !selectedMember,
+      label: Text('Customer', style: TextStyle(color: !this.selectedMember ? Colors.white: Colors.black, fontFamily: fontFamilyDefault),),
+      selected: !this.selectedMember,
       selectedColor: Color(0xff32b8a1),
       deleteIcon: !selectedMember ? Icon(Icons.check_circle_outline_outlined, color: Colors.indigo,) : Icon(Icons.highlight_remove_outlined, color: Colors.indigo,),
       onSelected: (bool selected) {
@@ -411,4 +414,43 @@ class _SaleAddConfirmState extends State<SaleAddConfirm> {
     );
   }
 
+  validationCustomer() {
+    print('validationCustomer');
+    if(this._formCustomerKey.currentState.validate()) {
+      rout();
+    }
+  }
+
+  validationMember() {
+    if(this._formMemberKey.currentState.validate()) {
+      rout();
+    }
+  }
+  void rout() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => SaleSuccessScreen(
+        isAddScreen: true,
+        vData: {
+          ImportTransactionKey.transactionID: 'AXD20210320',
+          ImportAddKey.total: this.total
+        },
+      )),
+    );
+  }
+  void checkFormValid() {
+    if(isClickConfirm && this.selectedMember != true) {
+      _formCustomerKey.currentState.validate();
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => SaleSuccessScreen(
+          isAddScreen: true,
+          vData: {
+            ImportTransactionKey.transactionID: 'AXD20210320',
+            ImportAddKey.total: this.total
+          },
+        )),
+      );
+    }
+  }
 }

@@ -24,6 +24,7 @@ class _AddImportScreenState extends State<AddImportScreen> {
       body: SafeArea(
         child: AddImportForm(
           onAddChange: (items) {
+            print('${items}');
             setState(() {
               this.vData = items;
               this.cartArrowDownCount = this.vData.length;
@@ -94,28 +95,16 @@ class _AddImportScreenState extends State<AddImportScreen> {
             child: ImportItems(
               vData: this.vData,
               onChanged: (vChangeData) {
+                print('vChangeData: ${vChangeData}');
                 setState(() {
                   this.vData = vChangeData;
+
                   this.cartArrowDownCount = this.vData.length;
                 });
               },
             ),
           );
         });
-  }
-
-  Widget _showDialog(Map item) {
-     ShowDialog.showDialogYesNo(
-        buildContext: context,
-        title: Text('Title'),
-        content: Text('Do you want to delete package of product : ?'),
-        onPressedYes: () {
-          print('onPressedBntRight');
-        },
-        onPressedNo: () {
-          print('onPressedBntLeft');
-        }
-    );
   }
 
 }

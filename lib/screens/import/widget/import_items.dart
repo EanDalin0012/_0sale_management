@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sale_management/share/constant/text_style.dart';
-import 'package:sale_management/share/model/key/m_key.dart';
+import 'package:sale_management/share/model/key/import_add_key.dart';
+import 'package:sale_management/share/model/key/package_product_key.dart';
+import 'package:sale_management/share/model/key/product_key.dart';
 
 class ImportItems extends StatefulWidget {
   final List<dynamic> vData;
@@ -126,21 +128,25 @@ class _ImportItemsState extends State<ImportItems> {
         ],
         rows: widget.vData.map((e) {
           i += 1;
+          Map product = e[ImportAddKey.product];
+          Map packageProduct = e[ImportAddKey.packageProduct];
+          print('e: ${e[ImportAddKey.quantity]}');
+          print('e: ${e[ImportAddKey.price]}');
           return DataRow(
               cells: <DataCell>[
                 DataCell(Text(i.toString())),
                 DataCell(
                     Row(
                         children: <Widget>[
-                          _buildLeading(e[SaleAddItemKey.productUrl].toString()),
+                          _buildLeading(product[ProductKey.url].toString()),
                           SizedBox(width: 10),
-                          Text(e[SaleAddItemKey.productName].toString())
+                          Text(product[ProductKey.name].toString())
                         ]
                     )
                 ),
-                DataCell(Text(e[SaleAddItemKey.packageProductName].toString())),
-                DataCell(Text(e[SaleAddItemKey.quantity].toString())),
-                DataCell(Text(e[SaleAddItemKey.total].toString() + ' \$')),
+                DataCell(Text(packageProduct[PackageProductKey.name].toString())),
+                DataCell(Text(e[ImportAddKey.quantity].toString())),
+                DataCell(Text(e[ImportAddKey.total].toString() + ' \$')),
                 DataCell(_buildRemoveButton(e))
               ]
           );

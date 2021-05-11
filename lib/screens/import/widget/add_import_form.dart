@@ -6,12 +6,13 @@ import 'package:sale_management/screens/size_config.dart';
 import 'package:sale_management/screens/widgets/custom_suffix_icon/custom_suffix_icon.dart';
 import 'package:sale_management/screens/widgets/package_product_dropdown/package_product_page.dart';
 import 'package:sale_management/screens/widgets/product_dropdown/product_page.dart';
+import 'package:sale_management/share/components/show_dialog/show_dialog.dart';
 import 'package:sale_management/share/constant/constant_color.dart';
 import 'package:sale_management/share/constant/text_style.dart';
 import 'package:sale_management/share/helper/keyboard.dart';
 import 'package:sale_management/share/model/key/package_product_key.dart';
 import 'package:sale_management/share/model/key/product_key.dart';
-import 'package:sale_management/share/model/key/m_key.dart';
+import 'package:sale_management/share/model/key/import_add_key.dart';
 import 'package:sale_management/screens/package_product/widgets/prefix_product.dart';
 import 'package:sale_management/screens/widgets/vendor_dropdown/vendor_dropdown.dart';
 import 'package:sale_management/share/model/key/vendor_key.dart';
@@ -35,13 +36,6 @@ class _AddNewCategoryFormState extends State<AddImportForm> {
   Size size;
   var isClickSave = false;
   List<dynamic> vData = [];
-  Map productItem;
-  Map packageProductItem;
-  Map vendorItem;
-  var quantity = 0.0;
-  var total = 0.0;
-  var remark = '';
-  var price = 0;
 
   var productController = new TextEditingController();
   var packageProductController = new TextEditingController();
@@ -49,6 +43,7 @@ class _AddNewCategoryFormState extends State<AddImportForm> {
   var quantityController = new TextEditingController();
   var totalController = new TextEditingController();
   var remarkController = new TextEditingController();
+  var price = 0;
 
   Map product;
   Map packageProduct;
@@ -343,13 +338,13 @@ class _AddNewCategoryFormState extends State<AddImportForm> {
           if( _formKey.currentState.validate()) {
             setState(() {
               Map data = {
-                ImportAddKey.product: this.productItem,
-                ImportAddKey.packageProduct: this.packageProductItem,
-                ImportAddKey.vendor: this.vendorItem,
-                ImportAddKey.quantity: this.quantity,
-                ImportAddKey.price: price,
-                ImportAddKey.total: this.total,
-                ImportAddKey.remark: this.remark
+                ImportAddKey.product: this.product,
+                ImportAddKey.packageProduct: this.packageProduct,
+                ImportAddKey.vendor: this.vendor,
+                ImportAddKey.quantity: this.quantityController.text,
+                ImportAddKey.price: this.price,
+                ImportAddKey.total: this.totalController.text,
+                ImportAddKey.remark: this.remarkController.text
               };
               this.vData.add(data);
               widget.onAddChange(this.vData);
@@ -361,6 +356,10 @@ class _AddNewCategoryFormState extends State<AddImportForm> {
               this.quantityController.clear();
               this.totalController.clear();
               this.remarkController.clear();
+              this.product = null;
+              this.packageProduct = null;
+              this.vendor = null;
+              this.isClickSave = false;
             });
           }
         },
@@ -376,6 +375,8 @@ class _AddNewCategoryFormState extends State<AddImportForm> {
           vData: this.vData,
         )),
       );
+    } else {
+      _showDialogCheckItems(content: 'Please add your import item(s).');
     }
   }
 
@@ -383,6 +384,17 @@ class _AddNewCategoryFormState extends State<AddImportForm> {
     if(isClickSave) {
       _formKey.currentState.validate();
     }
+  }
+
+  void _showDialogCheckItems({String content}) {
+    ShowDialog.showConfirm(
+        buildContext: context,
+        btnConfirm: 'Conf',
+        content: Text(content),
+        onPressedConfirm: () {
+          print('confirm Click');
+        }
+    );
   }
 
 }

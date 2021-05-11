@@ -40,6 +40,9 @@ class _SaleAddConfirmState extends State<SaleAddConfirm> {
   Map vCustomer;
   var total = 0.0;
   var selectedMember = false;
+  final _formCustomerKey = GlobalKey<FormState>();
+  final _formMemberKey = GlobalKey<FormState>();
+
   @override
   void initState() {
     super.initState();
@@ -260,7 +263,9 @@ class _SaleAddConfirmState extends State<SaleAddConfirm> {
 
   TextFormField _buildCustomerField() {
     return TextFormField(
-      keyboardType: TextInputType.emailAddress,
+      keyboardType: TextInputType.text,
+      textInputAction: TextInputAction.next,
+
       decoration: InputDecoration(
         labelText: "Customer",
         hintText: "Enter customer name",
@@ -293,7 +298,7 @@ class _SaleAddConfirmState extends State<SaleAddConfirm> {
 
   TextFormField _buildMemberField() {
     return TextFormField(
-      keyboardType: TextInputType.emailAddress,
+      keyboardType: TextInputType.text,
       decoration: InputDecoration(
         labelText: "Member",
         hintText: "Select member",
@@ -371,31 +376,37 @@ class _SaleAddConfirmState extends State<SaleAddConfirm> {
   }
 
   Widget _buildIsCustomerSelected() {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
-      child: Column(
-          children: <Widget>[
-          SizedBox(height: SizeConfig.screenHeight * 0.02),
-          _buildCustomerField(),
-          SizedBox(height: SizeConfig.screenHeight * 0.02),
-            _buildPhoneField(),
+    return Form(
+      key: _formCustomerKey,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+        child: Column(
+            children: <Widget>[
             SizedBox(height: SizeConfig.screenHeight * 0.02),
-          _buildRemarkField(),
-        ]
+            _buildCustomerField(),
+            SizedBox(height: SizeConfig.screenHeight * 0.02),
+              _buildPhoneField(),
+              SizedBox(height: SizeConfig.screenHeight * 0.02),
+            _buildRemarkField(),
+          ]
+        ),
       ),
     );
   }
 
   Widget _buildIsMemberSelected() {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
-      child: Column(
-          children: <Widget>[
-            SizedBox(height: SizeConfig.screenHeight * 0.02),
-            _buildMemberField(),
-            SizedBox(height: SizeConfig.screenHeight * 0.02),
-            _buildRemarkField(),
-          ]
+    return Form(
+      key: _formMemberKey,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+        child: Column(
+            children: <Widget>[
+              SizedBox(height: SizeConfig.screenHeight * 0.02),
+              _buildMemberField(),
+              SizedBox(height: SizeConfig.screenHeight * 0.02),
+              _buildRemarkField(),
+            ]
+        ),
       ),
     );
   }

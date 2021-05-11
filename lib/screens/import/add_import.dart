@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:sale_management/share/components/show_dialog/show_dialog.dart';
 import 'package:sale_management/share/constant/text_style.dart';
 import 'package:sale_management/screens/import/widget/add_import_form.dart';
 import 'package:sale_management/screens/import/widget/import_items.dart';
@@ -24,7 +23,6 @@ class _AddImportScreenState extends State<AddImportScreen> {
       body: SafeArea(
         child: AddImportForm(
           onAddChange: (items) {
-            print('${items}');
             setState(() {
               this.vData = items;
               this.cartArrowDownCount = this.vData.length;
@@ -95,10 +93,8 @@ class _AddImportScreenState extends State<AddImportScreen> {
             child: ImportItems(
               vData: this.vData,
               onChanged: (vChangeData) {
-                print('vChangeData: ${vChangeData}');
                 setState(() {
                   this.vData = vChangeData;
-
                   this.cartArrowDownCount = this.vData.length;
                 });
               },

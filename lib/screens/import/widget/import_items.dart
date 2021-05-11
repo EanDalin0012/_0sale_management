@@ -130,8 +130,6 @@ class _ImportItemsState extends State<ImportItems> {
           i += 1;
           Map product = e[ImportAddKey.product];
           Map packageProduct = e[ImportAddKey.packageProduct];
-          print('e: ${e[ImportAddKey.quantity]}');
-          print('e: ${e[ImportAddKey.price]}');
           return DataRow(
               cells: <DataCell>[
                 DataCell(Text(i.toString())),

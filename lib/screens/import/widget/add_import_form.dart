@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sale_management/screens/constants.dart';
-import 'package:sale_management/screens/sale/sale_add_confirm.dart';
+import 'package:sale_management/screens/import/confirm_import.dart';
 import 'package:sale_management/screens/size_config.dart';
 import 'package:sale_management/screens/widgets/custom_suffix_icon/custom_suffix_icon.dart';
 import 'package:sale_management/screens/widgets/package_product_dropdown/package_product_page.dart';
@@ -371,7 +371,7 @@ class _AddNewCategoryFormState extends State<AddImportForm> {
     if(this.vData.length > 0) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => SaleAddConfirm(
+        MaterialPageRoute(builder: (context) => ConfirmImport(
           vData: this.vData,
         )),
       );

@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 class ShowDialog {
 
-  static Widget showDialogYesNo(
+  static void showDialogYesNo(
       {
         BuildContext buildContext,
         Widget title,
@@ -18,7 +18,7 @@ class ShowDialog {
     showDialog (
         context: buildContext,
         builder: (BuildContext context) {
-          var padding = EdgeInsets.all(10);
+          var padding = EdgeInsets.only(left: 10, top: 5, bottom: 5, right: 10);
           var txtYes = 'Yes';
           var txtNo = 'No';
           if(btnYes != null) {
@@ -36,16 +36,16 @@ class ShowDialog {
                 child: Container(
                     padding: padding,
                     decoration: BoxDecoration(
-                      color: Colors.red[700].withOpacity(0.2),//Color(0xffd9dbdb).withOpacity(0.4),
+                      color: Colors.redAccent,//Color(0xffd9dbdb).withOpacity(0.4),
                       borderRadius: BorderRadius.circular(50),
                     ),
                     child: Center(
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
-                            FaIcon(FontAwesomeIcons.timesCircle,size: 25,color: Colors.red),
+                            FaIcon(FontAwesomeIcons.timesCircle,size: 25,color: Colors.white),
                             SizedBox(width: 5,),
-                            Center(child: Text('${txtNo}',style: GoogleFonts.merriweather(fontSize: 20, fontWeight: FontWeight.w500, color: Colors.black),)),
+                            Center(child: Text('${txtNo}',style: GoogleFonts.merriweather(fontSize: 20, fontWeight: FontWeight.w500, color: Colors.white),)),
                             SizedBox(width: 5,),
                           ],
 
@@ -69,7 +69,8 @@ class ShowDialog {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
                             // SizedBox(width: 5,),
-                            FaIcon(FontAwesomeIcons.checkCircle,size: 25,color: Colors.purple[900]),
+                            _buildIconCheck(),
+                            // FaIcon(FontAwesomeIcons.checkCircle,size: 25,color: Colors.purple[900]),
                             SizedBox(width: 5,),
                             Center(child: Text('${txtYes}',style: GoogleFonts.merriweather(fontSize: 20, fontWeight: FontWeight.w500, color: Colors.black),)),
                             SizedBox(width: 5,),
@@ -90,13 +91,15 @@ class ShowDialog {
           );});
   }
 
-  Container _container() {
+  static Widget showConfirm() {
+
+  }
+
+  static Widget _buildIconCheck() {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 10),
-      decoration: BoxDecoration(
-          color: Colors.black12,
-          borderRadius: BorderRadius.all(Radius.circular(30))
-      ),
+      width: 30,
+      height: 30,
+      child: Image(image: AssetImage('assets/icons/success-green-check-mark.png')),
     );
   }
 }

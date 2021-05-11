@@ -251,8 +251,8 @@ class _ProductScreenState extends State<ProductScreen> {
     },
   );
 
-  Widget _showDialog(Map item) {
-    return ShowDialog.showDialogYesNo(
+  void _showDialog(Map item) {
+    ShowDialog.showDialogYesNo(
         buildContext: context,
         title: Text(item[ProductKey.name]),
         content: Text('Do you want to delete package of product : '+item[ProductKey.name]+'?'),

@@ -263,7 +263,7 @@ class _CategoryState extends State<CategoryScreen> {
   );
 
   Widget _showDialog(Map category) {
-    return ShowDialog.showDialogYesNo(
+     ShowDialog.showDialogYesNo(
         buildContext: context,
         title: Text(category[CategoryKey.name]),
         content: Text('Do you want to delete category : '+category[CategoryKey.name]+'?'),

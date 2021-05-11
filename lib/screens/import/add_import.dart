@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sale_management/share/components/show_dialog/show_dialog.dart';
 import 'package:sale_management/share/constant/text_style.dart';
 import 'package:sale_management/screens/import/widget/add_import_form.dart';
 import 'package:sale_management/screens/import/widget/import_items.dart';
@@ -101,6 +102,20 @@ class _AddImportScreenState extends State<AddImportScreen> {
             ),
           );
         });
+  }
+
+  Widget _showDialog(Map item) {
+     ShowDialog.showDialogYesNo(
+        buildContext: context,
+        title: Text('Title'),
+        content: Text('Do you want to delete package of product : ?'),
+        onPressedYes: () {
+          print('onPressedBntRight');
+        },
+        onPressedNo: () {
+          print('onPressedBntLeft');
+        }
+    );
   }
 
 }

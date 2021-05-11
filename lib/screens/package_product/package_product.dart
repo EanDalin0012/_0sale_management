@@ -300,8 +300,8 @@ class _PackageProductScreenState extends State<PackageProductScreen> {
   }
 
 
-  Widget _showDialog(PackageProductModel item) {
-    return ShowDialog.showDialogYesNo(
+  void _showDialog(PackageProductModel item) {
+    ShowDialog.showDialogYesNo(
         buildContext: context,
         title: Text(item.name),
         content: Text('Do you want to delete package of product : '+item.name+'?'),

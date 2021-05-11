@@ -58,7 +58,6 @@ class _ConfirmImportState extends State<ConfirmImport> {
                   ],
                 ),
               ),
-
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
                 child: Column(
@@ -121,19 +120,6 @@ class _ConfirmImportState extends State<ConfirmImport> {
     );
   }
 
-
-  Widget buildListView() {
-    return Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-          color: Colors.white,
-        ),
-        child: Column(
-
-        )
-    );
-  }
-
   Widget _buildDataTable() {
     return DataTable(
         columns: <DataColumn>[
@@ -160,8 +146,6 @@ class _ConfirmImportState extends State<ConfirmImport> {
           i += 1;
           Map product = e[ImportAddKey.product];
           Map packageProduct = e[ImportAddKey.packageProduct];
-          print('e: ${e[ImportAddKey.quantity]}');
-          print('e: ${e[ImportAddKey.price]}');
           return DataRow(
               cells: <DataCell>[
                 DataCell(Text(i.toString())),
@@ -180,9 +164,7 @@ class _ConfirmImportState extends State<ConfirmImport> {
                 DataCell(_buildRemoveButton(e))
               ]
           );
-        }
-
-        ).toList()
+        }).toList()
     );
   }
 

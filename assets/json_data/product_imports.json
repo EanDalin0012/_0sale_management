@@ -5,7 +5,7 @@
       "name": "P-White",
       "remark": "P-White",
       "categoryID": 1,
-      "total_quantity": 200,
+      "totalQuantity": 200,
       "url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTz0tjwfGCu567kZZW8pFpoHut0MHSWsKPDng&usqp=CAU"
     },
     {
@@ -13,14 +13,14 @@
       "name": "ទឹកដោះគោស្តួត",
       "remark": "ទឹកដោះគោស្តួត",
       "categoryID": 2,
-      "total_quantity": 100,
+      "totalQuantity": 100,
       "url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTz0tjwfGCu567kZZW8pFpoHut0MHSWsKPDng&usqp=CAU"
     },{
       "id": 3,
       "name": "Tamarind scrub",
       "remark": "Tamarind scrub",
       "categoryID": 3,
-      "total_quantity": 50,
+      "totalQuantity": 50,
       "url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTz0tjwfGCu567kZZW8pFpoHut0MHSWsKPDng&usqp=CAU"
     }
   ]

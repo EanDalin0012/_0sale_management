@@ -1,22 +1,20 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sale_management/screens/home/Home.dart';
 import 'package:sale_management/screens/widgets/search_widget/search_widget.dart';
-import 'package:sale_management/screens/import/add_import.dart';
 import 'package:sale_management/share/constant/text_style.dart';
 import 'package:sale_management/share/model/key/m_key.dart';
 import 'package:sale_management/share/utils/format_date.dart';
 import 'package:sale_management/share/utils/number_format.dart';
 
-class ImportScreen extends StatefulWidget {
+class AllTransactionImportBody extends StatefulWidget {
   @override
-  _ImportScreenState createState() => _ImportScreenState();
+  _AllTransactionImportBodyState createState() => _AllTransactionImportBodyState();
 }
 
-class _ImportScreenState extends State<ImportScreen> {
+class _AllTransactionImportBodyState extends State<AllTransactionImportBody> {
   var isNative = false;
   Size size;
   var menuStyle = TextStyle( color: Colors.purple[900], fontWeight: FontWeight.w500, fontFamily: fontFamilyDefault);
@@ -34,87 +32,75 @@ class _ImportScreenState extends State<ImportScreen> {
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
-    return Scaffold(
-      appBar: _buildAppBar(),
-      body: SafeArea(
-        child: WillPopScope(
-          onWillPop:  () async {
-            return Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => Home()),
-            );
-          },
-          child: LayoutBuilder(
-            builder: (BuildContext context, BoxConstraints viewportConstraints) {
-              return Stack(
-                children: <Widget>[
-                    SingleChildScrollView(
-                      child: ConstrainedBox(
-                        constraints: BoxConstraints(
-                          minHeight: viewportConstraints.maxHeight,
-                        ),
-                        child: IntrinsicHeight(
-                          child: this.vDataLength > 0 ? Column(
-                              children: <Widget>[
-                                SizedBox(height: 40,),
-                                Column(
+    return SingleChildScrollView(
+      child: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints viewportConstraints) {
+          return Stack(
+            children: <Widget>[
+              SingleChildScrollView(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minHeight: viewportConstraints.maxHeight,
+                  ),
+                  child: IntrinsicHeight(
+                    child: this.vDataLength > 0 ? Column(
+                        children: <Widget>[
+                          SizedBox(height: 40,),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: this.vData.map((e) {
+                              List<dynamic> mData = e['transactionInfo'];
+                              var mDataLength = mData.length;
+                              var i = 0;
+                              return Container(
+                                width: size.width,
+                                child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: this.vData.map((e) {
-                                    List<dynamic> mData = e['transactionInfo'];
-                                    var mDataLength = mData.length;
-                                    var i = 0;
-                                    return Container(
+                                  children: <Widget>[
+                                    Container(
+                                      color: Color(0xCD939BA9).withOpacity(0.5),
                                       width: size.width,
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Container(
-                                            color: Color(0xCD939BA9).withOpacity(0.5),
-                                            width: size.width,
-                                            padding: EdgeInsets.all(10),
-                                            child: Text(
-                                              FormatDate.dateFormat(yyyyMMdd: e[ImportKey.transactionDate].toString()),
-                                              style: TextStyle(fontFamily: fontFamilyDefault, fontWeight: FontWeight.w500, fontSize: 17),
-                                            ),
-                                          ),
-                                          Column(
-                                            children: mData.map((item){
-                                              i += 1;
-                                              return Container(
-                                                decoration: mDataLength != i ? BoxDecoration(
-                                                    border: Border(
-                                                      bottom: BorderSide(color: Color(0xCD939BA9).withOpacity(0.2), width: 1.5),
-                                                    )
-                                                ) : null,
-                                                child: _buildListTile(
-                                                    transactionId: item[ImportKey.transactionId].toString(),
-                                                    transactionDate: e[ImportKey.transactionDate].toString(),
-                                                    time: item[ImportKey.time].toString(),
-                                                    total: item[ImportKey.total].toString()
-                                                ),
-                                              );
-                                            }).toList(),
-                                          )
-                                        ],
+                                      padding: EdgeInsets.all(10),
+                                      child: Text(
+                                        FormatDate.dateFormat(yyyyMMdd: e[ImportKey.transactionDate].toString()),
+                                        style: TextStyle(fontFamily: fontFamilyDefault, fontWeight: FontWeight.w500, fontSize: 17),
                                       ),
-                                    );
-                                  }).toList(),
-                                )
-                              ]
-                          ) : Container(),
-                        ),
-                      ),
-                    ),
-                  _container(),
-                ],
-              );
-            },
-          ),
-        ),
+                                    ),
+                                    Column(
+                                      children: mData.map((item){
+                                        i += 1;
+                                        return Container(
+                                          decoration: mDataLength != i ? BoxDecoration(
+                                              border: Border(
+                                                bottom: BorderSide(color: Color(0xCD939BA9).withOpacity(0.2), width: 1.5),
+                                              )
+                                          ) : null,
+                                          child: _buildListTile(
+                                              transactionId: item[ImportKey.transactionId].toString(),
+                                              transactionDate: e[ImportKey.transactionDate].toString(),
+                                              time: item[ImportKey.time].toString(),
+                                              total: item[ImportKey.total].toString()
+                                          ),
+                                        );
+                                      }).toList(),
+                                    )
+                                  ],
+                                ),
+                              );
+                            }).toList(),
+                          )
+                        ]
+                    ) : Container(),
+                  ),
+                ),
+              ),
+              _container(),
+            ],
+          );
+        },
       ),
-      floatingActionButton: _floatingActionButton()
     );
   }
 
@@ -161,21 +147,6 @@ class _ImportScreenState extends State<ImportScreen> {
           ],
         ),
       ): null,
-    );
-  }
-
-  FloatingActionButton _floatingActionButton() {
-    return FloatingActionButton(
-      backgroundColor: Colors.purple[900],
-      onPressed: (){
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => AddImportScreen()),
-        );
-      },
-      tooltip: 'Increment',
-      elevation: 5,
-      child: Icon(Icons.add_circle, size: 50,),
     );
   }
 

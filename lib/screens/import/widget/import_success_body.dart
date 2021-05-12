@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sale_management/screens/import/import.dart';
+import 'package:sale_management/screens/import/all_transaction_import.dart';
 import 'package:sale_management/screens/size_config.dart';
 import 'package:sale_management/screens/widgets/default_button/default_button.dart';
 import 'package:sale_management/share/constant/constant_color.dart';

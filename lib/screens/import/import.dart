@@ -29,19 +29,26 @@ class _ImportScreenState extends State<ImportScreen> {
       body: SafeArea(
         child: Column(
           children: <Widget>[
+            SizedBox(height: SizeConfig.screenHeight * 0.02),
             Center(
               child: Column(
-                children: <Widget>[
-                  SizedBox(height: SizeConfig.screenHeight * 0.02), // 4%
+                children: <Widget>[// 4%
                   Text("Sale Items", style: headingStyle),
-                  Text(
-                    "Complete your details. \n Please check sale items then click confirm.",
-                    textAlign: TextAlign.center,
+                  this.selectedProduct ? Center(
+                    child: Text(
+                      "All Product Import.",
+                      textAlign: TextAlign.center,
+                    ),
+                  ) :
+                  Center(
+                    child: Text(
+                      "All Transaction Import.",
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                 ],
               ),
             ),
-            SizedBox(height: SizeConfig.screenHeight * 0.02),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -50,7 +57,6 @@ class _ImportScreenState extends State<ImportScreen> {
                 inputChipTransaction()
               ],
             ),
-
             if(this.selectedProduct) Divider(
               color: Colors.black,
             ),

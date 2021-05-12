@@ -153,7 +153,6 @@ class _ProductImportBodyState extends State<ProductImportBody> {
       width: 50,
       height: 50,
       decoration: BoxDecoration(
-        color: Colors.deepPurple,
         borderRadius: BorderRadius.all(Radius.circular(60)),
         border: Border.all(color: Colors.grey, width: 2),
       ),

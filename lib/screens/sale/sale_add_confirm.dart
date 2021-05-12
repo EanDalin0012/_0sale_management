@@ -5,13 +5,14 @@ import 'package:sale_management/screens/size_config.dart';
 import 'package:sale_management/screens/widgets/custom_suffix_icon/custom_suffix_icon.dart';
 import 'package:sale_management/share/constant/constant_color.dart';
 import 'package:sale_management/share/constant/text_style.dart';
-import 'package:sale_management/share/helper/keyboard.dart';
 import 'package:sale_management/share/model/key/import_add_key.dart';
 import 'package:sale_management/share/model/key/m_key.dart';
+import 'package:sale_management/share/model/key/member_key.dart';
 import 'package:sale_management/share/model/key/package_product_key.dart';
 import 'package:sale_management/share/model/key/product_key.dart';
 import 'package:sale_management/share/utils/number_format.dart';
 import 'package:sale_management/screens/sale/sale_success_screen.dart';
+import 'package:sale_management/screens/widgets/member_dropdown/member_dropdown.dart';
 
 class SaleAddConfirm extends StatefulWidget {
   final List<dynamic> vData;
@@ -31,9 +32,13 @@ class _SaleAddConfirmState extends State<SaleAddConfirm> {
   var colorValue = Colors.deepPurple;
   Size size;
   var styleInput = TextStyle(color: Colors.black, fontSize: 17, fontWeight: FontWeight.w500, fontFamily: fontFamilyDefault);
+
   var remarkController = new TextEditingController();
   var nameValueController = new TextEditingController();
   var phoneController = new TextEditingController();
+  var memberController = new TextEditingController();
+
+
   var i = 0;
   double pay = 0.0;
   double vPay = 0.0;
@@ -43,6 +48,9 @@ class _SaleAddConfirmState extends State<SaleAddConfirm> {
   final _formCustomerKey = GlobalKey<FormState>();
   final _formMemberKey = GlobalKey<FormState>();
   var isClickConfirm  = false;
+  Map member;
+
+
   @override
   void initState() {
     super.initState();
@@ -113,7 +121,6 @@ class _SaleAddConfirmState extends State<SaleAddConfirm> {
                     inputChipMember()
                   ],
                 ),
-
                 this.selectedMember ? _buildIsMemberSelected() :  _buildIsCustomerSelected(),
 
                 SizedBox(height: SizeConfig.screenHeight * 0.02),
@@ -267,7 +274,7 @@ class _SaleAddConfirmState extends State<SaleAddConfirm> {
         labelText: "Customer",
         hintText: "Enter customer name",
         floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: CustomSufFixIcon( svgPaddingLeft: 15,svgIcon: "assets/icons/expand_more_black_24dp.svg"),
+        suffixIcon: CustomSufFixIcon( svgPaddingLeft: 15,svgIcon: "assets/icons/help_outline_black_24dp.svg"),
       ),
     );
   }
@@ -296,12 +303,28 @@ class _SaleAddConfirmState extends State<SaleAddConfirm> {
   TextFormField _buildMemberField() {
     return TextFormField(
       keyboardType: TextInputType.text,
+      controller: memberController,
+      onTap: () async {
+        final memberBackData = await Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => MemberDropDownPage(vMember: this.member)),
+        );
+        if(memberBackData == null) {
+          return;
+        }
+        setState(() {
+          this.member = memberBackData;
+          memberController.text = this.member[MemberKey.name];
+          checkFormValid();
+        });
+      },
       validator: (value) {
         if (value.isEmpty) {
           return "Invalid member.";
         }
         return null;
       },
+      readOnly: true,
       decoration: InputDecoration(
         labelText: "Member",
         hintText: "Select member",
@@ -388,8 +411,8 @@ class _SaleAddConfirmState extends State<SaleAddConfirm> {
             SizedBox(height: SizeConfig.screenHeight * 0.02),
             _buildCustomerField(),
             SizedBox(height: SizeConfig.screenHeight * 0.02),
-              _buildPhoneField(),
-              SizedBox(height: SizeConfig.screenHeight * 0.02),
+            _buildPhoneField(),
+            SizedBox(height: SizeConfig.screenHeight * 0.02),
             _buildRemarkField(),
           ]
         ),

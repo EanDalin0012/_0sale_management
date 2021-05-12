@@ -28,9 +28,63 @@ class _AllTransactionImportBodyState extends State<AllTransactionImportBody> {
     this._fetchItems();
     super.initState();
   }
-
   @override
   Widget build(BuildContext context) {
+    size = MediaQuery.of(context).size;
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      child:  this.vData.length > 0 ? SingleChildScrollView(
+          physics: ClampingScrollPhysics(),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+              children: this.vData.map((e) {
+                List<dynamic> mData = e['transactionInfo'];
+                var mDataLength = mData.length;
+                var i = 0;
+                return Container(
+                  width: size.width,
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          color: Color(0xCD939BA9).withOpacity(0.5),
+                          width: size.width,
+                          padding: EdgeInsets.all(10),
+                          child: Text(
+                              FormatDate.dateFormat(yyyyMMdd: e[ImportKey.transactionDate].toString()),
+                              style: TextStyle(fontFamily: fontFamilyDefault, fontWeight: FontWeight.w500, fontSize: 17),
+                          ),
+                        ),
+                        Column(
+                          children: mData.map((item){
+                            i += 1;
+                            return Container(
+                              decoration: mDataLength != i ? BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(color: Color(0xCD939BA9).withOpacity(0.2), width: 1.5),
+                                  )
+                              ) : null,
+                              child: _buildListTile(
+                                  transactionId: item[ImportKey.transactionId].toString(),
+                                  transactionDate: e[ImportKey.transactionDate].toString(),
+                                  time: item[ImportKey.time].toString(),
+                                  total: item[ImportKey.total].toString()
+                              ),
+                            );
+                          }).toList(),
+                        )
+                      ]
+                  ),
+                );
+              }).toList()
+          )
+      ) : Container(),
+    );
+  }
+
+  Widget build1(BuildContext context) {
     size = MediaQuery.of(context).size;
     return SingleChildScrollView(
       child: LayoutBuilder(

@@ -50,26 +50,13 @@ class _ImportScreenState extends State<ImportScreen> {
                 inputChipTransaction()
               ],
             ),
-            Expanded(
-              child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    this.selectedProduct ? ProductImportBody() : AllTransactionImportBody(),
-                  ],
-                ),
-              ),
+
+            if(this.selectedProduct) Divider(
+              color: Colors.black,
             ),
-            // Container(
-            //   height: size.height - 400,
-            //   width: size.width,
-            //   color: Colors.deepPurple,
-            //   child: SingleChildScrollView(
-            //     // child: this.selectedProduct ? ProductImportBody() : AllTransactionImportBody(),
-            //   )
-            // )
+            Expanded(
+              child: this.selectedProduct ? ProductImportBody() : AllTransactionImportBody(),
+            ),
 
           ],
         ),

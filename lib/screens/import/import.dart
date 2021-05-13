@@ -26,45 +26,53 @@ class _ImportScreenState extends State<ImportScreen> {
     size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: _buildAppBar(),
-      body: SafeArea(
-        child: Column(
-          children: <Widget>[
-            SizedBox(height: SizeConfig.screenHeight * 0.02),
-            Center(
-              child: Column(
-                children: <Widget>[// 4%
-                  Text("Import Product", style: headingStyle),
-                  this.selectedProduct ? Center(
-                    child: Text(
-                      "All Product Import.",
-                      textAlign: TextAlign.center,
+      body: WillPopScope(
+        onWillPop:  () async {
+          return Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Home()),
+          );
+        },
+        child: SafeArea(
+          child: Column(
+            children: <Widget>[
+              SizedBox(height: SizeConfig.screenHeight * 0.02),
+              Center(
+                child: Column(
+                  children: <Widget>[// 4%
+                    Text("Import Product", style: headingStyle),
+                    this.selectedProduct ? Center(
+                      child: Text(
+                        "All Product Import.",
+                        textAlign: TextAlign.center,
+                      ),
+                    ) :
+                    Center(
+                      child: Text(
+                        "All Transaction Import.",
+                        textAlign: TextAlign.center,
+                      ),
                     ),
-                  ) :
-                  Center(
-                    child: Text(
-                      "All Transaction Import.",
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
+                  ],
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  inputChipProduct(),
+                  SizedBox(width: 15,),
+                  inputChipTransaction()
                 ],
               ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                inputChipProduct(),
-                SizedBox(width: 15,),
-                inputChipTransaction()
-              ],
-            ),
-            if(this.selectedProduct) Divider(
-              color: Colors.black,
-            ),
-            Expanded(
-              child: this.selectedProduct ? ProductImportBody() : AllTransactionImportBody(),
-            ),
+              if(this.selectedProduct) Divider(
+                color: Colors.black,
+              ),
+              Expanded(
+                child: this.selectedProduct ? ProductImportBody() : AllTransactionImportBody(),
+              ),
 
-          ],
+            ],
+          ),
         ),
       ),
       floatingActionButton: _floatingActionButton(),

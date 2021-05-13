@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sale_management/screens/home/Home.dart';
+import 'package:sale_management/screens/stock/view_stock.dart';
 import 'package:sale_management/screens/widgets/circular_progress_indicator/circular_progress_loading.dart';
 import 'package:sale_management/screens/widgets/search_widget/search_widget.dart';
 import 'package:sale_management/share/constant/constant_color.dart';
@@ -180,6 +181,19 @@ class _StockScreenState extends State<StockScreen> {
   Widget _offsetPopup(Map item) => PopupMenuButton<int>(
     itemBuilder: (context) => [
       PopupMenuItem(
+          value: 2,
+          child: Row(
+            children: <Widget>[
+              FaIcon(FontAwesomeIcons.edit,size: 20,color: Colors.purple[900]),
+              SizedBox(width: 10,),
+              Text(
+                "View",
+                style: menuStyle,
+              ),
+            ],
+          )
+      ),
+      PopupMenuItem(
           value: 0,
           child: Row(
             children: <Widget>[
@@ -216,8 +230,11 @@ class _StockScreenState extends State<StockScreen> {
               EditStockScreen(stock: item)
           ),
         );
-      } else if (value == 1) {
-        // _showDialog(item);
+      } else if (value == 2) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) =>ViewStockScreen()),
+        );
       }
     },
   );

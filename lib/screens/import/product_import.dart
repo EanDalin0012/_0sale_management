@@ -1,12 +1,11 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sale_management/screens/import/transfter_to_stock.dart';
 import 'package:sale_management/share/constant/constant_color.dart';
 import 'package:sale_management/share/constant/text_style.dart';
 import 'package:sale_management/share/model/key/product_import_key.dart';
-import 'package:sale_management/share/utils/number_format.dart';
 
 class ProductImportBody extends StatefulWidget {
   const ProductImportBody({Key key}) : super(key: key);
@@ -80,7 +79,7 @@ class _ProductImportBodyState extends State<ProductImportBody> {
                 Row(
                   children: <Widget>[
                     Text(
-                      FormatNumber.usdFormat2Digit(dataItem[ProductImportKey.totalQuantity].toString()).toString(),
+                      dataItem[ProductImportKey.totalQuantity].toString(),
                       style: TextStyle(
                         color: Colors.black87,
                         fontSize: 18,
@@ -111,7 +110,7 @@ class _ProductImportBodyState extends State<ProductImportBody> {
             children: <Widget>[
               FaIcon(FontAwesomeIcons.edit,size: 20,color: Colors.purple[900]),
               SizedBox(width: 10,),
-              Text('Edit',
+              Text('View Transaction',
                 style: menuStyle,
               ),
             ],
@@ -121,9 +120,9 @@ class _ProductImportBodyState extends State<ProductImportBody> {
           value: 1,
           child: Row(
             children: <Widget>[
-              FaIcon(FontAwesomeIcons.trash,size: 20,color: Colors.purple[900]),
+              FaIcon(FontAwesomeIcons.tumblrSquare,size: 20,color: Colors.purple[900]),
               SizedBox(width: 10,),
-              Text('Delete',
+              Text('Transfer to Stock',
                 style: menuStyle,
               ),
             ],
@@ -141,7 +140,12 @@ class _ProductImportBodyState extends State<ProductImportBody> {
         //   ),
         // );
       } else if (value == 1) {
-        // _showDialog(item);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) =>
+              TransferToStock(vImport: item)
+          ),
+        );
       }
     },
   );

@@ -33,7 +33,7 @@ class _ImportScreenState extends State<ImportScreen> {
             Center(
               child: Column(
                 children: <Widget>[// 4%
-                  Text("Sale Items", style: headingStyle),
+                  Text("Import Product", style: headingStyle),
                   this.selectedProduct ? Center(
                     child: Text(
                       "All Product Import.",
@@ -146,7 +146,7 @@ class _ImportScreenState extends State<ImportScreen> {
         backgroundColor: !this.selectedProduct ? Colors.blue.shade600 : Colors.redAccent,
         child: Text('ST'),
       ),
-      label: Text('Show Transaction ', style: TextStyle(color: this.selectedProduct ? Colors.white: Colors.black, fontFamily: fontFamilyDefault)),
+      label: Text('Show All Transaction ', style: TextStyle(color: this.selectedProduct ? Colors.white: Colors.black, fontFamily: fontFamilyDefault)),
       selected: !this.selectedProduct,
       selectedColor: Color(0xff32b8a1),
       deleteIcon: !this.selectedProduct ? Icon(Icons.check_circle_outline_outlined, color: Colors.deepPurple,) : Icon(Icons.highlight_remove_outlined, color: Colors.indigo),

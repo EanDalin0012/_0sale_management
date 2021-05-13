@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sale_management/screens/import/show_transaction_import_by_product.dart';
 import 'package:sale_management/screens/import/transfter_to_stock.dart';
 import 'package:sale_management/share/constant/constant_color.dart';
 import 'package:sale_management/share/constant/text_style.dart';
@@ -133,12 +134,12 @@ class _ProductImportBodyState extends State<ProductImportBody> {
     offset: Offset(0, 45),
     onSelected: (value) {
       if(value == 0) {
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(builder: (context) =>
-        //       PackageProductEdit(packageProduct: item)
-        //   ),
-        // );
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) =>
+              ShowTransactionImportByProduct(vProductImport: item)
+          ),
+        );
       } else if (value == 1) {
         Navigator.push(
           context,

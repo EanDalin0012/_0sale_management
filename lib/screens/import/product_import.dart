@@ -111,7 +111,7 @@ class _ProductImportBodyState extends State<ProductImportBody> {
             children: <Widget>[
               FaIcon(FontAwesomeIcons.edit,size: 20,color: Colors.purple[900]),
               SizedBox(width: 10,),
-              Text('View Transaction',
+              Text('View Transaction Import',
                 style: menuStyle,
               ),
             ],
@@ -119,6 +119,18 @@ class _ProductImportBodyState extends State<ProductImportBody> {
       ),
       PopupMenuItem(
           value: 1,
+          child: Row(
+            children: <Widget>[
+              FaIcon(FontAwesomeIcons.edit,size: 20,color: Colors.purple[900]),
+              SizedBox(width: 10,),
+              Text('View Transaction => Stock',
+                style: menuStyle,
+              ),
+            ],
+          )
+      ),
+      PopupMenuItem(
+          value: 2,
           child: Row(
             children: <Widget>[
               FaIcon(FontAwesomeIcons.tumblrSquare,size: 20,color: Colors.purple[900]),
@@ -141,6 +153,8 @@ class _ProductImportBodyState extends State<ProductImportBody> {
           ),
         );
       } else if (value == 1) {
+
+      } else if (value == 2) {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) =>

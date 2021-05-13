@@ -118,7 +118,7 @@ class _SettingScreenState extends State<SettingScreen> {
                     top: 10,
                     bottom: 10
                 ),
-                child: InkWell(
+                child: GestureDetector(
                   onTap: () => languageChoice(),
                   child: Row(
                     children: <Widget>[
@@ -134,6 +134,44 @@ class _SettingScreenState extends State<SettingScreen> {
                   ),
                 ),
               ),
+
+              Container(
+                height: 50,
+                padding: EdgeInsets.only(
+                    left: 10,
+                    top: 17
+                ),
+                decoration: BoxDecoration(
+                    color: Color(0xCD939BA9).withOpacity(0.3)
+                ),
+                width: MediaQuery.of(context).size.width,
+                child: Text('Sale From Stoack', style: style,),
+              ),
+
+              Container(
+                height: 60,
+                padding: EdgeInsets.only(
+                    left: 10,
+                    top: 10,
+                    bottom: 10
+                ),
+                child: GestureDetector(
+                  onTap: () => languageChoice(),
+                  child: Row(
+                    children: <Widget>[
+                      _listTileLeading(
+                          height: 25,
+                          width: 20,
+                          svgIcon: 'assets/icons/language_black_24dp.svg'
+                      ),
+                      Padding(
+                          padding: EdgeInsets.only(left: 15),
+                          child: Text('${this.language}', style: style,))
+                    ],
+                  ),
+                ),
+              ),
+
               Container(
                 height: 50,
                 padding: EdgeInsets.only(

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sale_management/screens/forgot_password/widget/oto_fields.dart';
+import 'package:sale_management/screens/forgot_password/new_password.dart';
 import 'package:sale_management/screens/size_config.dart';
 import 'package:sale_management/share/constant/text_style.dart';
 
@@ -25,6 +25,31 @@ class OTPBody extends StatefulWidget {
 
 class _OTPBodyState extends State<OTPBody> {
   var email = '';
+  var isClickSave = false;
+  FocusNode pin2FN;
+  FocusNode pin3FN;
+  FocusNode pin4FN;
+  final pinStyle = TextStyle(fontSize: 32, fontWeight: FontWeight.bold);
+  final _formKey = GlobalKey<FormState>();
+  var invalid = '';
+
+  @override
+  void initState() {
+    super.initState();
+    pin2FN = FocusNode();
+    pin3FN = FocusNode();
+    pin4FN = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    pin2FN?.dispose();
+    pin3FN?.dispose();
+    pin4FN?.dispose();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     if(widget.email != null) {
@@ -55,7 +80,7 @@ class _OTPBodyState extends State<OTPBody> {
               ),
             ),
             SizedBox(height: 20.0),
-            OTPFields(),
+            _buildFormOTP(),
             SizedBox(height: 20.0),
             Text(
               "Expiring in 02:22",
@@ -89,10 +114,126 @@ class _OTPBodyState extends State<OTPBody> {
                   fontSize: 18.0,
                 ),
               ),
-              onPressed: () {},
+              onPressed: () => confirm(),
             )
           ]
       )
     );
+  }
+
+
+  Widget _buildFormOTP() {
+    return Form(
+      key: _formKey,
+      child: Column(
+        children: [
+          const SizedBox(height: 10.0),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              SizedBox(
+                width: 60,
+                child: TextFormField(
+                  autofocus: true,
+                  style: pinStyle,
+                  keyboardType: TextInputType.number,
+                  textAlign: TextAlign.center,
+                  decoration: inputDecoration,
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return this.invalid;
+                    }
+                    return null;
+                  },
+                  onChanged: (value) {
+                    nextField(value, pin2FN);
+                  },
+                ),
+              ),
+              SizedBox(
+                width: 60,
+                child: TextFormField(
+                  focusNode: pin2FN,
+                  style: pinStyle,
+                  keyboardType: TextInputType.number,
+                  textAlign: TextAlign.center,
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return this.invalid;
+                    }
+                    return null;
+                  },
+                  decoration: inputDecoration,
+                  onChanged: (value) => nextField(value, pin3FN),
+                ),
+              ),
+              SizedBox(
+                width: 60,
+                child: TextFormField(
+                  focusNode: pin3FN,
+                  style: pinStyle,
+                  keyboardType: TextInputType.number,
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return this.invalid;
+                    }
+                    return null;
+                  },
+                  textAlign: TextAlign.center,
+                  decoration: inputDecoration,
+                  onChanged: (value) => nextField(value, pin4FN),
+                ),
+              ),
+              SizedBox(
+                width: 60,
+                child: TextFormField(
+                  focusNode: pin4FN,
+                  style: pinStyle,
+                  keyboardType: TextInputType.number,
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return this.invalid;
+                    }
+                    return null;
+                  },
+                  textAlign: TextAlign.center,
+                  decoration: inputDecoration,
+                  onChanged: (value) {
+                    if (value.length == 1) {
+                      pin4FN.unfocus();
+                    }
+                  },
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10.0),
+        ],
+      ),
+    );
+  }
+
+  void nextField(String value, FocusNode focusNode) {
+    checkFormValid();
+    if (value.length == 1) {
+      focusNode.requestFocus();
+    }
+  }
+
+  void confirm() {
+    this.isClickSave = true;
+    if( _formKey.currentState.validate()) {
+      print('validate');
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => NewPasswordScreen(email: this.email)),
+      );
+    }
+  }
+
+  void checkFormValid() {
+    if(isClickSave) {
+      _formKey.currentState.validate();
+    }
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sale_management/screens/constants.dart';
-import 'package:sale_management/screens/otp/otp_screen.dart';
+import 'package:sale_management/screens/forgot_password/otp_screen.dart';
 import 'package:sale_management/screens/size_config.dart';
 import 'package:sale_management/screens/widgets/custom_suffix_icon/custom_suffix_icon.dart';
 import 'package:sale_management/screens/widgets/default_button/default_button.dart';

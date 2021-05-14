@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sale_management/screens/otp/widget/oto_fields.dart';
+import 'package:sale_management/screens/forgot_password/widget/oto_fields.dart';
 import 'package:sale_management/screens/size_config.dart';
 import 'package:sale_management/share/constant/text_style.dart';
 

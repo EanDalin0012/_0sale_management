@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sale_management/screens/otp/widget/otp_body.dart';
+import 'package:sale_management/screens/forgot_password/widget/otp_body.dart';
 
 class OTPScreen extends StatefulWidget {
   final email;

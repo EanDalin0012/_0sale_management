@@ -15,7 +15,6 @@ class ForgotPasswordForm extends StatefulWidget {
 class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
 
   final _formKey = GlobalKey<FormState>();
-  List<String> errors = [];
   var emailController = TextEditingController();
   String email;
 
@@ -27,12 +26,10 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
         children: <Widget>[
           _buildEmailFormField(),
           SizedBox(height: getProportionateScreenHeight(30)),
-          FormError(errors: errors),
           SizedBox(height: SizeConfig.screenHeight * 0.1),
           DefaultButton(
             text: "Continue",
             press: () {
-              print('${emailController.text}');
               if (_formKey.currentState.validate()) {
                 Navigator.push(
                   context,
@@ -52,41 +49,38 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
     return TextFormField(
       keyboardType: TextInputType.emailAddress,
       controller: emailController,
-      onChanged: (value) {
-        if (value.isNotEmpty && errors.contains(kEmailNullError)) {
-          setState(() {
-            errors.remove(kEmailNullError);
-          });
-        } else if (emailValidatorRegExp.hasMatch(value) &&
-            errors.contains(kInvalidEmailError)) {
-          setState(() {
-            errors.remove(kInvalidEmailError);
-          });
-        }
-        return null;
-      },
+      onChanged: (value) => this._formKey.currentState.validate(),
       validator: (value) {
-        if (value.isEmpty && !errors.contains(kEmailNullError)) {
-          setState(() {
-            errors.add(kEmailNullError);
-          });
-        } else if (!emailValidatorRegExp.hasMatch(value) &&
-            !errors.contains(kInvalidEmailError)) {
-          setState(() {
-            errors.add(kInvalidEmailError);
-          });
+        if (value.isEmpty) {
+          return "Please enter your email";
+        } else if (!emailValidatorRegExp.hasMatch(value)) {
+          return "Please enter valid email";
         }
         return null;
       },
       decoration: InputDecoration(
         labelText: "Email",
         hintText: "Enter your email",
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: CustomSufFixIcon(svgIcon: "assets/icons/Mail.svg"),
       ),
     );
+  }
+
+  void save() {
+    if( _formKey.currentState.validate()) {
+      print('validate');
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(builder: (context) => CategorySuccessScreen(
+      //     isAddScreen: true,
+      //     vData: {
+      //       CategoryKey.name: nameController.text,
+      //       CategoryKey.remark: remarkController.text
+      //     },
+      //   )),
+      // );
+    }
   }
 
 }

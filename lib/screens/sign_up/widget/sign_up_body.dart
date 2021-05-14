@@ -22,7 +22,7 @@ class _SignUpBodyState extends State<SignUpBody> {
             child: Column(
               children: <Widget>[
                 SizedBox(height: SizeConfig.screenHeight * 0.04), // 4%
-                Text("Register Account", style: headingStyle),
+                Text("Create Account", style: headingStyle),
                 Text(
                   "Complete your details or continue \nwith social media",
                   textAlign: TextAlign.center,

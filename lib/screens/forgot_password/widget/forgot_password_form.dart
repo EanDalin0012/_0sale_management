@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sale_management/screens/constants.dart';
+import 'package:sale_management/screens/otp/otp_screen.dart';
 import 'package:sale_management/screens/size_config.dart';
 import 'package:sale_management/screens/widgets/custom_suffix_icon/custom_suffix_icon.dart';
 import 'package:sale_management/screens/widgets/default_button/default_button.dart';
@@ -15,6 +16,7 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
 
   final _formKey = GlobalKey<FormState>();
   List<String> errors = [];
+  var emailController = TextEditingController();
   String email;
 
   @override
@@ -30,8 +32,12 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
           DefaultButton(
             text: "Continue",
             press: () {
+              print('${emailController.text}');
               if (_formKey.currentState.validate()) {
-                // Do what you want to do
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => OTPScreen(email: this.emailController.text)),
+                );
               }
             },
           ),
@@ -45,7 +51,7 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
   TextFormField _buildEmailFormField() {
     return TextFormField(
       keyboardType: TextInputType.emailAddress,
-      onSaved: (newValue) => email = newValue,
+      controller: emailController,
       onChanged: (value) {
         if (value.isNotEmpty && errors.contains(kEmailNullError)) {
           setState(() {

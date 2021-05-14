@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:sale_management/screens/constants.dart';
-import 'package:sale_management/screens/size_config.dart';
 import 'package:sale_management/screens/member/widget/add_member_form.dart';
 
 class AddMemberScreen extends StatefulWidget {

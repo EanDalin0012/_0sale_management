@@ -233,7 +233,7 @@ class _StockScreenState extends State<StockScreen> {
       } else if (value == 2) {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) =>ViewStockScreen()),
+          MaterialPageRoute(builder: (context) =>ViewStockScreen(vData: item)),
         );
       }
     },

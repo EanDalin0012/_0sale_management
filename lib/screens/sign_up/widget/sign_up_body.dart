@@ -80,16 +80,14 @@ class _SignUpBodyState extends State<SignUpBody> {
                     autovalidate: false,
                     initialValue: this.gender,
                     onChanged: (value) {
-                      print('value changed: ${value}');
-                      this._formKey.currentState.validate();
+                      checkFormValid();
                       setState(() {
                         this.gender = value;
                       });
                     },
                     validator: (value) {
-                      print('dddd ${value}');
                       if(value == null) {
-                        return 'Negative values not supported';
+                        return 'Please select gender!';
                       }
                       return null;
                     }

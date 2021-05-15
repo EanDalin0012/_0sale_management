@@ -22,6 +22,7 @@ class _SignUpBodyState extends State<SignUpBody> {
   var passwordController = new TextEditingController();
   var confPasswordController = new TextEditingController();
   var isClickSave = false;
+  var gender;
 
   Size size;
   @override
@@ -74,13 +75,24 @@ class _SignUpBodyState extends State<SignUpBody> {
                   SizedBox(height: SizeConfig.screenHeight * 0.02),
                   _buildLastNameField(),
                   SizedBox(height: SizeConfig.screenHeight * 0.02),
-                  GenderSelectOption(
+                  GenderForm(
+                    size: size,
+                    autovalidate: false,
+                    initialValue: this.gender,
+                    onChanged: (value) {
+                      print('value changed: ${value}');
+                      this._formKey.currentState.validate();
+                      setState(() {
+                        this.gender = value;
+                      });
+                    },
                     validator: (value) {
-                      if(value.isEmpty) {
-                        return "Please select gender!";
+                      print('dddd ${value}');
+                      if(value == null) {
+                        return 'Negative values not supported';
                       }
                       return null;
-                    },
+                    }
                   ),
                   SizedBox(height: SizeConfig.screenHeight * 0.02),
                   buildEmailFormField(),

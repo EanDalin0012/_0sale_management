@@ -4,6 +4,7 @@ import 'package:sale_management/screens/home/Home.dart';
 import 'package:sale_management/screens/import/add_import.dart';
 import 'package:sale_management/screens/size_config.dart';
 import 'package:sale_management/screens/widgets/search_widget/search_widget.dart';
+import 'package:sale_management/screens/widgets/two_tab/two_tab.dart';
 import 'package:sale_management/share/constant/text_style.dart';
 import 'package:sale_management/screens/import/all_transaction_import.dart';
 import 'package:sale_management/screens/import/product_import.dart';
@@ -56,16 +57,29 @@ class _ImportScreenState extends State<ImportScreen> {
                   ],
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  inputChipProduct(),
-                  SizedBox(width: 15,),
-                  inputChipTransaction()
-                ],
-              ),
-              if(this.selectedProduct) Divider(
-                color: Colors.black,
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: <Widget>[
+              //     inputChipProduct(),
+              //     SizedBox(width: 15,),
+              //     inputChipTransaction()
+              //   ],
+              // ),
+              // if(this.selectedProduct) Divider(
+              //   color: Colors.black,
+              // ),
+              TwoTabs(
+                textTab0: 'Product',
+                textTab1: "Transaction",
+                onChanged: (tabIndex) {
+                  setState(() {
+                    if(tabIndex == 0) {
+                      this.selectedProduct = true;
+                    }else if (tabIndex == 1) {
+                      this.selectedProduct = false;
+                    }
+                  });
+                },
               ),
               Expanded(
                 child: this.selectedProduct ? ProductImportBody() : AllTransactionImportBody(),

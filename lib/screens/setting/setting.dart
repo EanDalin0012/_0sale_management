@@ -4,9 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_switch/flutter_switch.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sale_management/screens/setting/widget/language_choice.dart';
+import 'package:sale_management/share/constant/constant_color.dart';
 import 'package:sale_management/share/constant/text_style.dart';
 import 'package:sale_management/screens/setting/widget/profile_header.dart';
 import 'package:sale_management/share/model/key/language_key.dart';
@@ -14,6 +16,7 @@ import 'package:sale_management/share/model/key/m_key.dart';
 import 'package:sale_management/share/static/language_static.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sale_management/screens/setting/widget/stock_choice.dart';
+import 'package:xlive_switch/xlive_switch.dart';
 
 class SettingScreen extends StatefulWidget {
   @override
@@ -28,6 +31,8 @@ class _SettingScreenState extends State<SettingScreen> {
   var languageCode = 'en';
   List<dynamic> vDataStock = [];
   Map vStock;
+  bool status2 = true;
+  bool status4 = true;
 
   @override
   void initState() {
@@ -155,26 +160,22 @@ class _SettingScreenState extends State<SettingScreen> {
                     color: Color(0xCD939BA9).withOpacity(0.3)
                 ),
                 width: MediaQuery.of(context).size.width,
-                child: Text('Sale From Stoack', style: style,),
+                child: Text('Sale From Stock', style: style,),
               ) : Container(),
 
-              this.vStock != null  ? Container(
-                height: 60,
-                padding: EdgeInsets.only(
-                    left: 10,
-                    top: 10,
-                    bottom: 10
-                ),
-                child: GestureDetector(
-                  onTap: () => changeStock(this.vStock),
+              this.vStock != null  ? GestureDetector(
+                onTap: () => changeStock(this.vStock),
+                child: Container(
+                  height: 60,
+                  padding: EdgeInsets.only(left: 10,top: 10,bottom: 10),
                   child: Row(
-                    children: <Widget>[
-                      FaIcon(FontAwesomeIcons.database,),
-                      Padding(
-                          padding: EdgeInsets.only(left: 15),
-                          child: Text('${this.vStock[StockKey.name]}', style: style,))
-                    ],
-                  ),
+                      children: <Widget>[
+                        FaIcon(FontAwesomeIcons.database,),
+                        Padding(
+                            padding: EdgeInsets.only(left: 15),
+                            child: Text('${this.vStock[StockKey.name]}', style: style,))
+                      ],
+                    ),
                 ),
               ) : Container(),
 
@@ -192,6 +193,29 @@ class _SettingScreenState extends State<SettingScreen> {
               ),
               Divider(
                 height: 2,
+              ),
+              ListTile(
+                leading: Icon(Icons.lock, size: 30,color: dropColor,),
+                title: Text('User Fingerprint to Login'),
+              ),
+              ListTile(
+                leading: Icon(Icons.fingerprint_rounded, size: 30,color: dropColor,),
+                title: Text('User Fingerprint to Login'),
+                trailing: Container(
+                  width: 50,
+                  child: FlutterSwitch(
+                    width: 55.0,
+                    height: 25.0,
+                    valueFontSize: 12.0,
+                    toggleSize: 18.0,
+                    value: status4,
+                    onToggle: (val) {
+                      setState(() {
+                        status4 = val;
+                      });
+                    },
+                  ),
+                ),
               ),
               FlatButton(
                 color: Colors.blue,
@@ -274,6 +298,7 @@ class _SettingScreenState extends State<SettingScreen> {
           return Dialog(
               child: StockChoice(
                 vStock: data,
+                mList: this.vDataStock,
                 onChanged: (value) {
                   setState(() {
                     this.vStock = value;

@@ -8,8 +8,9 @@ import 'package:sale_management/share/model/key/m_key.dart';
 
 class StockChoice extends StatefulWidget {
   final Map vStock;
+  final List<dynamic> mList;
   final ValueChanged<Map> onChanged;
-  const StockChoice({Key key, this.vStock, this.onChanged}) : super(key: key);
+  const StockChoice({Key key, this.vStock, this.onChanged, this.mList}) : super(key: key);
 
   @override
   _StockChoiceState createState() => _StockChoiceState();
@@ -42,7 +43,7 @@ class _StockChoiceState extends State<StockChoice> {
                   fontFamily: fontFamilyDefault,
                   fontWeight: FontWeight.w500),)),
             ),
-            this.vData.length > 0 ? SingleChildScrollView(
+            widget.mList.length > 0 ? SingleChildScrollView(
               child: Container(
                 color: Colors.lightBlue[50].withOpacity(0.4),
                 child: Column(

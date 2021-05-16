@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sale_management/screens/constants.dart';
 import 'package:sale_management/screens/size_config.dart';
 import 'package:sale_management/screens/widgets/custom_suffix_icon/custom_suffix_icon.dart';
+import 'package:sale_management/screens/widgets/two_tab/two_tab.dart';
 import 'package:sale_management/share/constant/constant_color.dart';
 import 'package:sale_management/share/constant/text_style.dart';
 import 'package:sale_management/share/model/key/import_add_key.dart';
@@ -44,7 +45,7 @@ class _SaleAddConfirmState extends State<SaleAddConfirm> {
   double vPay = 0.0;
   Map vCustomer;
   var total = 0.0;
-  var selectedMember = false;
+  var selectedCustomer = false;
   final _formCustomerKey = GlobalKey<FormState>();
   final _formMemberKey = GlobalKey<FormState>();
   var isClickConfirm  = false;
@@ -113,15 +114,16 @@ class _SaleAddConfirmState extends State<SaleAddConfirm> {
                   ),
                 ),
                 SizedBox(height: SizeConfig.screenHeight * 0.02),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    inputChipCustomer(),
-                    SizedBox(width: 15,),
-                    inputChipMember()
-                  ],
+                TwoTabs(
+                  textTab0: 'Customer',
+                  textTab1: "Member",
+                  onChanged: (tabIndex) {
+                    setState(() {
+                      this.selectedCustomer = !this.selectedCustomer;
+                    });
+                  },
                 ),
-                this.selectedMember ? _buildIsMemberSelected() :  _buildIsCustomerSelected(),
+                this.selectedCustomer ? _buildIsCustomerSelected() : _buildIsMemberSelected(),
 
                 SizedBox(height: SizeConfig.screenHeight * 0.02),
                 Text(
@@ -140,7 +142,7 @@ class _SaleAddConfirmState extends State<SaleAddConfirm> {
           bottom: 0,
           child: GestureDetector(
             onTap: () {
-              !this.selectedMember ? validationCustomer() : validationMember();
+              this.selectedCustomer ? validationCustomer() : validationMember();
             },
             child: Container(
               width: size.width,
@@ -359,48 +361,6 @@ class _SaleAddConfirmState extends State<SaleAddConfirm> {
     });
   }
 
-  Widget inputChipMember() {
-    return InputChip(
-      padding: EdgeInsets.all(2.0),
-      elevation: 5,
-      avatar: CircleAvatar(
-        backgroundColor: this.selectedMember ? Colors.blue.shade600 : Colors.redAccent,
-        child: Text('M'),
-      ),
-      label: Text('Member', style: TextStyle(color: selectedMember ? Colors.white: Colors.black, fontFamily: fontFamilyDefault)),
-      selected: selectedMember,
-      selectedColor: Color(0xff32b8a1),
-      deleteIcon: selectedMember ? Icon(Icons.check_circle_outline_outlined, color: Colors.deepPurple,) : Icon(Icons.highlight_remove_outlined, color: Colors.indigo),
-      onSelected: (bool selected) {
-        setState(() {
-          selectedMember = selected;
-        });
-      },
-      onDeleted: () {},
-    );
-  }
-
-  Widget inputChipCustomer() {
-    return InputChip(
-      padding: EdgeInsets.all(2.0),
-      elevation: 5,
-      avatar: CircleAvatar(
-        backgroundColor: !this.selectedMember ? Colors.blue.shade600 : Colors.redAccent,
-        child: Text('C'),
-      ),
-      label: Text('Customer', style: TextStyle(color: !this.selectedMember ? Colors.white: Colors.black, fontFamily: fontFamilyDefault),),
-      selected: !this.selectedMember,
-      selectedColor: Color(0xff32b8a1),
-      deleteIcon: !selectedMember ? Icon(Icons.check_circle_outline_outlined, color: Colors.indigo,) : Icon(Icons.highlight_remove_outlined, color: Colors.indigo,),
-      onSelected: (bool selected) {
-        setState(() {
-          selectedMember = !selected;
-        });
-      },
-      onDeleted: () {},
-    );
-  }
-
   Widget _buildIsCustomerSelected() {
     return Form(
       key: _formCustomerKey,
@@ -462,7 +422,7 @@ class _SaleAddConfirmState extends State<SaleAddConfirm> {
     );
   }
   void checkFormValid() {
-    if(isClickConfirm && this.selectedMember != true) {
+    if(isClickConfirm && this.selectedCustomer != true) {
       _formCustomerKey.currentState.validate();
       Navigator.push(
         context,

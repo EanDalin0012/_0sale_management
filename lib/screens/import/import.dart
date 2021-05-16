@@ -57,17 +57,6 @@ class _ImportScreenState extends State<ImportScreen> {
                   ],
                 ),
               ),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   children: <Widget>[
-              //     inputChipProduct(),
-              //     SizedBox(width: 15,),
-              //     inputChipTransaction()
-              //   ],
-              // ),
-              // if(this.selectedProduct) Divider(
-              //   color: Colors.black,
-              // ),
               TwoTabs(
                 textTab0: 'Product',
                 textTab1: "Transaction",
@@ -111,8 +100,6 @@ class _ImportScreenState extends State<ImportScreen> {
           icon: Icon(isNative ? Icons.close : Icons.search),
           onPressed: () => setState(() {
             this.isNative = !isNative;
-            // this.isItemChanged = false;
-            // this.isFilterByProduct = false;
           }),
         ),
         const SizedBox(width: 8),
@@ -136,48 +123,6 @@ class _ImportScreenState extends State<ImportScreen> {
           ],
         ),
       ): null,
-    );
-  }
-
-  Widget inputChipProduct() {
-    return InputChip(
-      padding: EdgeInsets.all(2.0),
-      elevation: 5,
-      avatar: CircleAvatar(
-        backgroundColor: this.selectedProduct ? Colors.blue.shade600 : Colors.redAccent,
-        child: Text('Pr'),
-      ),
-      label: Text('Product', style: TextStyle(color: this.selectedProduct ? Colors.white: Colors.black, fontFamily: fontFamilyDefault),),
-      selected: this.selectedProduct,
-      selectedColor: Color(0xff32b8a1),
-      deleteIcon: selectedProduct ? Icon(Icons.check_circle_outline_outlined, color: Colors.indigo,) : Icon(Icons.highlight_remove_outlined, color: Colors.indigo,),
-      onSelected: (bool selected) {
-        setState(() {
-          selectedProduct = selected;
-        });
-      },
-      onDeleted: () {},
-    );
-  }
-
-  Widget inputChipTransaction() {
-    return InputChip(
-      padding: EdgeInsets.all(2.0),
-      elevation: 5,
-      avatar: CircleAvatar(
-        backgroundColor: !this.selectedProduct ? Colors.blue.shade600 : Colors.redAccent,
-        child: Text('ST'),
-      ),
-      label: Text('Show All Transaction ', style: TextStyle(color: this.selectedProduct ? Colors.white: Colors.black, fontFamily: fontFamilyDefault)),
-      selected: !this.selectedProduct,
-      selectedColor: Color(0xff32b8a1),
-      deleteIcon: !this.selectedProduct ? Icon(Icons.check_circle_outline_outlined, color: Colors.deepPurple,) : Icon(Icons.highlight_remove_outlined, color: Colors.indigo),
-      onSelected: (bool selected) {
-        setState(() {
-          this.selectedProduct = !selected;
-        });
-      },
-      onDeleted: () {},
     );
   }
 

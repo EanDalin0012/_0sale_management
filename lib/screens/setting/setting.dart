@@ -194,8 +194,8 @@ class _SettingScreenState extends State<SettingScreen> {
                 height: 2,
               ),
               ListTile(
-                leading: Icon(Icons.lock, size: 30,color: dropColor,),
-                title: Text('User Fingerprint to Login'),
+                leading: Icon(Icons.touch_app, size: 30,color: dropColor,),
+                title: Text('Change Pin'),
               ),
               ListTile(
                 leading: Icon(Icons.fingerprint_rounded, size: 30,color: dropColor,),
@@ -216,17 +216,7 @@ class _SettingScreenState extends State<SettingScreen> {
                   ),
                 ),
               ),
-              FlatButton(
-                color: Colors.blue,
-                textColor: Colors.white,
-                padding: EdgeInsets.all(8.0),
-                splashColor: Colors.blueAccent,
-                onPressed: () {
-                  // onPressedGetLocal().then((value) {
-                  // });
-                },
-                child: Text("Set Flat Button",style: TextStyle(fontSize: 20.0),),
-              ),
+              SizedBox(height: 30)
             ],
           )
         ),

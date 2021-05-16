@@ -14,9 +14,13 @@ class TwoTabs extends StatefulWidget {
 
 class _TwoTabsState extends State<TwoTabs> {
   String _place = "tab0";
-
+  Size size;
+  double w = 0.0;
   @override
   Widget build(BuildContext context) {
+    size = MediaQuery.of(context).size;
+    w = (size.width / 2 ) - 30;
+
     return Container(
       height: 50.0,
       width: MediaQuery.of(context).size.width,
@@ -37,7 +41,7 @@ class _TwoTabsState extends State<TwoTabs> {
                 });
               },
               child: Container(
-                width: 170.0,
+                width: w,
                 padding: EdgeInsets.symmetric(vertical: 14.0, horizontal: 40.0),
                 decoration: BoxDecoration(
                     color: _place == "tab0" ? Colors.white : null,
@@ -59,7 +63,7 @@ class _TwoTabsState extends State<TwoTabs> {
                 });
               },
               child: Container(
-                width: 170.0,
+                width: w,
                 padding: EdgeInsets.symmetric(vertical: 14.0, horizontal: 40.0),
                 decoration: BoxDecoration(
                     color: _place == "tab1" ? Colors.white : null,

@@ -16,7 +16,6 @@ import 'package:sale_management/share/model/key/m_key.dart';
 import 'package:sale_management/share/static/language_static.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sale_management/screens/setting/widget/stock_choice.dart';
-import 'package:xlive_switch/xlive_switch.dart';
 
 class SettingScreen extends StatefulWidget {
   @override

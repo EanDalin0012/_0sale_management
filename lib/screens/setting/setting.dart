@@ -1,13 +1,19 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sale_management/screens/setting/widget/language_choice.dart';
 import 'package:sale_management/share/constant/text_style.dart';
 import 'package:sale_management/screens/setting/widget/profile_header.dart';
 import 'package:sale_management/share/model/key/language_key.dart';
+import 'package:sale_management/share/model/key/m_key.dart';
 import 'package:sale_management/share/static/language_static.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sale_management/screens/setting/widget/stock_choice.dart';
 
 class SettingScreen extends StatefulWidget {
   @override
@@ -20,8 +26,12 @@ class _SettingScreenState extends State<SettingScreen> {
   var switchValue = true;
   var language = 'English';
   var languageCode = 'en';
+  List<dynamic> vDataStock = [];
+  Map vStock;
+
   @override
   void initState() {
+    this._fetchItemsStock();
     super.initState();
   }
 
@@ -135,7 +145,7 @@ class _SettingScreenState extends State<SettingScreen> {
                 ),
               ),
 
-              Container(
+              this.vStock != null ? Container(
                 height: 50,
                 padding: EdgeInsets.only(
                     left: 10,
@@ -146,9 +156,9 @@ class _SettingScreenState extends State<SettingScreen> {
                 ),
                 width: MediaQuery.of(context).size.width,
                 child: Text('Sale From Stoack', style: style,),
-              ),
+              ) : Container(),
 
-              Container(
+              this.vStock != null  ? Container(
                 height: 60,
                 padding: EdgeInsets.only(
                     left: 10,
@@ -156,21 +166,17 @@ class _SettingScreenState extends State<SettingScreen> {
                     bottom: 10
                 ),
                 child: GestureDetector(
-                  onTap: () => languageChoice(),
+                  onTap: () => changeStock(this.vStock),
                   child: Row(
                     children: <Widget>[
-                      _listTileLeading(
-                          height: 25,
-                          width: 20,
-                          svgIcon: 'assets/icons/language_black_24dp.svg'
-                      ),
+                      FaIcon(FontAwesomeIcons.database,),
                       Padding(
                           padding: EdgeInsets.only(left: 15),
-                          child: Text('${this.language}', style: style,))
+                          child: Text('${this.vStock[StockKey.name]}', style: style,))
                     ],
                   ),
                 ),
-              ),
+              ) : Container(),
 
               Container(
                 height: 50,
@@ -261,12 +267,41 @@ class _SettingScreenState extends State<SettingScreen> {
 
   }
 
+  changeStock(Map data) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+              child: StockChoice(
+                vStock: data,
+                onChanged: (value) {
+                  setState(() {
+                    this.vStock = value;
+                  });
+                },
+              )
+          );
+        });
+    // _showToast();
+
+  }
+
   _showToast() {
     Fluttertoast.showToast(
         msg: "This is Center Short Toast",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM
     );
+  }
+
+  _fetchItemsStock() async {
+    final data = await rootBundle.loadString('assets/json_data/stock_list.json');
+    Map mapItems = jsonDecode(data);
+    setState(() {
+      this.vDataStock = mapItems['stocks'];
+      this.vStock = this.vDataStock[0];
+    });
+    return this.vDataStock;
   }
 
   Future<String> onPressedGetLocal() async {

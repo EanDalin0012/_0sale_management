@@ -21,6 +21,8 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  flutter_localizations:
+    sdk: flutter
   flutter:
     sdk: flutter
 
@@ -41,15 +43,22 @@ dependencies:
   flutter_parsed_text: ^2.1.0
   time_machine: ^0.9.16
   date_format: ^2.0.2
-  settings_ui: ^1.0.0
+#  settings_ui: ^1.0.0
   shared_preferences: ^2.0.5
   localstorage: ^4.0.0+1
   fluttertoast: ^8.0.6
   sqflite: ^2.0.0+3
   toast: ^0.1.5
   path_provider: ^2.0.1
-  xlive_switch: ^1.0.5
   flutter_switch: ^0.3.1
+#  intl: '>=0.17.0-0 <=0.17.0'
+#  args: ^2.0.0
+#  path: '>=1.8.0-0 <=1.8.0'
+  easy_logger: ^0.0.2
+  easy_localization: ^3.0.0
+
+dependency_overrides:
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:
@@ -72,6 +81,7 @@ flutter:
     - assets/json_data/
     - assets/images/
     - assets/icons/
+    - assets/i18n/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

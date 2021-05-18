@@ -7,14 +7,30 @@ import 'package:sale_management/screens/theme.dart';
 import 'package:sale_management/screens/widgets/country_dropdown/provider/country_provider.dart';
 import 'package:sale_management/share/database/language_db.dart';
 import 'package:sale_management/share/static/language_static.dart';
+import 'package:easy_localization/easy_localization.dart';
 
-Future<void> main() async {
+ main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
+
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-  runApp(MyApp());
+
+  runApp(EasyLocalization(
+    path: 'assets/i18n',
+    supportedLocales: [
+      Locale('en'),
+      Locale('km'),
+    ],
+    fallbackLocale: Locale('en'),
+    saveLocale: true,
+    //assetLoader: CodegenLoader(),
+    child: MyApp(),
+  )
+
+  );
 }
 
 class MyApp extends StatefulWidget {
@@ -25,22 +41,21 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   Map currentLanguage;
 
-  @override
-  void initState() {
-    LanguageDataBase.currentSelectedLanguage().then((value) {
-
-      if (value != null) {
-        setState(() {
-          currentLanguage = value;
-          MemoryStore.languageStore = currentLanguage;
-        });
-      } else {
-        print('not found data');
-      }
-    });
-
-
-  }
+  // @override
+  // void initState() {
+  //   LanguageDataBase.currentSelectedLanguage().then((value) {
+  //     if (value != null) {
+  //       setState(() {
+  //         currentLanguage = value;
+  //         MemoryStore.languageStore = currentLanguage;
+  //       });
+  //     } else {
+  //       print('not found data');
+  //     }
+  //   });
+  //
+  //
+  // }
 
   showMessage({String data}) {
     return AlertDialog(
@@ -52,47 +67,37 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    //Toast.show('show language:'+MemoryStore.languageStore.toString(), context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
-    return ChangeNotifierProvider(
-        create: (context) => CountryProvider(),
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Flutter Demo',
-          theme: theme(),
-          home: currentLanguage == null ? ChooseLanguageScreen() : SignInScreen(),
-        )
+    print(context.locale.toString());
+    return MaterialApp(
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: Locale("en", "en"),
+      debugShowCheckedModeBanner: false,
+      title: 'Flutter Demo',
+      theme: theme(),
+      home: SignInScreen(),
     );
 
     void checkCurrentLanguage() {
 
     }
   }
-}
 
-
-class MyAppa extends StatelessWidget {
-  // This widget is the root of your application.
-  Map currentLanguage;
-  MyApp() {
-    LanguageDataBase.currentSelectedLanguage().then((value) {
-      if (value != null) {
-        print('not found data');
-        currentLanguage = value;
-      } else {
-        print('not found data');
-      }
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) => ChangeNotifierProvider(
-      create: (context) => CountryProvider(),
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
-        theme: theme(),
-        home: currentLanguage == null ? ChooseLanguageScreen() : SignInScreen(),
-      )
-  );
+  // Widget build1(BuildContext context) {
+  //   //Toast.show('show language:'+MemoryStore.languageStore.toString(), context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+  //   return ChangeNotifierProvider(
+  //       create: (context) => CountryProvider(),
+  //       child: MaterialApp(
+  //         debugShowCheckedModeBanner: false,
+  //         title: 'Flutter Demo',
+  //         theme: theme(),
+  //         home: currentLanguage == null ? ChooseLanguageScreen() : SignInScreen(),
+  //       )
+  //   );
+  //
+  //   void checkCurrentLanguage() {
+  //
+  //   }
+  // }
 
 }

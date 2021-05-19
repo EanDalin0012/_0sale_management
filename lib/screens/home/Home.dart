@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sale_management/screens/home/HomeScreen.dart';
@@ -37,36 +37,36 @@ class _HomeState extends State<Home> {
       items: [
         BottomNavigationBarItem(
           icon: Icon(
-            Feather.home,
+            FeatherIcons.home,
             color: kGoodLightGray,
           ),
           title: Text('HOME'),
           activeIcon: Icon(
-            Feather.home,
+            FeatherIcons.home,
             color: kGoodPurple,
             size: 30,
           ),
         ),
         BottomNavigationBarItem(
           icon: Icon(
-            Feather.plus_circle,
+            FeatherIcons.plusCircle,
             color: kGoodLightGray,
           ),
           title: Text('CALENDAR'),
           activeIcon: Icon(
-            Feather.plus_circle,
+            FeatherIcons.plusCircle,
             color: kGoodPurple,
             size: activeIconSize,
           ),
         ),
         BottomNavigationBarItem(
           icon: Icon(
-            Feather.align_left,
+            FeatherIcons.alignLeft,
             color: kGoodLightGray,
           ),
           title: Text('PROFILE'),
           activeIcon: Icon(
-            Feather.align_left,
+            FeatherIcons.alignLeft,
             color: kGoodPurple,
             size: activeIconSize,
           ),

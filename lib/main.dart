@@ -67,11 +67,17 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    //context.locale = Locale('en', 'US');
+    //var _newLocale = Locale('en', 'en');
+    // context.setLocale(_newLocale); // change `easy_localization` locale
+
     print(context.locale.toString());
+    print(context.locale.toString());
+    print('${'title'.tr()}'); //String
     return MaterialApp(
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
-      locale: Locale("en", "en"),
+      locale: context.locale,
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: theme(),

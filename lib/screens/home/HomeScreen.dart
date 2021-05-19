@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sale_management/screens/home/widgets/product_card.dart';
+import 'package:sale_management/screens/testing/easy_localization.dart';
 import 'package:sale_management/screens/widgets/country_dropdown/country_page.dart';
 import 'package:sale_management/screens/widgets/simple_bar_chart.dart';
 import 'package:sale_management/share/database/language_data_base_helper.dart';
@@ -82,6 +83,27 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
                 },
                 child: Text('TextButton'),
+              )
+              ,
+            ),
+            SliverToBoxAdapter(
+              child: TextButton(
+                style: ButtonStyle(
+                  overlayColor: MaterialStateProperty.resolveWith<Color>(
+                          (Set<MaterialState> states) {
+                        if (states.contains(MaterialState.focused))
+                          return Colors.red;
+                        return null; // Defer to the widget's default.
+                      }
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => EasyLocalizationScreen()),
+                  );
+                },
+                child: Text('Testing translate'),
               )
               ,
             ),

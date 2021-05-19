@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_switch/flutter_switch.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sale_management/screens/setting/widget/language_choice.dart';
 import 'package:sale_management/share/constant/constant_color.dart';
@@ -16,6 +15,7 @@ import 'package:sale_management/share/model/key/m_key.dart';
 import 'package:sale_management/share/static/language_static.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sale_management/screens/setting/widget/stock_choice.dart';
+import 'package:toast/toast.dart';
 
 class SettingScreen extends StatefulWidget {
   @override
@@ -298,14 +298,6 @@ class _SettingScreenState extends State<SettingScreen> {
         });
     // _showToast();
 
-  }
-
-  _showToast() {
-    Fluttertoast.showToast(
-        msg: "This is Center Short Toast",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM
-    );
   }
 
   _fetchItemsStock() async {

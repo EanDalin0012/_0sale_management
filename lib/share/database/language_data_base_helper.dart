@@ -1,6 +1,3 @@
-import 'dart:io';
-import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path/path.dart';
 import 'package:sale_management/share/static/language_static.dart';
 import 'package:sqflite/sqflite.dart';
@@ -23,15 +20,15 @@ class LanguageDatabaseHelper {
       _database = await _initDatabase();
       return _database;
     } catch (e) {
-      Fluttertoast.showToast(
-          msg: "database catch:"+e.toString(),
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0
-      );
+      // Fluttertoast.showToast(
+      //     msg: "database catch:"+e.toString(),
+      //     toastLength: Toast.LENGTH_SHORT,
+      //     gravity: ToastGravity.CENTER,
+      //     timeInSecForIosWeb: 1,
+      //     backgroundColor: Colors.red,
+      //     textColor: Colors.white,
+      //     fontSize: 16.0
+      // );
       throw e;
       }
 
@@ -44,30 +41,12 @@ class LanguageDatabaseHelper {
       // Directory documentsDirectory = await getApplicationDocumentsDirectory();
       String dir = (await getApplicationDocumentsDirectory()).path;
       String path = join(dir, _databaseName);
-      Fluttertoast.showToast(
-          msg: "_initDatabase path:"+path.toString(),
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0
-      );
       MemoryStore.path = path;
       // Open the database. Can also add an onUpdate callback parameter.
       return await openDatabase(path,
           version: _databaseVersion,
           onCreate: _onCreate);
     }catch(e) {
-      Fluttertoast.showToast(
-          msg: "_initDatabase catch:"+e.toString(),
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0
-      );
       throw e;
     }
   }
@@ -83,15 +62,6 @@ class LanguageDatabaseHelper {
               )
               ''');
     }catch(e) {
-      Fluttertoast.showToast(
-          msg: "_onCreate catch:"+e.toString(),
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0
-      );
       throw e;
     }
 
@@ -103,15 +73,6 @@ class LanguageDatabaseHelper {
       int id = await db.insert(tableWords, word.toMap());
       return id;
     }catch(e) {
-      Fluttertoast.showToast(
-          msg: "insert catch:"+e.toString(),
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0
-      );
       throw e;
     }
 
@@ -129,15 +90,6 @@ class LanguageDatabaseHelper {
       }
       return null;
     }catch(e) {
-      Fluttertoast.showToast(
-          msg: "queryWord catch:"+e.toString(),
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0
-      );
       throw e;
     }
 

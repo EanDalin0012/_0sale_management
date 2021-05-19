@@ -74,10 +74,18 @@ class _EasyLocalizationScreenState extends State<EasyLocalizationScreen> {
     return RaisedButton(
       child: Text(text),
       onPressed: () {
-        setState(() async {
-          //await context.setLocale(Locale(languageCode[i]));
-          //EasyLocalization.of(context).locale = Locale('', '');
-        });
+        // EasyLocalization.of(context).locale = Col
+        print('I: ${i}');
+
+        if(i == 0) {
+          // ignore: deprecated_member_use
+          context.setLocale(context.supportedLocales[0]);
+        } else {
+          // ignore: deprecated_member_use
+          context.setLocale(context.supportedLocales[1]);
+        }
+
+        print('${'test'.tr()}');
       },
     );
   }
